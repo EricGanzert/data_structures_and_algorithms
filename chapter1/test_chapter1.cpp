@@ -73,10 +73,5 @@ TEST(CH1Test, basic)
         cout << "FAIL" << endl;
     }
 
-    // test out clang format
-    char varOne; char varTwo;
-    (void)varOne;
-    (void)varTwo;
-
     EXPECT_TRUE(allClear);
 }
