@@ -35,7 +35,7 @@ int main()
     cout << "R-1.2    ";
     vector<int> sampleArray = {6, -1, -2, 3, 4, 5};
     int smallest{};
-    int largest{};
+    int largest{}; 
 
     findSmallestAndLargest(sampleArray, smallest, largest);
     if (smallest != -2 || largest != 6)
