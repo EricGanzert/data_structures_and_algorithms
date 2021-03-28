@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include "gtest/gtest.h"
 
 using namespace std;
 
@@ -26,16 +27,20 @@ void findSmallestAndLargest(const vector<int>& array, int& smallest, int& larges
     }
 }
 
-int main()
+int main(int argc, char **argv) {
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}
+
+TEST(CH1Test, basic)
 {
     bool allClear = true;
 
     // R-1.2
     // find largest and smallest numbers in an array of numbers
-    cout << "R-1.2    ";
     vector<int> sampleArray = {6, -1, -2, 3, 4, 5};
     int smallest{};
-    int largest{}; 
+    int largest{};
 
     findSmallestAndLargest(sampleArray, smallest, largest);
     if (smallest != -2 || largest != 6)
@@ -66,12 +71,7 @@ int main()
     {
         allClear = false;
         cout << "FAIL" << endl;
-    }    
-
-    if (allClear)
-    {
-        cout << "PASS" << endl;
     }
 
-    return allClear;
+    EXPECT_TRUE(allClear);
 }
