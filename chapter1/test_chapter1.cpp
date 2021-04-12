@@ -110,3 +110,19 @@ TEST(SumOfIntsSmaller, MaxArgResultGreater)
     auto result = sumOfIntsSmaller(n);
     EXPECT_GT(result, n);
 }
+
+// R-1.8
+TEST(IsMultiple, IsMultiple)
+{
+    EXPECT_TRUE(isMultiple(20, 5));
+    EXPECT_TRUE(isMultiple(2, 1));
+    EXPECT_TRUE(isMultiple(6, 2));
+    EXPECT_TRUE(isMultiple(18, 3));
+    EXPECT_TRUE(isMultiple(66, 11));
+    EXPECT_TRUE(isMultiple(0, 10));
+
+    EXPECT_FALSE(isMultiple(7, 0));
+    EXPECT_FALSE(isMultiple(15, 10));
+    EXPECT_FALSE(isMultiple(5, 4));
+    EXPECT_FALSE(isMultiple(5, 10));
+}
