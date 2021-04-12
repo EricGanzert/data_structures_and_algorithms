@@ -131,3 +131,24 @@ TEST(IsMultiple, EdgeCases)
     EXPECT_NO_THROW(EXPECT_TRUE(isMultiple(0, 10)));
     EXPECT_NO_THROW(EXPECT_FALSE(isMultiple(7, 0)));
 }
+
+// R-1.9
+TEST(PrintArray, PrintArray)
+{
+    int** A = nullptr;
+    constexpr auto m = 4;
+    constexpr auto n = 6;
+
+    A = new int*[m];
+    for(auto row=0; row < m; ++row)
+    {
+        *(A + row) = new int[n];
+        auto rowPtr = *(A + row);
+        for (auto index=0; index<n; ++index)
+        {
+            rowPtr[index] = (row * n) + index;
+        }
+    }
+
+    printArray(A, m, n);
+}

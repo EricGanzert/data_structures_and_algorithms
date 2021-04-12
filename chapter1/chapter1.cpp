@@ -1,5 +1,7 @@
 #include "chapter1.h"
 
+#include <iostream>
+
 using namespace std;
 
 void findSmallestAndLargest(const vector<int>& array, int& smallest, int& largest)
@@ -50,4 +52,22 @@ bool isMultiple(uint64_t n, uint64_t m)
 
     auto i = n / m;
     return m == n / i;
+}
+
+void printArray(int** A, int m, int n)
+{
+    if (m < 1 || n < 1)
+    {
+        return;
+    }
+    
+    for (int rowIndex = 0; rowIndex < m; ++rowIndex)
+    {
+        auto row = *(A + rowIndex);
+        for (int index = 0; index < n; ++index)
+        {
+            cout << row[index] << " ";
+        }
+        cout << endl;
+    }
 }
