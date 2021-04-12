@@ -119,10 +119,15 @@ TEST(IsMultiple, IsMultiple)
     EXPECT_TRUE(isMultiple(6, 2));
     EXPECT_TRUE(isMultiple(18, 3));
     EXPECT_TRUE(isMultiple(66, 11));
-    EXPECT_TRUE(isMultiple(0, 10));
 
-    EXPECT_FALSE(isMultiple(7, 0));
     EXPECT_FALSE(isMultiple(15, 10));
     EXPECT_FALSE(isMultiple(5, 4));
     EXPECT_FALSE(isMultiple(5, 10));
+}
+
+TEST(IsMultiple, EdgeCases)
+{
+    EXPECT_NO_THROW(EXPECT_TRUE(isMultiple(0, 0)));
+    EXPECT_NO_THROW(EXPECT_TRUE(isMultiple(0, 10)));
+    EXPECT_NO_THROW(EXPECT_FALSE(isMultiple(7, 0)));
 }
