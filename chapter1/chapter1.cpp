@@ -24,3 +24,8 @@ void findSmallestAndLargest(const vector<int>& array, int& smallest, int& larges
         }
     }
 }
+
+uint64_t sumOfIntsSmaller(uint32_t n)
+{
+    return ((uint64_t{n}-1)*uint64_t{n})/2;
+}

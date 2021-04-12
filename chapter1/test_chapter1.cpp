@@ -13,6 +13,7 @@ int main(int argc, char **argv) {
     return RUN_ALL_TESTS();
 }
 
+// R-1.2
 TEST(FindSmallestAndLargestTest, FindsSmallestAndLargest)
 {
     vector<int> sampleArray = {6, -1, -2, 3, 4, 5};
@@ -44,4 +45,68 @@ TEST(FindSmallestAndLargestTest, OnlyOneInVector)
     findSmallestAndLargest(hasOne, smallest, largest);
     EXPECT_EQ(smallest, -1);
     EXPECT_EQ(smallest, -1);
+}
+
+// R-1.3
+TEST(PairStructTest, InitToZero)
+{
+    Pair p;
+    EXPECT_EQ(p.first, 0);
+    EXPECT_EQ(p.second, 0.0);
+}
+
+// R-1.4
+TEST(StringContents, CheckResult)
+{
+    string s = "abc";
+    string t = "cde";
+
+    s += s + t[1] + s;
+
+    EXPECT_EQ(s, "abcabcdabc");
+}
+
+
+// R-1.5
+TEST(OperatorPrecedence, OperatorPrecedence)
+{
+    double y = 3;
+    double z = 4;
+    double w = 5;
+
+    auto result = y + 2 * z ++ < 3 - w / 5;
+    auto resultWithParen = (y + (2 * (z ++))) < (3 - (w / 5));
+
+    EXPECT_EQ(result, resultWithParen);
+}
+
+// R-1.6
+TEST(AllocateArray, ProperStorage)
+{
+    double* dp[10];
+    for (auto& i : dp)
+    {
+        i = new double{0.0};
+    }
+
+    for (auto i : dp)
+    {
+        EXPECT_EQ(*i, 0.0);
+    }
+}
+
+// R-1.7
+TEST(SumOfIntsSmaller, SimpleMathCheck)
+{
+    auto n = 4u;
+    auto expectedResult = 1ul + 2ul + 3ul;
+
+    EXPECT_EQ(sumOfIntsSmaller(n), expectedResult);
+}
+
+TEST(SumOfIntsSmaller, MaxArgResultGreater)
+{
+    auto n = std::numeric_limits<uint32_t>::max();
+    auto result = sumOfIntsSmaller(n);
+    EXPECT_GT(result, n);
 }
