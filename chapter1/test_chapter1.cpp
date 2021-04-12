@@ -39,9 +39,6 @@ TEST(FindSmallestAndLargestTest, OnlyOneInVector)
     int smallest{};
     int largest{};
 
-    smallest = 0;
-    largest = 0;
-
     vector<int> hasOne {-1};
 
     findSmallestAndLargest(hasOne, smallest, largest);
