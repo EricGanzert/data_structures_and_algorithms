@@ -103,3 +103,39 @@ void printArray(int** A, int m, int n)
     {
         m_price = price;
     }
+
+
+    CreditCard::CreditCard(const string& no, 
+        const string& nm, int lim, double bal)
+        : m_number(no), m_name(nm), m_limit(lim), m_balance(bal)
+    {}
+
+    bool CreditCard::chargeIt(double price)
+    {
+        if (price < 0 || price + m_balance > m_limit)
+        {
+            return false;
+        }
+
+        m_balance += price;
+        return true;
+    }
+
+    void CreditCard::makePayment(double payment)
+    {
+        if (payment < 0)
+        {
+            return;
+        }
+        m_balance -= payment;
+    }
+
+ostream& operator<<(ostream& out, const CreditCard& c)
+{
+    out << "Number = " << c.getNumber() << endl
+        << "Name = " << c.getName() << endl
+        << "Balance = " << c.getBalance() << endl
+        << "Limit = " << c.getLimit() << endl;
+
+    return out;
+}

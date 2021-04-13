@@ -181,3 +181,20 @@ TEST(FlowerClass, SetMembers)
     EXPECT_EQ(f.getNumPedals(), numPedals);
     EXPECT_EQ(f.getPrice(), price);
 }
+
+// R-1.12
+TEST(CreditCard, ChargeItRejectsNegative)
+{
+    CreditCard c("12132343", "eric", 1000);
+
+    EXPECT_FALSE(c.chargeIt(-20.00));
+}
+
+TEST(CreditCard, NegativePaymentNoEffect)
+{
+    CreditCard c("12132343", "eric", 1000);
+
+    c.chargeIt(20.00);
+    c.makePayment(-10.00);
+    EXPECT_EQ(c.getBalance(), 20.00);
+}
