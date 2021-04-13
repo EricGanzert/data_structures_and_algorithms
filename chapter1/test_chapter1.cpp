@@ -152,3 +152,32 @@ TEST(PrintArray, PrintArray)
 
     printArray(A, m, n);
 }
+
+// R-1.11
+TEST(FlowerClass, ConstructorSetsMembers)
+{
+    constexpr auto name = "Daisy";
+    constexpr auto numPedals = 12;
+    constexpr auto price = 9.99f;
+
+    Flower f(name, numPedals, price);
+    EXPECT_EQ(f.getName(), name);
+    EXPECT_EQ(f.getNumPedals(), numPedals);
+    EXPECT_EQ(f.getPrice(), price);
+}
+
+TEST(FlowerClass, SetMembers)
+{
+    constexpr auto name = "Daisy";
+    constexpr auto numPedals = 12;
+    constexpr auto price = 9.99f;
+
+    Flower f("no name", 0, 0.f);
+    f.setName(name);
+    f.setNumPedals(numPedals);
+    f.setPrice(price);
+
+    EXPECT_EQ(f.getName(), name);
+    EXPECT_EQ(f.getNumPedals(), numPedals);
+    EXPECT_EQ(f.getPrice(), price);
+}

@@ -71,3 +71,35 @@ void printArray(int** A, int m, int n)
         cout << endl;
     }
 }
+
+    Flower::Flower(string name, int numPedals, float price) : m_name(name), m_numPedals(numPedals), m_price(price) {}
+
+    string Flower::getName()
+    {
+        return m_name;
+    }
+
+    void Flower::setName(string name)
+    {
+        m_name = name;
+    }
+
+    int Flower::getNumPedals()
+    {
+        return m_numPedals;
+    }
+
+    void Flower::setNumPedals(int numPedals)
+    {
+        m_numPedals = numPedals;
+    }
+
+    float Flower::getPrice()
+    {
+        return m_price;
+    }
+
+    void Flower::setPrice(float price)
+    {
+        m_price = price;
+    }
