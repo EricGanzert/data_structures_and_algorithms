@@ -55,6 +55,8 @@ private:
     std::string m_name;
     int m_limit;
     double m_balance;
+
+    const double m_interestRate = 0.02;
 };
 
 std::ostream& operator<<(std::ostream& out, const CreditCard& c);

@@ -127,6 +127,8 @@ void printArray(int** A, int m, int n)
         {
             return;
         }
+
+        m_balance += payment * m_interestRate;
         m_balance -= payment;
     }
 

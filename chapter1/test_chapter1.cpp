@@ -198,3 +198,37 @@ TEST(CreditCard, NegativePaymentNoEffect)
     c.makePayment(-10.00);
     EXPECT_EQ(c.getBalance(), 20.00);
 }
+
+// R-1.13
+TEST(CreditCard, ChargesInterestOnPayments)
+{
+    CreditCard c("12132343", "eric", 1000);
+    c.chargeIt(10000.00);
+
+    auto payment = 20.00;
+    auto balance = c.getBalance();
+    c.makePayment(payment);
+
+    EXPECT_LT(balance - c.getBalance(), payment);
+}
+
+TEST(CreditCard, InterestProportionalToPayment)
+{
+    CreditCard c("12132343", "eric", 1000);
+    c.chargeIt(10000.00);
+
+    auto payment = 20.00;
+    auto balance = c.getBalance();
+    c.makePayment(payment);
+
+    auto amountOfInterest = payment - (balance - c.getBalance());
+
+    payment *= 2;
+
+    balance = c.getBalance();
+    c.makePayment(payment);
+
+    auto moreInterest = payment - (balance - c.getBalance());
+
+    EXPECT_GT(moreInterest, amountOfInterest);
+}
