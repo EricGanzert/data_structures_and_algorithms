@@ -5,6 +5,8 @@
 
 using namespace std;
 
+namespace chapter_1 {
+
 void findSmallestAndLargest(const vector<int>& array, int& smallest, int& largest)
 {
     if (array.empty())
@@ -106,9 +108,9 @@ void printArray(int** A, int m, int n)
     }
 
 
-    CreditCard::CreditCard(unique_ptr<SteadyClock> clock, const string& no, 
+    CreditCard::CreditCard(shared_ptr<SteadyClock> clock, const string& no, 
         const string& nm, int lim, double bal)
-        : m_number(no), m_name(nm), m_limit(lim), m_balance(bal), m_clock(move(clock))
+        : m_number(no), m_name(nm), m_limit(lim), m_balance(bal), m_clock(clock)
     {}
 
     bool CreditCard::chargeIt(double price)
@@ -161,4 +163,6 @@ void CreditCard::chargeFeeIfLate()
         m_balance += m_lateFee;
         m_lateFeeCharged = true;
     }
+}
+
 }

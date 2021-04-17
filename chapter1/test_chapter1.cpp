@@ -1,10 +1,12 @@
 #include "chapter1.h"
+#include "mock_steady_clock.h"
 
 #include <gtest/gtest.h>
 
 #include <iostream>
 #include <vector>
 
+using namespace chapter_1;
 using namespace std;
 using namespace testing;
 
@@ -50,7 +52,7 @@ TEST(FindSmallestAndLargestTest, OnlyOneInVector)
 // R-1.3
 TEST(PairStructTest, InitToZero)
 {
-    Pair p;
+    chapter_1::Pair p;
     EXPECT_EQ(p.first, 0);
     EXPECT_EQ(p.second, 0.0);
 }
@@ -182,53 +184,62 @@ TEST(FlowerClass, SetMembers)
     EXPECT_EQ(f.getPrice(), price);
 }
 
-// R-1.12
-TEST(CreditCard, ChargeItRejectsNegative)
-{
-    CreditCard c(make_unique<SteadyClock>(), "12132343", "eric", 1000);
+class CreditCardTest : public Test {
+public:
+    unique_ptr<CreditCard> makeCreditCard(string no, string nm, int lim, double bal=0)
+    {
+        return make_unique<CreditCard>(m_mockClock, no, nm, lim, bal);
+    }
+    shared_ptr<MockSteadyClock> m_mockClock = make_shared<NiceMock<MockSteadyClock>>();
+};
 
-    EXPECT_FALSE(c.chargeIt(-20.00));
+// R-1.12
+TEST_F(CreditCardTest, ChargeItRejectsNegative)
+{
+    auto c = makeCreditCard("12132343", "eric", 1000);
+
+    EXPECT_FALSE(c->chargeIt(-20.00));
 }
 
-TEST(CreditCard, NegativePaymentNoEffect)
+TEST_F(CreditCardTest, NegativePaymentNoEffect)
 {
-    CreditCard c(make_unique<SteadyClock>(), "12132343", "eric", 1000);
+    auto c = makeCreditCard("12132343", "eric", 1000);
 
-    c.chargeIt(20.00);
-    c.makePayment(-10.00);
-    EXPECT_EQ(c.getBalance(), 20.00);
+    c->chargeIt(20.00);
+    c->makePayment(-10.00);
+    EXPECT_EQ(c->getBalance(), 20.00);
 }
 
 // R-1.13
-TEST(CreditCard, ChargesInterestOnPayments)
+TEST_F(CreditCardTest, ChargesInterestOnPayments)
 {
-    CreditCard c(make_unique<SteadyClock>(), "12132343", "eric", 1000);
-    c.chargeIt(10000.00);
+    auto c = makeCreditCard("12132343", "eric", 1000);
+    c->chargeIt(10000.00);
 
     auto payment = 20.00;
-    auto balance = c.getBalance();
-    c.makePayment(payment);
+    auto balance = c->getBalance();
+    c->makePayment(payment);
 
-    EXPECT_LT(balance - c.getBalance(), payment);
+    EXPECT_LT(balance - c->getBalance(), payment);
 }
 
-TEST(CreditCard, InterestProportionalToPayment)
+TEST_F(CreditCardTest, InterestProportionalToPayment)
 {
-    CreditCard c(make_unique<SteadyClock>(), "12132343", "eric", 1000);
-    c.chargeIt(10000.00);
+    auto c = makeCreditCard("12132343", "eric", 1000);
+    c->chargeIt(10000.00);
 
     auto payment = 20.00;
-    auto balance = c.getBalance();
-    c.makePayment(payment);
+    auto balance = c->getBalance();
+    c->makePayment(payment);
 
-    auto amountOfInterest = payment - (balance - c.getBalance());
+    auto amountOfInterest = payment - (balance - c->getBalance());
 
     payment *= 2;
 
-    balance = c.getBalance();
-    c.makePayment(payment);
+    balance = c->getBalance();
+    c->makePayment(payment);
 
-    auto moreInterest = payment - (balance - c.getBalance());
+    auto moreInterest = payment - (balance - c->getBalance());
 
     EXPECT_GT(moreInterest, amountOfInterest);
 }

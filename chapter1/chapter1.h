@@ -8,6 +8,8 @@
 #include <string>
 #include <vector>
 
+namespace chapter_1 {
+
 void findSmallestAndLargest(const std::vector<int>& array, int& smallest, int& largest);
 
 struct Pair {
@@ -43,7 +45,7 @@ private:
 
 class CreditCard {
 public:
-    CreditCard(std::unique_ptr<SteadyClock> clock, const std::string& no, 
+    CreditCard(std::shared_ptr<SteadyClock> clock, const std::string& no, 
         const std::string& nm, int lim, double bal=0);
 
     std::string getNumber() const { return m_number; }
@@ -66,7 +68,9 @@ private:
     const double m_lateFee = 10.00;
     bool m_lateFeeCharged = false;
     std::chrono::steady_clock::time_point m_paymentDue{};
-    std::unique_ptr<SteadyClock> m_clock;
+    std::shared_ptr<SteadyClock> m_clock;
 };
 
 std::ostream& operator<<(std::ostream& out, const CreditCard& c);
+
+}
