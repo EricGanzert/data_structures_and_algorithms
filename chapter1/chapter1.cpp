@@ -1,9 +1,9 @@
 #include "chapter1.h"
+#include "steady_clock.h"
 
 #include <iostream>
 
 using namespace std;
-using namespace std::chrono;
 
 void findSmallestAndLargest(const vector<int>& array, int& smallest, int& largest)
 {
@@ -150,6 +150,11 @@ ostream& operator<<(ostream& out, const CreditCard& c)
 
 void CreditCard::chargeFeeIfLate()
 {
+    if (m_paymentDue == chrono::steady_clock::time_point{})
+    {
+        return;
+    }
+
     auto now = steady_clock::now();
     if (now > m_paymentDue && !m_lateFeeCharged)
     {
