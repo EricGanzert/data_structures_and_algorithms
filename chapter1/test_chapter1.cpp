@@ -8,6 +8,7 @@
 
 using namespace chapter_1;
 using namespace std;
+using namespace std::chrono;
 using namespace testing;
 
 int main(int argc, char **argv) {
@@ -186,11 +187,19 @@ TEST(FlowerClass, SetMembers)
 
 class CreditCardTest : public Test {
 public:
+    CreditCardTest()
+    {
+        m_currentTime = steady_clock::now();
+        ON_CALL(*m_mockClock, now()).WillByDefault(Return(ByRef(m_currentTime)));
+    }
+
     unique_ptr<CreditCard> makeCreditCard(string no, string nm, int lim, double bal=0)
     {
         return make_unique<CreditCard>(m_mockClock, no, nm, lim, bal);
     }
+
     shared_ptr<MockSteadyClock> m_mockClock = make_shared<NiceMock<MockSteadyClock>>();
+    steady_clock::time_point m_currentTime{};
 };
 
 // R-1.12
@@ -242,4 +251,18 @@ TEST_F(CreditCardTest, InterestProportionalToPayment)
     auto moreInterest = payment - (balance - c->getBalance());
 
     EXPECT_GT(moreInterest, amountOfInterest);
+}
+
+TEST_F(CreditCardTest, LatePaymentFee)
+{
+    auto card = makeCreditCard("12132343", "eric", 1000);
+
+    auto charge = 20.00;
+    card->chargeIt(charge);
+
+    m_currentTime += 720h + 1h;
+
+    card->chargeIt(charge);
+
+    EXPECT_THAT(card->getBalance(), Gt(2 * charge));
 }
