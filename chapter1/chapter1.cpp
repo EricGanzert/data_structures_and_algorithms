@@ -3,6 +3,7 @@
 #include <iostream>
 
 using namespace std;
+using namespace std::chrono;
 
 void findSmallestAndLargest(const vector<int>& array, int& smallest, int& largest)
 {
@@ -118,6 +119,7 @@ void printArray(int** A, int m, int n)
         }
 
         m_balance += price;
+        chargeFeeIfLate();
         return true;
     }
 
@@ -130,6 +132,10 @@ void printArray(int** A, int m, int n)
 
         m_balance += payment * m_interestRate;
         m_balance -= payment;
+        chargeFeeIfLate();
+
+        m_paymentDue = steady_clock::now() + 720h;
+        m_lateFeeCharged = false;
     }
 
 ostream& operator<<(ostream& out, const CreditCard& c)
@@ -140,4 +146,14 @@ ostream& operator<<(ostream& out, const CreditCard& c)
         << "Limit = " << c.getLimit() << endl;
 
     return out;
+}
+
+void CreditCard::chargeFeeIfLate()
+{
+    auto now = steady_clock::now();
+    if (now > m_paymentDue && !m_lateFeeCharged)
+    {
+        m_balance += m_lateFee;
+        m_lateFeeCharged = true;
+    }
 }

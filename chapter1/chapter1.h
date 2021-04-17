@@ -1,5 +1,6 @@
 #pragma once
 
+#include <chrono>
 #include <cstdint>
 #include <string>
 #include <vector>
@@ -51,12 +52,17 @@ public:
     void makePayment(double payment);
 
 private:
+    void chargeFeeIfLate();
+
     std::string m_number;
     std::string m_name;
     int m_limit;
     double m_balance;
 
     const double m_interestRate = 0.02;
+    const double m_lateFee = 10.00;
+    bool m_lateFeeCharged = false;
+    std::chrono::steady_clock::time_point m_paymentDue{};
 };
 
 std::ostream& operator<<(std::ostream& out, const CreditCard& c);
