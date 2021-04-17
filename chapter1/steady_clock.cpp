@@ -1,10 +1,9 @@
 #include "steady_clock.h"
 
-namespace steady_clock {
+using namespace std;
+using namespace std::chrono;
 
-std::chrono::steady_clock::time_point now()
+steady_clock::time_point SteadyClock::now()
 {
-    return std::chrono::steady_clock::now();
-}
-
+    return steady_clock::now();
 }

@@ -106,9 +106,9 @@ void printArray(int** A, int m, int n)
     }
 
 
-    CreditCard::CreditCard(const string& no, 
+    CreditCard::CreditCard(unique_ptr<SteadyClock> clock, const string& no, 
         const string& nm, int lim, double bal)
-        : m_number(no), m_name(nm), m_limit(lim), m_balance(bal)
+        : m_number(no), m_name(nm), m_limit(lim), m_balance(bal), m_clock(move(clock))
     {}
 
     bool CreditCard::chargeIt(double price)
@@ -134,7 +134,7 @@ void printArray(int** A, int m, int n)
         m_balance -= payment;
         chargeFeeIfLate();
 
-        m_paymentDue = steady_clock::now() + 720h;
+        m_paymentDue = m_clock->now() + 720h;
         m_lateFeeCharged = false;
     }
 
@@ -155,7 +155,7 @@ void CreditCard::chargeFeeIfLate()
         return;
     }
 
-    auto now = steady_clock::now();
+    auto now = m_clock->now();
     if (now > m_paymentDue && !m_lateFeeCharged)
     {
         m_balance += m_lateFee;

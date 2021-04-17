@@ -185,14 +185,14 @@ TEST(FlowerClass, SetMembers)
 // R-1.12
 TEST(CreditCard, ChargeItRejectsNegative)
 {
-    CreditCard c("12132343", "eric", 1000);
+    CreditCard c(make_unique<SteadyClock>(), "12132343", "eric", 1000);
 
     EXPECT_FALSE(c.chargeIt(-20.00));
 }
 
 TEST(CreditCard, NegativePaymentNoEffect)
 {
-    CreditCard c("12132343", "eric", 1000);
+    CreditCard c(make_unique<SteadyClock>(), "12132343", "eric", 1000);
 
     c.chargeIt(20.00);
     c.makePayment(-10.00);
@@ -202,7 +202,7 @@ TEST(CreditCard, NegativePaymentNoEffect)
 // R-1.13
 TEST(CreditCard, ChargesInterestOnPayments)
 {
-    CreditCard c("12132343", "eric", 1000);
+    CreditCard c(make_unique<SteadyClock>(), "12132343", "eric", 1000);
     c.chargeIt(10000.00);
 
     auto payment = 20.00;
@@ -214,7 +214,7 @@ TEST(CreditCard, ChargesInterestOnPayments)
 
 TEST(CreditCard, InterestProportionalToPayment)
 {
-    CreditCard c("12132343", "eric", 1000);
+    CreditCard c(make_unique<SteadyClock>(), "12132343", "eric", 1000);
     c.chargeIt(10000.00);
 
     auto payment = 20.00;
