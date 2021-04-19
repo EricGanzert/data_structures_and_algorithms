@@ -6,7 +6,6 @@
 #include <iostream>
 #include <vector>
 
-using namespace chapter_1;
 using namespace std;
 using namespace std::chrono;
 using namespace testing;
@@ -53,7 +52,7 @@ TEST(FindSmallestAndLargestTest, OnlyOneInVector)
 // R-1.3
 TEST(PairStructTest, InitToZero)
 {
-    chapter_1::Pair p;
+    MyPair p;
     EXPECT_EQ(p.first, 0);
     EXPECT_EQ(p.second, 0.0);
 }
@@ -320,6 +319,6 @@ TEST_F(CreditCardTest, SetBalance)
 
     constexpr auto NewBalance = 33.00;
     card->setBalance(NewBalance);
-    
+
     EXPECT_THAT(card->getBalance(), Eq(NewBalance));
 }

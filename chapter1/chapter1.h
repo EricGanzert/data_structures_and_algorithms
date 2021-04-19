@@ -8,11 +8,9 @@
 #include <string>
 #include <vector>
 
-namespace chapter_1 {
-
 void findSmallestAndLargest(const std::vector<int>& array, int& smallest, int& largest);
 
-struct Pair {
+struct MyPair {
     int first{};
     double second{};
 };
@@ -78,5 +76,3 @@ private:
 };
 
 std::ostream& operator<<(std::ostream& out, const CreditCard& c);
-
-}

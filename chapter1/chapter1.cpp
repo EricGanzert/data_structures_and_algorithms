@@ -6,8 +6,6 @@
 using namespace std;
 using namespace std::chrono;
 
-namespace chapter_1 {
-
 void findSmallestAndLargest(const vector<int>& array, int& smallest, int& largest)
 {
     if (array.empty())
@@ -179,6 +177,4 @@ void CreditCard::setLimit(double limit)
     }
 
     m_limit = limit;
-}
-
 }
