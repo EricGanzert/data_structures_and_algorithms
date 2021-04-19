@@ -4,6 +4,7 @@
 #include <iostream>
 
 using namespace std;
+using namespace std::chrono;
 
 namespace chapter_1 {
 
@@ -111,7 +112,9 @@ void printArray(int** A, int m, int n)
     CreditCard::CreditCard(shared_ptr<SteadyClock> clock, const string& no, 
         const string& nm, int lim, double bal)
         : m_number(no), m_name(nm), m_limit(lim), m_balance(bal), m_clock(clock)
-    {}
+    {
+        m_payPeriodStart = m_clock->now();
+    }
 
     bool CreditCard::chargeIt(double price)
     {
@@ -121,7 +124,6 @@ void printArray(int** A, int m, int n)
         }
 
         m_balance += price;
-        chargeFeeIfLate();
         return true;
     }
 
@@ -135,9 +137,7 @@ void printArray(int** A, int m, int n)
         m_balance += payment * m_interestRate;
         m_balance -= payment;
         chargeFeeIfLate();
-
-        m_paymentDue = m_clock->now() + 720h;
-        m_lateFeeCharged = false;
+        m_payPeriodStart = m_clock->now();
     }
 
 ostream& operator<<(ostream& out, const CreditCard& c)
@@ -152,16 +152,12 @@ ostream& operator<<(ostream& out, const CreditCard& c)
 
 void CreditCard::chargeFeeIfLate()
 {
-    if (m_paymentDue == chrono::steady_clock::time_point{})
-    {
-        return;
-    }
-
     auto now = m_clock->now();
-    if (now > m_paymentDue && !m_lateFeeCharged)
+    auto timeDiff = now - m_payPeriodStart;
+
+    if (timeDiff > 720h)
     {
         m_balance += m_lateFee;
-        m_lateFeeCharged = true;
     }
 }
 

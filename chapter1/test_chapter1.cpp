@@ -189,8 +189,8 @@ class CreditCardTest : public Test {
 public:
     CreditCardTest()
     {
-        m_currentTime = steady_clock::now();
-        ON_CALL(*m_mockClock, now()).WillByDefault(Return(ByRef(m_currentTime)));
+        ON_CALL(*m_mockClock, now()).WillByDefault(Invoke([&]() {
+            return m_currentTime; }));
     }
 
     unique_ptr<CreditCard> makeCreditCard(string no, string nm, int lim, double bal=0)
@@ -253,16 +253,23 @@ TEST_F(CreditCardTest, InterestProportionalToPayment)
     EXPECT_GT(moreInterest, amountOfInterest);
 }
 
+// R-1.14
 TEST_F(CreditCardTest, LatePaymentFee)
 {
-    auto card = makeCreditCard("12132343", "eric", 1000);
-
+    auto cardPayedLate = makeCreditCard("12132343", "eric", 1000);
     auto charge = 20.00;
-    card->chargeIt(charge);
+    cardPayedLate->chargeIt(charge);
 
     m_currentTime += 720h + 1h;
+    cardPayedLate->makePayment(charge);
+    auto latePayBalance = cardPayedLate->getBalance();
 
-    card->chargeIt(charge);
+    auto cardPayedEarly = makeCreditCard("11111111", "tim", 1000);
+    cardPayedEarly->chargeIt(charge);
 
-    EXPECT_THAT(card->getBalance(), Gt(2 * charge));
+    m_currentTime += 1h;
+    cardPayedEarly->makePayment(charge);
+    auto earlyPayBalance = cardPayedEarly->getBalance();
+
+    EXPECT_THAT(earlyPayBalance, Lt(latePayBalance));
 }

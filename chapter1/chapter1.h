@@ -66,8 +66,7 @@ private:
 
     const double m_interestRate = 0.02;
     const double m_lateFee = 10.00;
-    bool m_lateFeeCharged = false;
-    std::chrono::steady_clock::time_point m_paymentDue{};
+    std::chrono::steady_clock::time_point m_payPeriodStart{};
     std::shared_ptr<SteadyClock> m_clock;
 };
 
