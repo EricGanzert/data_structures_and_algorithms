@@ -43,8 +43,8 @@ private:
 
 class CreditCard {
 public:
-    CreditCard(std::shared_ptr<SteadyClock> clock, const std::string& no, 
-        const std::string& nm, int lim, double bal=0);
+    CreditCard(std::shared_ptr<SteadyClock> clock, std::string no, 
+        std::string nm, int lim, double bal=0);
 
     std::string getNumber() const { return m_number; }
     void setNumber(std::string number) { m_number = number; }

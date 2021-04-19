@@ -106,9 +106,8 @@ void printArray(int** A, int m, int n)
         m_price = price;
     }
 
-
-    CreditCard::CreditCard(shared_ptr<SteadyClock> clock, const string& no, 
-        const string& nm, int lim, double bal)
+    CreditCard::CreditCard(shared_ptr<SteadyClock> clock, string no, 
+        string nm, int lim, double bal)
         : m_number(no), m_name(nm), m_limit(lim), m_balance(bal), m_clock(clock)
     {
         m_payPeriodStart = m_clock->now();
