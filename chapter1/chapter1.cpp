@@ -161,4 +161,24 @@ void CreditCard::chargeFeeIfLate()
     }
 }
 
+void CreditCard::setBalance(double balance)
+{
+    if (balance < 0.0)
+    {
+        return;
+    }
+
+    m_balance = balance;
+}
+
+void CreditCard::setLimit(double limit)
+{
+    if (limit < 0.0)
+    {
+        return;
+    }
+
+    m_limit = limit;
+}
+
 }

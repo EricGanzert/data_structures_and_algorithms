@@ -273,3 +273,53 @@ TEST_F(CreditCardTest, LatePaymentFee)
 
     EXPECT_THAT(earlyPayBalance, Lt(latePayBalance));
 }
+
+// R-1.15
+TEST_F(CreditCardTest, SetNumber)
+{
+    auto card = makeCreditCard("12132343", "eric", 1000);
+    constexpr auto NewNumber = "new number";
+    card->setNumber(NewNumber);
+    EXPECT_THAT(card->getNumber(), Eq(NewNumber));
+}
+
+TEST_F(CreditCardTest, SetName)
+{
+    auto card = makeCreditCard("12132343", "eric", 1000);
+    constexpr auto NewName = "new name";
+    card->setName(NewName);
+    EXPECT_THAT(card->getName(), Eq(NewName));
+}
+
+TEST_F(CreditCardTest, BalanceZeroByDefault)
+{
+    auto card = makeCreditCard("12132343", "eric", 1000);
+    EXPECT_THAT(card->getBalance(), Eq(0.00));
+}
+
+TEST_F(CreditCardTest, BalanceCanHaveFractionalComponent)
+{
+    constexpr auto OriginalBalance = 0.01;
+    auto card = makeCreditCard("12132343", "eric", 1000, OriginalBalance);
+    EXPECT_THAT(card->getBalance(), Gt(0.00));
+}
+
+TEST_F(CreditCardTest, SetBalanceNegativeRejected)
+{
+    constexpr auto OriginalBalance = 20.00;
+    auto card = makeCreditCard("12132343", "eric", 1000, OriginalBalance);
+    
+    card->setBalance(-12);
+    EXPECT_THAT(card->getBalance(), Eq(OriginalBalance));
+}
+
+
+TEST_F(CreditCardTest, SetBalance)
+{
+    auto card = makeCreditCard("12132343", "eric", 1000);
+
+    constexpr auto NewBalance = 33.00;
+    card->setBalance(NewBalance);
+    
+    EXPECT_THAT(card->getBalance(), Eq(NewBalance));
+}

@@ -49,9 +49,16 @@ public:
         const std::string& nm, int lim, double bal=0);
 
     std::string getNumber() const { return m_number; }
+    void setNumber(std::string number) { m_number = number; }
+
     std::string getName() const { return m_name; }
+    void setName(std::string name) { m_name = name; }
+
     double getBalance() const { return m_balance; }
+    void setBalance(double balance);
+
     int getLimit() const { return m_limit; }
+    void setLimit(double limit);
 
     bool chargeIt(double price);
     void makePayment(double payment);
