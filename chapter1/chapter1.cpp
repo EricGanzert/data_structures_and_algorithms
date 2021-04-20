@@ -177,3 +177,41 @@ void CreditCard::setLimit(double limit)
 
     m_limit = limit;
 }
+
+AllKinds::AllKinds(int integer, long longInt, float flt) 
+    : m_int(integer), m_long(longInt), m_float(flt) {}
+
+int AllKinds::getInt()
+{
+    return m_int;
+}
+
+void AllKinds::setInt(int newInt)
+{
+    m_int = newInt;
+}
+
+long AllKinds::getLongInt()
+{
+    return m_long;
+}
+
+void AllKinds::setLongInt(long newLong)
+{
+    m_long = newLong;
+}
+
+float AllKinds::getFloat()
+{
+    return m_float;
+}
+
+void AllKinds::setFloat(float newFloat)
+{
+    m_float = newFloat;
+}
+
+double AllKinds::sumOfAllCombos()
+{
+    return double(m_int * m_float + m_int * m_long + m_float * m_long);
+}

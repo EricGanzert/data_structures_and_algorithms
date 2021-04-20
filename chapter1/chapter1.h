@@ -76,3 +76,25 @@ private:
 };
 
 std::ostream& operator<<(std::ostream& out, const CreditCard& c);
+
+
+class AllKinds {
+public:
+    AllKinds() {}
+    AllKinds(int integer, long longInt, float flt);
+    
+    int getInt();
+    void setInt(int newInt);
+
+    long getLongInt();
+    void setLongInt(long newLong);
+
+    float getFloat();
+    void setFloat(float newFloat);
+
+    double sumOfAllCombos();
+private:
+    int m_int{};
+    long m_long{};
+    float m_float{};
+};

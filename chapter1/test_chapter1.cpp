@@ -351,3 +351,42 @@ TEST_F(CreditCardTest, Fragment1_4)
         cout << endl;
     }
 }
+
+TEST(AllKindsTest, DefaultConstructorZeroes)
+{
+    AllKinds ak;
+
+    EXPECT_THAT(ak.getInt(), Eq(int(0)));
+    EXPECT_THAT(ak.getLongInt(), Eq(long(0)));
+    EXPECT_THAT(ak.getFloat(), Eq(0.f));
+}
+
+TEST(AllKindsTest, SetAndGetFunctions)
+{
+    AllKinds ak;
+
+    ak.setInt(1);
+    EXPECT_THAT(ak.getInt(), Eq(int(1)));
+
+    ak.setLongInt(2);
+    EXPECT_THAT(ak.getLongInt(), Eq(long(2)));
+
+    ak.setFloat(3.f);
+    EXPECT_THAT(ak.getFloat(), Eq(3.f));
+}
+
+TEST(AllKindsTest, ConstructorSetsMembers)
+{
+    AllKinds ak(5, 6l, 7.f);
+    EXPECT_THAT(ak.getInt(), Eq(int(5)));
+    EXPECT_THAT(ak.getLongInt(), Eq(long(6)));
+    EXPECT_THAT(ak.getFloat(), Eq(7.f));
+}
+
+TEST(AllKindsTest, SumOfAllCombos)
+{
+    AllKinds ak(5, 6l, 7.f);
+
+    double expectedResult = 5 * 6l + 5 * 7.f + 6l * 7.f;
+    EXPECT_THAT(ak.sumOfAllCombos(), Eq(expectedResult));
+}
