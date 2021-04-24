@@ -352,6 +352,7 @@ TEST_F(CreditCardTest, Fragment1_4)
     }
 }
 
+// R-1.17
 TEST(AllKindsTest, DefaultConstructorZeroes)
 {
     AllKinds ak;
@@ -389,4 +390,14 @@ TEST(AllKindsTest, SumOfAllCombos)
 
     double expectedResult = 5 * 6l + 5 * 7.f + 6l * 7.f;
     EXPECT_THAT(ak.sumOfAllCombos(), Eq(expectedResult));
+}
+
+// R-1.18
+TEST(IsMultiple, NegativeInputs)
+{
+    ASSERT_TRUE(isMultiple(-20, 5));
+    ASSERT_TRUE(isMultiple(20, -5));
+    ASSERT_TRUE(isMultiple(-20, -5));
+
+    ASSERT_FALSE(isMultiple(-13, 4));
 }
