@@ -419,10 +419,18 @@ TEST(TwoPower, TwoPower)
     EXPECT_FALSE(twoPower(33));
 }
 
-// R-1.20
+// R-1.21
 TEST(SumOfOddIntsSmaller, SumOfOddIntsSmaller)
 {
     EXPECT_EQ(sumOfOddIntsSmaller(4), 4);
     EXPECT_EQ(sumOfOddIntsSmaller(10), 25);
     EXPECT_EQ(sumOfOddIntsSmaller(13), 36);
+}
+
+// R-1.22
+TEST(NumDividesBy2Above2, NumDividesBy2Above2)
+{
+    EXPECT_EQ(numDividesBy2Above2(64), 5);
+    EXPECT_EQ(numDividesBy2Above2(33.3), 4);
+    EXPECT_EQ(numDividesBy2Above2(29.9), 3);
 }

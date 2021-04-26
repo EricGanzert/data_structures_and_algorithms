@@ -103,3 +103,5 @@ private:
 bool twoPower(int i);
 
 uint64_t sumOfOddIntsSmaller(uint32_t n);
+
+uint32_t numDividesBy2Above2(double x);

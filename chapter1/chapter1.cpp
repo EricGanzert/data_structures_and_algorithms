@@ -2,6 +2,7 @@
 #include "steady_clock.h"
 
 #include <iostream>
+#include <math.h>
 
 using namespace std;
 using namespace std::chrono;
@@ -243,4 +244,12 @@ uint64_t sumOfOddIntsSmaller(uint32_t n)
 {
     auto numOdds = n / 2;
     return numOdds * numOdds;
+}
+
+uint32_t numDividesBy2Above2(double x)
+{
+    auto asInt = int64_t(x + 0.5);
+    
+    auto bits = log2(asInt);
+    return bits - 1;
 }
