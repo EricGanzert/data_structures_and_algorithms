@@ -401,3 +401,20 @@ TEST(IsMultiple, NegativeInputs)
 
     ASSERT_FALSE(isMultiple(-13, 4));
 }
+
+//R-1.19
+TEST(TwoPower, TwoPower)
+{
+    ASSERT_TRUE(twoPower(1));
+    ASSERT_TRUE(twoPower(2));
+    ASSERT_TRUE(twoPower(4));
+    ASSERT_TRUE(twoPower(16));
+    ASSERT_TRUE(twoPower(128));
+    ASSERT_TRUE(twoPower(1024));
+
+    ASSERT_FALSE(twoPower(0));
+    ASSERT_FALSE(twoPower(-2));
+    ASSERT_FALSE(twoPower(3));
+    ASSERT_FALSE(twoPower(31));
+    ASSERT_FALSE(twoPower(33));
+}

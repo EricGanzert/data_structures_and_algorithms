@@ -214,3 +214,27 @@ double AllKinds::sumOfAllCombos()
 {
     return double(m_int * m_float + m_int * m_long + m_float * m_long);
 }
+
+bool twoPower(int i)
+{
+    if (i < 1)
+    {
+        return false;
+    }
+
+    // if you look at the bits representing the number,
+    // it is a power of 2 if only one of the bits is set to 1
+    auto sizeInBits = sizeof(i) * 8;
+    auto andCount = 0u;
+    auto bitCheck = 1ul;
+
+    for (auto it = 0u; it < sizeInBits; it++, bitCheck <<= 1)
+    {
+        if (i & bitCheck)
+        {
+            andCount++;
+        }
+    }
+
+    return andCount == 1;
+}
