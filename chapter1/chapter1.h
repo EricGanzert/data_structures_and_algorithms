@@ -101,3 +101,5 @@ private:
 
 // returns true if i is a power of 2. Does not use multiplication or division
 bool twoPower(int i);
+
+uint64_t sumOfOddIntsSmaller(uint32_t n);

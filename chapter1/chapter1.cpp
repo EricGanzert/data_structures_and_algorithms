@@ -238,3 +238,9 @@ bool twoPower(int i)
 
     return andCount == 1;
 }
+
+uint64_t sumOfOddIntsSmaller(uint32_t n)
+{
+    auto numOdds = n / 2;
+    return numOdds * numOdds;
+}

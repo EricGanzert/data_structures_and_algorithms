@@ -395,26 +395,34 @@ TEST(AllKindsTest, SumOfAllCombos)
 // R-1.18
 TEST(IsMultiple, NegativeInputs)
 {
-    ASSERT_TRUE(isMultiple(-20, 5));
-    ASSERT_TRUE(isMultiple(20, -5));
-    ASSERT_TRUE(isMultiple(-20, -5));
+    EXPECT_TRUE(isMultiple(-20, 5));
+    EXPECT_TRUE(isMultiple(20, -5));
+    EXPECT_TRUE(isMultiple(-20, -5));
 
-    ASSERT_FALSE(isMultiple(-13, 4));
+    EXPECT_FALSE(isMultiple(-13, 4));
 }
 
-//R-1.19
+// R-1.19
 TEST(TwoPower, TwoPower)
 {
-    ASSERT_TRUE(twoPower(1));
-    ASSERT_TRUE(twoPower(2));
-    ASSERT_TRUE(twoPower(4));
-    ASSERT_TRUE(twoPower(16));
-    ASSERT_TRUE(twoPower(128));
-    ASSERT_TRUE(twoPower(1024));
+    EXPECT_TRUE(twoPower(1));
+    EXPECT_TRUE(twoPower(2));
+    EXPECT_TRUE(twoPower(4));
+    EXPECT_TRUE(twoPower(16));
+    EXPECT_TRUE(twoPower(128));
+    EXPECT_TRUE(twoPower(1024));
 
-    ASSERT_FALSE(twoPower(0));
-    ASSERT_FALSE(twoPower(-2));
-    ASSERT_FALSE(twoPower(3));
-    ASSERT_FALSE(twoPower(31));
-    ASSERT_FALSE(twoPower(33));
+    EXPECT_FALSE(twoPower(0));
+    EXPECT_FALSE(twoPower(-2));
+    EXPECT_FALSE(twoPower(3));
+    EXPECT_FALSE(twoPower(31));
+    EXPECT_FALSE(twoPower(33));
+}
+
+// R-1.20
+TEST(SumOfOddIntsSmaller, SumOfOddIntsSmaller)
+{
+    EXPECT_EQ(sumOfOddIntsSmaller(4), 4);
+    EXPECT_EQ(sumOfOddIntsSmaller(10), 25);
+    EXPECT_EQ(sumOfOddIntsSmaller(13), 36);
 }
