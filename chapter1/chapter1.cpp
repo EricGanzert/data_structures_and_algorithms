@@ -248,8 +248,13 @@ uint64_t sumOfOddIntsSmaller(uint32_t n)
 
 uint32_t numDividesBy2Above2(double x)
 {
-    auto asInt = int64_t(x + 0.5);
+    if (x < 2)
+    {
+        return 0u;
+    }
     
+    auto asInt = int64_t(x + 0.5);
+
     auto bits = log2(asInt);
     return bits - 1;
 }

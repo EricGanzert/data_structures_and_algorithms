@@ -433,4 +433,6 @@ TEST(NumDividesBy2Above2, NumDividesBy2Above2)
     EXPECT_EQ(numDividesBy2Above2(64), 5);
     EXPECT_EQ(numDividesBy2Above2(33.3), 4);
     EXPECT_EQ(numDividesBy2Above2(29.9), 3);
+
+    EXPECT_EQ(numDividesBy2Above2(-64), 0);
 }
