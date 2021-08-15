@@ -105,3 +105,7 @@ bool twoPower(int i);
 uint64_t sumOfOddIntsSmaller(uint32_t n);
 
 uint32_t numDividesBy2Above2(double x);
+
+std::vector<int> reverseArray(const std::vector<int>& inputArray);
+
+bool containsEvenProductOfPair(const std::vector<int>& inputArray);

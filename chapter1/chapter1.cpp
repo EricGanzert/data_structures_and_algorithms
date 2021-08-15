@@ -258,3 +258,29 @@ uint32_t numDividesBy2Above2(double x)
     auto bits = log2(asInt);
     return bits - 1;
 }
+
+vector<int> reverseArray(const vector<int>& inputArray)
+{
+    vector<int> result;
+    for (auto it = inputArray.rbegin(); it != inputArray.rend(); it++)
+    {
+        result.emplace_back(*it);
+    }
+
+    return result;
+}
+
+bool containsEvenProductOfPair(const std::vector<int>& inputArray)
+{
+    for (auto i = inputArray.begin(); i != inputArray.end(); ++i)
+    {
+        for (auto j = inputArray.begin(); j != inputArray.end(); ++j)
+        {
+            if (i != j && !((*i) * (*j) % 2))
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}

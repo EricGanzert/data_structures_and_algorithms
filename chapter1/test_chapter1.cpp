@@ -436,3 +436,48 @@ TEST(NumDividesBy2Above2, NumDividesBy2Above2)
 
     EXPECT_EQ(numDividesBy2Above2(-64), 0);
 }
+
+// C-1.1
+TEST(ReveseArray, ReverseArray)
+{
+    constexpr auto Iterations = 10U;
+
+    vector<int> testArray{1, 2, 3, 4, 5};
+    vector<int> arrayReversed{5, 4, 3, 2, 1};
+
+    for (auto i=0U; i<Iterations; i++)
+    {
+        testArray.clear();
+        arrayReversed.clear();
+
+        for (auto item=0U; item<i; item++)
+        {
+            testArray.emplace_back(item);
+            arrayReversed.emplace_back(i - (item + 1));
+        }
+
+        vector<int> result;
+        EXPECT_NO_THROW(result = reverseArray(testArray));
+
+        EXPECT_EQ(result, arrayReversed);
+    }
+}
+
+// C-1.2
+TEST(ContainsEvenProduct, ContainsEvenProduct)
+{
+    vector<int> testArray{1, 2};
+    EXPECT_TRUE(containsEvenProductOfPair(testArray));
+
+    testArray = {1, 3};
+    EXPECT_FALSE(containsEvenProductOfPair(testArray));
+
+    testArray = {1, 3, 2};
+    EXPECT_TRUE(containsEvenProductOfPair(testArray));
+
+    testArray = {2};
+    EXPECT_FALSE(containsEvenProductOfPair(testArray));
+
+    testArray.clear();
+    EXPECT_FALSE(containsEvenProductOfPair(testArray));
+}
