@@ -4,6 +4,7 @@
 
 #include <chrono>
 #include <cstdint>
+#include <iostream>
 #include <memory>
 #include <string>
 #include <vector>
@@ -111,3 +112,5 @@ std::vector<int> reverseArray(const std::vector<int>& inputArray);
 bool containsEvenProductOfPair(const std::vector<int>& inputArray);
 
 bool allVectorElementsUnique(const std::vector<int>& inputArray);
+
+void printOdds(std::ostream& outs, const std::vector<int>& inputArray);

@@ -482,7 +482,7 @@ TEST(ContainsEvenProduct, ContainsEvenProduct)
     EXPECT_FALSE(containsEvenProductOfPair(testArray));
 }
 
-// c-1.3
+// C-1.3
 TEST(AllUnique, AllUnique)
 {
     EXPECT_TRUE(allVectorElementsUnique(vector<int>()));
@@ -501,4 +501,17 @@ TEST(AllUnique, AllUnique)
 
     testArray = {1, 2, 3, 4, 3};
     EXPECT_FALSE(allVectorElementsUnique(testArray));
+}
+
+// C-1.4
+TEST(PrintOdds, PrintOdds)
+{
+    stringstream outs;
+    vector<int> testArray{1, 2, 3, 4, 5};
+    printOdds(outs, testArray);
+
+    auto result = outs.str();
+    EXPECT_THAT(result.find("1"), Ne(string::npos));
+    EXPECT_THAT(result.find("3"), Ne(string::npos));
+    EXPECT_THAT(result.find("5"), Ne(string::npos));
 }

@@ -4,6 +4,8 @@
 #include <iostream>
 #include <math.h>
 #include <unordered_set>
+#include <string>
+#include <sstream>
 
 using namespace std;
 using namespace std::chrono;
@@ -298,4 +300,16 @@ bool allVectorElementsUnique(const vector<int>& inputArray)
         seen.emplace(item);
     }
     return true;
+}
+
+void printOdds(ostream& outs, const vector<int>& inputArray)
+{
+    for (const auto& item : inputArray)
+    {
+        if (item % 2)
+        {
+            outs << item << " ";
+        }
+    }
+    outs << endl;
 }
