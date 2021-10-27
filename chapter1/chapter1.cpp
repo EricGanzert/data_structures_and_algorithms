@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <math.h>
+#include <unordered_set>
 
 using namespace std;
 using namespace std::chrono;
@@ -283,4 +284,18 @@ bool containsEvenProductOfPair(const std::vector<int>& inputArray)
         }
     }
     return false;
+}
+
+bool allVectorElementsUnique(const vector<int>& inputArray)
+{
+    unordered_set<int> seen;
+    for (const auto& item : inputArray)
+    {
+        if (seen.count(item))
+        {
+            return false;
+        }
+        seen.emplace(item);
+    }
+    return true;
 }

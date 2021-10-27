@@ -109,3 +109,5 @@ uint32_t numDividesBy2Above2(double x);
 std::vector<int> reverseArray(const std::vector<int>& inputArray);
 
 bool containsEvenProductOfPair(const std::vector<int>& inputArray);
+
+bool allVectorElementsUnique(const std::vector<int>& inputArray);

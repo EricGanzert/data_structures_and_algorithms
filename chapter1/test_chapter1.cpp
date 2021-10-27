@@ -481,3 +481,24 @@ TEST(ContainsEvenProduct, ContainsEvenProduct)
     testArray.clear();
     EXPECT_FALSE(containsEvenProductOfPair(testArray));
 }
+
+// c-1.3
+TEST(AllUnique, AllUnique)
+{
+    EXPECT_TRUE(allVectorElementsUnique(vector<int>()));
+
+    vector<int> testArray{1, 2};
+    EXPECT_TRUE(allVectorElementsUnique(testArray));
+
+    testArray = {1, 1};
+    EXPECT_FALSE(allVectorElementsUnique(testArray));
+
+    testArray = {1, 2, 2};
+    EXPECT_FALSE(allVectorElementsUnique(testArray));
+
+    testArray = {1, 2, 3, 4, 5};
+    EXPECT_TRUE(allVectorElementsUnique(testArray));
+
+    testArray = {1, 2, 3, 4, 3};
+    EXPECT_FALSE(allVectorElementsUnique(testArray));
+}
