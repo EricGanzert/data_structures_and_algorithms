@@ -4,6 +4,8 @@
 #include <gtest/gtest.h>
 
 #include <iostream>
+#include <unordered_set>
+#include <numeric>
 #include <vector>
 
 using namespace std;
@@ -512,6 +514,46 @@ TEST(PrintOdds, PrintOdds)
 
     auto result = outs.str();
     EXPECT_THAT(result.find("1"), Ne(string::npos));
+    EXPECT_THAT(result.find("2"), Eq(string::npos));
     EXPECT_THAT(result.find("3"), Ne(string::npos));
+    EXPECT_THAT(result.find("4"), Eq(string::npos));
     EXPECT_THAT(result.find("5"), Ne(string::npos));
+}
+
+// C-1.5
+TEST(ShuffleInts, ShuffleInts)
+{
+    auto printArray = [](const vector<int>& arg)
+    {
+        for (const auto& item : arg)
+        {
+            cout << item << " "; 
+        }
+        cout << endl;
+    };
+
+    constexpr auto ArraySize = 52;
+    vector<int> myArray(ArraySize);
+    iota(myArray.begin(), myArray.end(), 1);
+
+    auto beforeShuffling = myArray;
+    unordered_set<int> beforeShuffleLookup(myArray.begin(), myArray.end());
+
+    cout << "array before shuffling: ";
+    printArray(myArray);
+    shuffleArray(myArray);
+    cout << endl << "array after shuffling: ";
+    printArray(myArray);
+    cout << endl;
+
+    ASSERT_THAT(myArray.size(), Eq(ArraySize));
+
+    // Every card must be accounted for
+    for (const auto& item : myArray)
+    {
+        EXPECT_THAT(beforeShuffleLookup.count(item), Eq(1u));
+    }
+
+    // Can't be in the same order
+    EXPECT_THAT(myArray, Ne(beforeShuffling));
 }

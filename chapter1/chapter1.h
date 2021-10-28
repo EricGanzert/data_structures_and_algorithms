@@ -114,3 +114,5 @@ bool containsEvenProductOfPair(const std::vector<int>& inputArray);
 bool allVectorElementsUnique(const std::vector<int>& inputArray);
 
 void printOdds(std::ostream& outs, const std::vector<int>& inputArray);
+
+void shuffleArray(std::vector<int>& inputArray);

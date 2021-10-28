@@ -1,6 +1,7 @@
 #include "chapter1.h"
 #include "steady_clock.h"
 
+#include <deque>
 #include <iostream>
 #include <math.h>
 #include <unordered_set>
@@ -312,4 +313,22 @@ void printOdds(ostream& outs, const vector<int>& inputArray)
         }
     }
     outs << endl;
+}
+
+void shuffleArray(vector<int>& inputArray)
+{
+    vector<int> shuffled(inputArray.size());
+    deque<int> drawFrom(inputArray.begin(), inputArray.end());
+
+    auto numRemaining = inputArray.size();
+
+    for (auto& item : shuffled)
+    {
+        auto index = rand() % numRemaining;
+        item = drawFrom[index];
+        drawFrom.erase(drawFrom.begin() + index);
+        numRemaining--;
+    }
+
+    swap(inputArray, shuffled);
 }
