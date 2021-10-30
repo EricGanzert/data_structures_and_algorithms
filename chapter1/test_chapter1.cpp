@@ -617,7 +617,7 @@ TEST(ReverseLines, ReverseLines)
     EXPECT_THAT(outputStream.str(), Eq(reverse));
 }
 
-//C-1.8
+// C-1.8
 TEST(ElementWiseProduct, DifferentSizedInputsThrowsException)
 {
     vector<int> a(3);
@@ -651,4 +651,39 @@ TEST(ElementWiseProduct, ResultIsCorrect)
 
     auto result = elementWiseProduct(a, b);
     EXPECT_THAT(result, Eq(expectedResult));
+}
+
+// C-1.9
+TEST(Vector2, addVectorsThrowsIfSizesDiffer)
+{
+    Vector2 v1;
+    v1.pushBack(1, 1);
+    v1.pushBack(2, 2);
+    v1.pushBack(3, 3);
+
+    Vector2 v2;
+    v2.pushBack(4, 4);
+
+    EXPECT_THROW(v1 + v2, runtime_error);
+}
+
+TEST(Vector2, addVectors)
+{
+    Vector2 v1;
+    v1.pushBack(1, 1);
+    v1.pushBack(2, 2);
+    v1.pushBack(3, 3);
+
+    Vector2 v2;
+    v2.pushBack(4, 4);
+    v2.pushBack(5, 5);
+    v2.pushBack(6, 6);
+
+    Vector2 expectedSum;
+    expectedSum.pushBack(5, 5);
+    expectedSum.pushBack(7, 7);
+    expectedSum.pushBack(9, 9);
+
+    auto summed = v1 + v2;
+    EXPECT_THAT(summed, Eq(expectedSum));
 }

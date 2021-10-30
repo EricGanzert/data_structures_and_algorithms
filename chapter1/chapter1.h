@@ -123,3 +123,23 @@ void reverseLines(std::istream& ins, std::ostream& outs);
 
 // will throw an exception if the vectors provided are not the same size
 std::vector<int> elementWiseProduct(const std::vector<int>& a, const std::vector<int>& b);
+
+class Vector2 {
+public:
+    struct Coordinate {
+        Coordinate(double x, double y);
+        double x{};
+        double y{};
+    };
+
+    size_t size() const;
+    void pushBack(Coordinate coordinate);
+    void pushBack(double x, double y);
+    const Coordinate at(size_t index) const;
+private:
+    std::vector<Coordinate> m_data;
+};
+
+const Vector2 operator+(Vector2 lhs, Vector2 rhs);
+
+bool operator==(Vector2 lhs, Vector2 rhs);

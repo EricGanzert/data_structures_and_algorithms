@@ -403,3 +403,63 @@ vector<int> elementWiseProduct(const vector<int>& a, const vector<int>& b)
     }
     return result;
 }
+
+Vector2::Coordinate::Coordinate(double x, double y) : x(x), y(y)
+{}
+
+size_t Vector2::size() const
+{
+    return m_data.size(); 
+}
+
+void Vector2::pushBack(Vector2::Coordinate coordinate)
+{
+    m_data.push_back(coordinate);
+}
+
+void Vector2::pushBack(double x, double y)
+{
+    m_data.push_back(Vector2::Coordinate(x, y));
+}
+
+const Vector2::Coordinate Vector2::at(size_t index) const
+{
+    return m_data[index];
+}
+
+const Vector2 operator+(Vector2 lhs, Vector2 rhs)
+{
+    if (lhs.size() != rhs.size())
+    {
+        throw runtime_error("cannot add 2 vectors of differing sizes");
+    }
+
+    Vector2 result;
+    for (auto index = 0u; index < lhs.size(); ++index)
+    {
+        Vector2::Coordinate coordinate(lhs.at(index).x + rhs.at(index).x, lhs.at(index).y + rhs.at(index).y);
+        result.pushBack(coordinate);
+    }
+    return result;
+}
+
+bool operator==(Vector2 lhs, Vector2 rhs)
+{
+    if (lhs.size() != rhs.size())
+    {
+        return false;
+    }
+
+    for (auto idx = 0u; idx < lhs.size(); ++idx)
+    {
+        auto a = lhs.at(idx);
+        auto b = rhs.at(idx);
+
+        if (!(a.x == b.x && a.y == b.y))
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
