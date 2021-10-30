@@ -594,3 +594,25 @@ TEST(CombineLetters, CombineLetters)
 
     EXPECT_THAT(resultWordCount, Eq(expectedNumWords));
 }
+
+// C-1.7
+TEST(ReverseLines, ReverseLines)
+{
+    vector<string> allLines = {"this is a line", "another line", "last line now, goodbye"};
+    string forward;
+    for (const auto& line : allLines)
+    {
+        forward += line + "\n";
+    }
+    string reverse;
+    for (auto line = allLines.rbegin(); line != allLines.rend(); line++)
+    {
+        reverse += *line + "\n";
+    }
+
+    istringstream inputStream(forward);
+    stringstream outputStream;
+    reverseLines(inputStream, outputStream);
+
+    EXPECT_THAT(outputStream.str(), Eq(reverse));
+}

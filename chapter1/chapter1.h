@@ -118,3 +118,5 @@ void printOdds(std::ostream& outs, const std::vector<int>& inputArray);
 void shuffleArray(std::vector<int>& inputArray);
 
 void allPossibleStrings(std::ostream& outs, const std::string& letters);
+
+void reverseLines(std::istream& ins, std::ostream& outs);

@@ -367,3 +367,24 @@ void allPossibleStrings(ostream& outs, const string& letters)
         addLetter(outs, string(""), c, letters);
     }
 }
+
+void reverseLines(istream& ins, ostream& outs)
+{
+    string line;
+    deque<string> allLines;
+    
+    while(getline(ins, line))
+    {
+        if (line.empty())
+        {
+            break;
+        }
+        allLines.emplace_back(line);
+    }
+
+    while(!allLines.empty())
+    {
+        outs << allLines.back() << endl;
+        allLines.pop_back();
+    }
+}
