@@ -121,4 +121,5 @@ void allPossibleStrings(std::ostream& outs, const std::string& letters);
 
 void reverseLines(std::istream& ins, std::ostream& outs);
 
+// will throw an exception if the vectors provided are not the same size
 std::vector<int> elementWiseProduct(const std::vector<int>& a, const std::vector<int>& b);
