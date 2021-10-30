@@ -2,6 +2,7 @@
 #include "steady_clock.h"
 
 #include <deque>
+#include <functional>
 #include <iostream>
 #include <math.h>
 #include <unordered_set>
@@ -331,4 +332,38 @@ void shuffleArray(vector<int>& inputArray)
     }
 
     swap(inputArray, shuffled);
+}
+
+namespace
+{
+void addLetter(ostream& outs, string output, char letter, const string& allLetters)
+{
+    if (output.find(letter) == string::npos)
+    {
+        output += letter;
+
+        if (output.size() == allLetters.size())
+        {
+            if (!output.empty())
+            {
+                outs << " ";
+            }
+            outs << output;
+            return;
+        }
+
+        for (char c : allLetters)
+        {
+            addLetter(outs, output, c, allLetters);
+        }
+    }
+}
+}
+
+void allPossibleStrings(ostream& outs, const string& letters)
+{
+    for (char c : letters)
+    {
+        addLetter(outs, string(""), c, letters);
+    }
 }

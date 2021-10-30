@@ -1,6 +1,7 @@
 #include "chapter1.h"
 #include "mock_steady_clock.h"
 
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 #include <iostream>
@@ -556,4 +557,35 @@ TEST(ShuffleInts, ShuffleInts)
 
     // Can't be in the same order
     EXPECT_THAT(myArray, Ne(beforeShuffling));
+}
+
+// C-1.6
+TEST(CombineLetters, CombineLetters)
+{
+    function<int(int)> factorial = [&](int n)
+    {
+        return (n == 0) || (n == 1) ? 1 : n * factorial(n - 1);
+    };
+
+    stringstream outs;
+    const string abcdef = "abcdef";
+    allPossibleStrings(outs, abcdef);
+    const auto result = outs.str();
+
+    const auto expectedNumWords = factorial(abcdef.size());
+    auto resultWordCount = 0l;
+    stringstream countTool(result);
+    string aWord;
+    while(countTool >> aWord) 
+    {
+        EXPECT_THAT(aWord.size(), Eq(abcdef.size()));
+        for (char x : abcdef)
+        {
+            // assert rather than expect to avoid too much error output if something is wrong
+            ASSERT_TRUE(aWord.find(x) != string::npos);
+        }
+        resultWordCount++;
+    }
+
+    EXPECT_THAT(resultWordCount, Eq(expectedNumWords));
 }
