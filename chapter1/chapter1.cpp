@@ -388,3 +388,18 @@ void reverseLines(istream& ins, ostream& outs)
         allLines.pop_back();
     }
 }
+
+vector<int> elementWiseProduct(const vector<int>& a, const vector<int>& b)
+{
+    if (a.size() != b.size())
+    {
+        throw runtime_error("element wise product for vectors of different sizes is undefined");
+    }
+
+    vector<int> result(a.size());
+    for (auto idx = 0u; idx < result.size(); ++idx)
+    {
+        result[idx] = a[idx] * b[idx];
+    }
+    return result;
+}

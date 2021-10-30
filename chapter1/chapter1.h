@@ -120,3 +120,5 @@ void shuffleArray(std::vector<int>& inputArray);
 void allPossibleStrings(std::ostream& outs, const std::string& letters);
 
 void reverseLines(std::istream& ins, std::ostream& outs);
+
+std::vector<int> elementWiseProduct(const std::vector<int>& a, const std::vector<int>& b);

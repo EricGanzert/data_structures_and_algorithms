@@ -616,3 +616,39 @@ TEST(ReverseLines, ReverseLines)
 
     EXPECT_THAT(outputStream.str(), Eq(reverse));
 }
+
+//C-1.8
+TEST(ElementWiseProduct, DifferentSizedInputsThrowsException)
+{
+    vector<int> a(3);
+    vector<int> b(2);
+
+    EXPECT_THROW(elementWiseProduct(a, b), runtime_error);
+}
+
+TEST(ElementWiseProduct, SameSizedInputsNoThrow)
+{
+    vector<int> a(3);
+    vector<int> b(3);
+
+    EXPECT_NO_THROW(elementWiseProduct(a, b));
+}
+
+TEST(ElementWiseProduct, ResultIsCorrectSize)
+{
+    vector<int> a = {1, 2, 3};
+    vector<int> b = {4, 5, 6};
+
+    auto result = elementWiseProduct(a, b);
+    EXPECT_THAT(result.size(), Eq(3));
+}
+
+TEST(ElementWiseProduct, ResultIsCorrect)
+{
+    vector<int> a = {1, 2, 3};
+    vector<int> b = {4, 5, 6};
+    vector<int> expectedResult = {4, 10, 18};
+
+    auto result = elementWiseProduct(a, b);
+    EXPECT_THAT(result, Eq(expectedResult));
+}
