@@ -574,6 +574,8 @@ TEST(CombineLetters, CombineLetters)
 
     const auto expectedNumWords = factorial(abcdef.size());
     auto resultWordCount = 0l;
+    unordered_set<string> seen;
+
     stringstream countTool(result);
     string aWord;
     while(countTool >> aWord) 
@@ -584,6 +586,9 @@ TEST(CombineLetters, CombineLetters)
             // assert rather than expect to avoid too much error output if something is wrong
             ASSERT_TRUE(aWord.find(x) != string::npos);
         }
+        
+        ASSERT_FALSE(seen.count(aWord));
+        seen.insert(aWord);
         resultWordCount++;
     }
 
