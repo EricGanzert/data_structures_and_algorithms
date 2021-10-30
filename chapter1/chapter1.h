@@ -140,6 +140,10 @@ private:
     std::vector<Coordinate> m_data;
 };
 
-const Vector2 operator+(Vector2 lhs, Vector2 rhs);
+const Vector2 operator+(const Vector2& lhs, const Vector2& rhs);
 
-bool operator==(Vector2 lhs, Vector2 rhs);
+bool operator==(const Vector2& lhs, const Vector2& rhs);
+
+const Vector2 operator*(double coefficient, const Vector2& rhs);
+
+const Vector2 operator*(const Vector2& lhs, double coefficient);

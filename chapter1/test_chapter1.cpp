@@ -659,7 +659,6 @@ TEST(Vector2, addVectorsThrowsIfSizesDiffer)
     Vector2 v1;
     v1.pushBack(1, 1);
     v1.pushBack(2, 2);
-    v1.pushBack(3, 3);
 
     Vector2 v2;
     v2.pushBack(4, 4);
@@ -670,9 +669,9 @@ TEST(Vector2, addVectorsThrowsIfSizesDiffer)
 TEST(Vector2, addVectors)
 {
     Vector2 v1;
-    v1.pushBack(1, 1);
-    v1.pushBack(2, 2);
-    v1.pushBack(3, 3);
+    v1.pushBack(-1, 1);
+    v1.pushBack(2, -2);
+    v1.pushBack(-3, 3);
 
     Vector2 v2;
     v2.pushBack(4, 4);
@@ -680,10 +679,27 @@ TEST(Vector2, addVectors)
     v2.pushBack(6, 6);
 
     Vector2 expectedSum;
-    expectedSum.pushBack(5, 5);
-    expectedSum.pushBack(7, 7);
-    expectedSum.pushBack(9, 9);
+    expectedSum.pushBack(3, 5);
+    expectedSum.pushBack(7, 3);
+    expectedSum.pushBack(3, 9);
 
     auto summed = v1 + v2;
     EXPECT_THAT(summed, Eq(expectedSum));
+}
+
+TEST(Vector2, MultiplyVectorByScalar)
+{
+    Vector2 v1;
+    v1.pushBack(-1, 1);
+    v1.pushBack(2, -2);
+    v1.pushBack(-3, 3);
+
+    auto product = v1 * 3;
+
+    Vector2 expectedResult;
+    expectedResult.pushBack(-3, 3);
+    expectedResult.pushBack(6, -6);
+    expectedResult.pushBack(-9, 9);
+
+    EXPECT_THAT(product, Eq(expectedResult));
 }

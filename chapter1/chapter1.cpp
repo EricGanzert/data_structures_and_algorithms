@@ -427,7 +427,7 @@ const Vector2::Coordinate Vector2::at(size_t index) const
     return m_data[index];
 }
 
-const Vector2 operator+(Vector2 lhs, Vector2 rhs)
+const Vector2 operator+(const Vector2& lhs, const Vector2& rhs)
 {
     if (lhs.size() != rhs.size())
     {
@@ -437,13 +437,15 @@ const Vector2 operator+(Vector2 lhs, Vector2 rhs)
     Vector2 result;
     for (auto index = 0u; index < lhs.size(); ++index)
     {
-        Vector2::Coordinate coordinate(lhs.at(index).x + rhs.at(index).x, lhs.at(index).y + rhs.at(index).y);
+        auto coordinate = lhs.at(index);
+        coordinate.x += rhs.at(index).x;
+        coordinate.y += rhs.at(index).y;
         result.pushBack(coordinate);
     }
     return result;
 }
 
-bool operator==(Vector2 lhs, Vector2 rhs)
+bool operator==(const Vector2& lhs, const Vector2& rhs)
 {
     if (lhs.size() != rhs.size())
     {
@@ -462,4 +464,22 @@ bool operator==(Vector2 lhs, Vector2 rhs)
     }
 
     return true;
+}
+
+const Vector2 operator*(double coefficient, const Vector2& rhs)
+{
+    Vector2 result;
+    for (auto index = 0u; index < rhs.size(); ++index)
+    {
+        auto coordinate = rhs.at(index);
+        coordinate.x *= coefficient;
+        coordinate.y *= coefficient;
+        result.pushBack(coordinate);
+    }
+    return result;
+}
+
+const Vector2 operator*(const Vector2& lhs, double coefficient)
+{
+    return coefficient * lhs;
 }
