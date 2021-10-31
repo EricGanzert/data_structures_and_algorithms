@@ -404,82 +404,89 @@ vector<int> elementWiseProduct(const vector<int>& a, const vector<int>& b)
     return result;
 }
 
+Vector2::Vector2() : m_data(Coordinate(0, 0))
+{
+}
+
+Vector2::Vector2(double x, double y) : m_data(Coordinate(x, y))
+{
+}
+
+Vector2::Vector2(Coordinate coordinate) : m_data(coordinate)
+{
+}
+
+double Vector2::x() const
+{
+    return m_data.x;
+}
+
+double Vector2::y() const
+{
+    return m_data.y;
+}
+
+void Vector2::set(double x, double y)
+{
+    set(Coordinate(x, y));
+}
+
+void Vector2::set(Coordinate coordinate)
+{
+    m_data = coordinate;
+}
+
+Vector2::Coordinate Vector2::get() const
+{
+    return m_data;
+}
+
 Vector2::Coordinate::Coordinate(double x, double y) : x(x), y(y)
 {}
 
-size_t Vector2::size() const
-{
-    return m_data.size(); 
-}
-
-void Vector2::pushBack(Vector2::Coordinate coordinate)
-{
-    m_data.push_back(coordinate);
-}
-
-void Vector2::pushBack(double x, double y)
-{
-    m_data.push_back(Vector2::Coordinate(x, y));
-}
-
-const Vector2::Coordinate Vector2::at(size_t index) const
-{
-    return m_data[index];
-}
+Vector2::Coordinate::Coordinate() : x(0), y(0)
+{}
 
 const Vector2 operator+(const Vector2& lhs, const Vector2& rhs)
 {
-    if (lhs.size() != rhs.size())
-    {
-        throw runtime_error("cannot add 2 vectors of differing sizes");
-    }
+    Vector2::Coordinate coordinate(lhs.get());
+    coordinate.x += rhs.x();
+    coordinate.y += rhs.y();
 
-    Vector2 result;
-    for (auto index = 0u; index < lhs.size(); ++index)
-    {
-        auto coordinate = lhs.at(index);
-        coordinate.x += rhs.at(index).x;
-        coordinate.y += rhs.at(index).y;
-        result.pushBack(coordinate);
-    }
-    return result;
+    return Vector2(coordinate);
 }
 
 bool operator==(const Vector2& lhs, const Vector2& rhs)
 {
-    if (lhs.size() != rhs.size())
-    {
-        return false;
-    }
+    auto a = lhs.get();
+    auto b = rhs.get();
 
-    for (auto idx = 0u; idx < lhs.size(); ++idx)
-    {
-        auto a = lhs.at(idx);
-        auto b = rhs.at(idx);
-
-        if (!(a.x == b.x && a.y == b.y))
-        {
-            return false;
-        }
-    }
-
-    return true;
+    return a.x == b.x && a.y == b.y;
 }
 
 const Vector2 operator*(double coefficient, const Vector2& rhs)
 {
-    Vector2 result;
-    for (auto index = 0u; index < rhs.size(); ++index)
-    {
-        auto coordinate = rhs.at(index);
-        coordinate.x *= coefficient;
-        coordinate.y *= coefficient;
-        result.pushBack(coordinate);
-    }
-    return result;
+    Vector2::Coordinate coordinate(rhs.get());
+    coordinate.x *= coefficient;
+    coordinate.y *= coefficient;
+
+    return Vector2(coordinate);
 }
 
 const Vector2 operator*(const Vector2& lhs, double coefficient)
 {
     return coefficient * lhs;
+}
+
+double dotProduct(const Vector2& vecA, const Vector2& vecB)
+{
+    auto a = vecA.get();
+    auto b = vecB.get();
+
+    return (a.x * b.x) + (a.y * b.y);
+}
+
+long powerOf2(uint32_t i)
+{
+    return 1 << i;
 }

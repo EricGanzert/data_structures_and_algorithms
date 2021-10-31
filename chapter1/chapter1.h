@@ -128,16 +128,22 @@ class Vector2 {
 public:
     struct Coordinate {
         Coordinate(double x, double y);
+        Coordinate();
         double x{};
         double y{};
     };
 
-    size_t size() const;
-    void pushBack(Coordinate coordinate);
-    void pushBack(double x, double y);
-    const Coordinate at(size_t index) const;
+    Vector2();
+    Vector2(double x, double y);
+    Vector2(Coordinate coordinate);
+
+    double x() const;
+    double y() const;
+    void set(double x, double y);
+    void set(Coordinate coordinate);
+    Coordinate get() const;
 private:
-    std::vector<Coordinate> m_data;
+    Coordinate m_data;
 };
 
 const Vector2 operator+(const Vector2& lhs, const Vector2& rhs);
@@ -147,3 +153,7 @@ bool operator==(const Vector2& lhs, const Vector2& rhs);
 const Vector2 operator*(double coefficient, const Vector2& rhs);
 
 const Vector2 operator*(const Vector2& lhs, double coefficient);
+
+double dotProduct(const Vector2& vecA, const Vector2& vecB);
+
+long powerOf2(uint32_t i);
