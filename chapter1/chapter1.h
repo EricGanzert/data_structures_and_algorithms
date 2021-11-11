@@ -157,3 +157,5 @@ const Vector2 operator*(const Vector2& lhs, double coefficient);
 double dotProduct(const Vector2& vecA, const Vector2& vecB);
 
 long powerOf2(uint32_t i);
+
+int gcd(int a, int b);

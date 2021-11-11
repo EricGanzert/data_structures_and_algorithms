@@ -691,3 +691,17 @@ TEST(PowerOf2, PowerOf2)
     EXPECT_THAT(powerOf2(2), Eq(4ul));
     EXPECT_THAT(powerOf2(3), Eq(8ul));
 }
+
+// C-1.11
+TEST(GreatestCommonDivisor, GreatestCommonDivisor)
+{
+    EXPECT_THAT(gcd(0, 0), 0);
+    EXPECT_THAT(gcd(1, 0), 0);
+    EXPECT_THAT(gcd(1, 1), 1);
+    EXPECT_THAT(gcd(2, 1), 1);
+    EXPECT_THAT(gcd(4, 2), 2);
+    EXPECT_THAT(gcd(15, 3), 3);
+    EXPECT_THAT(gcd(13, 2), 1);
+    EXPECT_THAT(gcd(80844, 25320), 12);
+    EXPECT_THAT(gcd(25320, 80844), 12);
+}

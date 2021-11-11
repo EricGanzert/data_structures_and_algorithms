@@ -490,3 +490,26 @@ long powerOf2(uint32_t i)
 {
     return 1 << i;
 }
+
+int gcd(int a, int b)
+{
+    if (!(a && b))
+    {
+        return 0;
+    }
+
+    if (abs(b) > abs(a))
+    {
+        auto temp = a;
+        a = b;
+        b = temp;
+    }
+
+    while(auto modulo = a % b)
+    {
+        a = b;
+        b = modulo;
+    }
+
+    return b;
+}
