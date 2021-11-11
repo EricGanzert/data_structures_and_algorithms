@@ -14,7 +14,7 @@ using namespace std::chrono;
 using namespace testing;
 
 int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
+    InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }
 
@@ -715,10 +715,4 @@ TEST(GreatestCommonDivisor, NegativeNumbers)
     EXPECT_THAT(gcd(-15, 3), 3);
     EXPECT_THAT(gcd(15, -3), 3);
     EXPECT_THAT(gcd(-15, -3), 3);
-}
-
-// P-1.1
-TEST(WriteOutSentence, WriteOutSentence)
-{
-    writeOutSentence("I will always use object-oriented design");
 }

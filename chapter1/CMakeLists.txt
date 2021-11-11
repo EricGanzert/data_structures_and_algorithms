@@ -21,3 +21,11 @@ add_library(steady_clock STATIC
     steady_clock.h
     steady_clock.cpp
 )
+
+add_executable(test_chapter1_project1 test_chapter1_project1.cpp)
+
+target_link_libraries(test_chapter1_project1
+    PUBLIC
+        gmock
+        chapter1
+)
