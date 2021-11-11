@@ -705,3 +705,9 @@ TEST(GreatestCommonDivisor, GreatestCommonDivisor)
     EXPECT_THAT(gcd(80844, 25320), 12);
     EXPECT_THAT(gcd(25320, 80844), 12);
 }
+
+// P-1.1
+TEST(WriteOutSentence, WriteOutSentence)
+{
+    writeOutSentence("I will always use object-oriented design");
+}

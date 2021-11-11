@@ -513,3 +513,34 @@ int gcd(int a, int b)
 
     return b;
 }
+
+void writeOutSentence(const std::string& sentence)
+{
+    string alphabet = "abcdefghijklmnopqrstuvwxyz";
+    auto randomAlphabetCharacter = [&] ()
+    {
+        return alphabet[rand() % alphabet.size()];
+    };
+
+    // pick 8 random numbers in between 1 and 100
+    unordered_set<uint32_t> randomIndexes;
+    while (randomIndexes.size() < 8ul)
+    {
+        auto index = rand() % 100;
+        if (!randomIndexes.count(index))
+        {
+            randomIndexes.insert(index);
+        }
+    }
+
+    for (auto i=0u; i<100u; ++i)
+    {
+        string line = sentence;
+        if (randomIndexes.count(i))
+        {
+            line[rand() % line.size()] = randomAlphabetCharacter();
+        }
+        
+        cout << to_string(i + 1) << ". " << line << endl;
+    }
+}

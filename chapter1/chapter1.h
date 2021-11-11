@@ -159,3 +159,5 @@ double dotProduct(const Vector2& vecA, const Vector2& vecB);
 long powerOf2(uint32_t i);
 
 int gcd(int a, int b);
+
+void writeOutSentence(const std::string& sentence);
