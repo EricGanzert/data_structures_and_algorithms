@@ -693,7 +693,7 @@ TEST(PowerOf2, PowerOf2)
 }
 
 // C-1.11
-TEST(GreatestCommonDivisor, GreatestCommonDivisor)
+TEST(GreatestCommonDivisor, PositiveNumbers)
 {
     EXPECT_THAT(gcd(0, 0), 0);
     EXPECT_THAT(gcd(1, 0), 0);
@@ -703,7 +703,18 @@ TEST(GreatestCommonDivisor, GreatestCommonDivisor)
     EXPECT_THAT(gcd(15, 3), 3);
     EXPECT_THAT(gcd(13, 2), 1);
     EXPECT_THAT(gcd(80844, 25320), 12);
+}
+
+TEST(GreatestCommonDivisor, NumbersReversed)
+{
     EXPECT_THAT(gcd(25320, 80844), 12);
+}
+
+TEST(GreatestCommonDivisor, NegativeNumbers)
+{
+    EXPECT_THAT(gcd(-15, 3), 3);
+    EXPECT_THAT(gcd(15, -3), 3);
+    EXPECT_THAT(gcd(-15, -3), 3);
 }
 
 // P-1.1

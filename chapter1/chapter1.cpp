@@ -511,7 +511,7 @@ int gcd(int a, int b)
         b = modulo;
     }
 
-    return b;
+    return abs(b);
 }
 
 void writeOutSentence(const std::string& sentence)
