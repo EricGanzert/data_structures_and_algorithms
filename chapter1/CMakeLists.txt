@@ -29,3 +29,11 @@ target_link_libraries(test_chapter1_project1
         gmock
         chapter1
 )
+
+add_executable(test_chapter1_project2 test_chapter1_project2.cpp)
+
+target_link_libraries(test_chapter1_project2
+    PUBLIC
+        gmock
+        chapter1
+)

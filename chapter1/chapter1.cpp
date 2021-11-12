@@ -544,3 +544,90 @@ void writeOutSentence(const std::string& sentence)
         cout << to_string(i + 1) << ". " << line << endl;
     }
 }
+
+namespace
+{
+    Day getDayEnum(uint32_t dayNumber)
+    {
+        switch (dayNumber)
+        {
+        case 0:
+            return Day::Sunday; 
+        case 1:
+            return Day::Monday;
+        case 2:
+            return Day::Tuesday;
+        case 3:
+            return Day::Wednesday;
+        case 4:
+            return Day::Thursday;
+        case 5:
+            return Day::Friday;
+        case 6:
+            return Day::Saturday;       
+        }
+        throw runtime_error("invalid day of week integer");
+    }
+}
+
+std::string getDayString(Day day)
+{
+    switch (day)
+    {
+    case Day::Monday:
+        return "Monday";
+    case Day::Tuesday:
+        return "Tuesday";
+    case Day::Wednesday:
+        return "Wednesday";
+    case Day::Thursday:
+        return "Thursday";
+    case Day::Friday:
+        return "Friday";
+    case Day::Saturday:
+        return "Saturday";
+    case Day::Sunday:
+        return "Sunday";
+    }
+    throw runtime_error("unknown day enum");
+}
+
+Day getDayOfWeek(uint32_t day, Month month, uint32_t year)
+{
+    if (day > 31)
+    {
+        string msg = "invalid day number: " + to_string(day);
+        throw runtime_error(msg);
+    }
+
+    if (year > 9999)
+    {
+        string msg = "invalid year number: " + to_string(year);
+        throw runtime_error(msg);
+    }
+
+    auto monthNumber = static_cast<uint32_t>(month);
+    // convert the month number for our formula
+    if (monthNumber < 3)
+    {
+        monthNumber += 12;
+    }
+    monthNumber -= 2;
+
+    if (month == Month::January || month == Month::February)
+    {
+        year -= 1;
+    }
+    auto c = year / 100;
+    auto y = year % 100;
+
+    auto dayNumber = static_cast<int>(day + floor((2.6 * monthNumber) - 0.2) + y 
+        + (y / 4) + (c / 4) - (2 * c)) % 7;
+
+    if (dayNumber < 0)
+    {
+        dayNumber += 7;
+    }
+
+    return getDayEnum(dayNumber);    
+}
