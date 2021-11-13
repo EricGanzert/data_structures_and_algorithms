@@ -17,3 +17,8 @@ TEST(Calendar, DayOfWeekFunction)
     EXPECT_THAT(getDayString(getDayOfWeek(6, Month::January, 2003)), "Monday");
     EXPECT_THAT(getDayString(getDayOfWeek(12, Month::May, 1933)), "Friday");
 }
+
+TEST(Calendar, MonthDraw)
+{
+    CalendarMonth myMonth(Month::November, 2021);
+}

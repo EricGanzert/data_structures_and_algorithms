@@ -192,3 +192,14 @@ enum class Month : uint32_t {
 std::string getMonthString(Month month);
 
 Day getDayOfWeek(uint32_t day, Month month, uint32_t year);
+
+class CalendarMonth {
+public:
+    CalendarMonth() = delete;
+    CalendarMonth(Month month, uint32_t year);
+
+    void draw(std::ostream stream);
+
+private:
+    std::string m_chart;
+};

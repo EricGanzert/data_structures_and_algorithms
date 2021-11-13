@@ -5,6 +5,7 @@
 #include <functional>
 #include <iostream>
 #include <math.h>
+#include <map>
 #include <unordered_set>
 #include <string>
 #include <sstream>
@@ -547,49 +548,52 @@ void writeOutSentence(const std::string& sentence)
 
 namespace
 {
-    Day getDayEnum(uint32_t dayNumber)
-    {
-        switch (dayNumber)
-        {
-        case 0:
-            return Day::Sunday; 
-        case 1:
-            return Day::Monday;
-        case 2:
-            return Day::Tuesday;
-        case 3:
-            return Day::Wednesday;
-        case 4:
-            return Day::Thursday;
-        case 5:
-            return Day::Friday;
-        case 6:
-            return Day::Saturday;       
-        }
-        throw runtime_error("invalid day of week integer");
-    }
+constexpr auto CellWidth = 13;
+constexpr auto CellHeight = 13;
+
+const map<Day, string> dayStrings = {{Day::Sunday, "Sunday"}, {Day::Monday, "Monday"}, 
+    {Day::Tuesday, "Tuesday"}, {Day::Wednesday, "Wednesday"}, {Day::Thursday, "Thursday"}, 
+    {Day::Friday, "Friday"}, {Day::Saturday, "Saturday"}};
+
+const map<Month, string> monthStrings = {{Month::January, "January"}, {Month::February, "February"},
+    {Month::March, "March"}, {Month::April, "April"}, {Month::May, "May"}, {Month::June, "June"}, 
+    {Month::July, "July"}, {Month::August, "August"}, {Month::September, "September"},
+    {Month::October, "October"}, {Month::November, "November"}, {Month::December, "December"}};
+
+Day getDayEnum(uint32_t dayNumber)
+{
+    return static_cast<Day>(dayNumber);
+}
+
+string makeCenteredDayString(Day day)
+{
+    string line(CellWidth, ' ');
+    auto dayString = getDayString(day);
+
+    auto index = (CellWidth / 2) - (dayString.size() / 2);
+    copy(dayString.begin(), dayString.end(), line.begin() + index);
+    return line;
+}
+
+string makeCenteredTitleString(Month month, uint32_t year)
+{
+    string line(CellWidth * 7u, ' ');
+    string title = getMonthString(month) + "  " + to_string(year);
+
+    auto index = ((CellWidth * 7u) / 2) - (title.size() / 2);
+    copy(title.begin(), title.end(), line.begin() + index);
+    return line;
+}
 }
 
 std::string getDayString(Day day)
 {
-    switch (day)
-    {
-    case Day::Monday:
-        return "Monday";
-    case Day::Tuesday:
-        return "Tuesday";
-    case Day::Wednesday:
-        return "Wednesday";
-    case Day::Thursday:
-        return "Thursday";
-    case Day::Friday:
-        return "Friday";
-    case Day::Saturday:
-        return "Saturday";
-    case Day::Sunday:
-        return "Sunday";
-    }
-    throw runtime_error("unknown day enum");
+    return dayStrings.at(day);
+}
+
+std::string getMonthString(Month month)
+{
+    return monthStrings.at(month);
 }
 
 Day getDayOfWeek(uint32_t day, Month month, uint32_t year)
@@ -631,3 +635,22 @@ Day getDayOfWeek(uint32_t day, Month month, uint32_t year)
 
     return getDayEnum(dayNumber);    
 }
+
+CalendarMonth::CalendarMonth(Month month, uint32_t year)
+{
+    // main title
+    m_chart += string(CellWidth * 7u, ' ') + "\n";
+    m_chart += makeCenteredTitleString(month, year) + "\n";
+    m_chart += string(CellWidth * 7u, ' ') + "\n";
+
+    // make header with days of week
+    for (const auto& day : dayStrings)
+    {
+        m_chart += makeCenteredDayString(day.first);
+    }
+    cout << m_chart << endl;
+}
+
+void draw(std::ostream stream);
+
+std::string m_chart;
