@@ -2,6 +2,7 @@
 
 #include <gmock/gmock.h>
 
+using namespace calendar;
 using namespace std;
 using namespace testing;
 
@@ -35,5 +36,9 @@ TEST(Calendar, MakeCell)
 
 TEST(Calendar, MonthDraw)
 {
-    CalendarMonth myMonth(Month::November, 2021);
+    CalendarMonth november2021(Month::November, 2021);
+    november2021.draw(cout);
+
+    CalendarMonth march1994(Month::March, 1994);
+    march1994.draw(cout);
 }

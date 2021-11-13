@@ -546,8 +546,8 @@ void writeOutSentence(const std::string& sentence)
     }
 }
 
-namespace
-{
+namespace calendar {
+
 const map<Day, string> dayStrings = {{Day::Sunday, "Sunday"}, {Day::Monday, "Monday"}, 
     {Day::Tuesday, "Tuesday"}, {Day::Wednesday, "Wednesday"}, {Day::Thursday, "Thursday"}, 
     {Day::Friday, "Friday"}, {Day::Saturday, "Saturday"}};
@@ -581,9 +581,8 @@ string makeCenteredTitleString(Month month, uint32_t year)
     copy(title.begin(), title.end(), line.begin() + index);
     return line;
 }
-}
 
-void makeCell(Cell& cell, string contents)
+void makeCell(Cell& cell, string value)
 {
     cell[0u] = string(CellWidth, '-');
 
@@ -599,8 +598,8 @@ void makeCell(Cell& cell, string contents)
 
         if (i == CellHeight / 2)
         {
-            auto index = (CellWidth / 2) - (contents.size() / 2);
-            copy(contents.begin(), contents.end(), line.begin() + index);
+            auto index = (CellWidth / 2) - (value.size() / 2);
+            copy(value.begin(), value.end(), line.begin() + index);
         }
         cell[i] = line;
     }
@@ -715,11 +714,9 @@ CalendarMonth::CalendarMonth(Month month, uint32_t year)
     }
 
     fillChart();
-
-    cout << m_chart << endl;
 }
 
-void CalendarMonth::draw(ostream stream)
+void CalendarMonth::draw(ostream& stream)
 {
     stream << m_chart;
 }
@@ -738,3 +735,5 @@ void CalendarMonth::fillChart()
         }
     }
 }
+
+} // namespace calendar
