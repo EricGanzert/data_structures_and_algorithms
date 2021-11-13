@@ -18,6 +18,21 @@ TEST(Calendar, DayOfWeekFunction)
     EXPECT_THAT(getDayString(getDayOfWeek(12, Month::May, 1933)), "Friday");
 }
 
+TEST(Calendar, MakeCell)
+{
+    auto printCell = [](const Cell& cell)
+    {
+        for (const auto& line : cell)
+        {
+            cout << line << endl;
+        }
+    };
+
+    Cell myCell{};
+    makeCell(myCell, "21");
+    printCell(myCell);
+}
+
 TEST(Calendar, MonthDraw)
 {
     CalendarMonth myMonth(Month::November, 2021);

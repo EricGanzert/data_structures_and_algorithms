@@ -193,6 +193,15 @@ std::string getMonthString(Month month);
 
 Day getDayOfWeek(uint32_t day, Month month, uint32_t year);
 
+constexpr uint32_t NumDaysInWeek = 7u;
+constexpr uint32_t NumWeeksPerMonth = 5u;
+
+const uint32_t CellWidth = 13u;
+const uint32_t CellHeight = 7u;
+
+using Cell = std::array<std::string, CellHeight>;
+void makeCell(Cell& cell, std::string contents);
+
 class CalendarMonth {
 public:
     CalendarMonth() = delete;
@@ -201,8 +210,10 @@ public:
     void draw(std::ostream stream);
 
 private:
+    void fillChart();
+
     Month m_month;
     uint32_t m_year{};
     std::string m_chart;
-    std::array<std::array<uint32_t, 7u>, 5u> m_grid{};
+    std::array<std::array<Cell, 7u>, 5u> m_grid{};
 };

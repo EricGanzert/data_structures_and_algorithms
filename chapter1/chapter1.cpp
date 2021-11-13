@@ -548,9 +548,6 @@ void writeOutSentence(const std::string& sentence)
 
 namespace
 {
-constexpr auto CellWidth = 13;
-constexpr auto CellHeight = 7;
-
 const map<Day, string> dayStrings = {{Day::Sunday, "Sunday"}, {Day::Monday, "Monday"}, 
     {Day::Tuesday, "Tuesday"}, {Day::Wednesday, "Wednesday"}, {Day::Thursday, "Thursday"}, 
     {Day::Friday, "Friday"}, {Day::Saturday, "Saturday"}};
@@ -584,12 +581,11 @@ string makeCenteredTitleString(Month month, uint32_t year)
     copy(title.begin(), title.end(), line.begin() + index);
     return line;
 }
+}
 
-string makeCell(string contents)
+void makeCell(Cell& cell, string contents)
 {
-    string result;
-    result += string(CellWidth, '-');
-    result += '\n';
+    cell[0u] = string(CellWidth, '-');
 
     for (auto i = 0u; i < CellHeight; ++i)
     {
@@ -606,14 +602,10 @@ string makeCell(string contents)
             auto index = (CellWidth / 2) - (contents.size() / 2);
             copy(contents.begin(), contents.end(), line.begin() + index);
         }
-        result += line + '\n';
+        cell[i] = line;
     }
 
-    result += string(CellWidth, '-');
-    result += '\n';
-    return result;
-}
-
+    cell[cell.size() - 1] = string(CellWidth, '-');
 }
 
 string getDayString(Day day)
@@ -714,15 +706,15 @@ CalendarMonth::CalendarMonth(Month month, uint32_t year)
             if ((weekIdx == 0 && dayIdx < static_cast<uint32_t>(startDay))
                 || (weekIdx == 4u && daysMarked >= totalDays))
             {
-                m_chart += makeCell("  ");
+                makeCell(m_grid[weekIdx][dayIdx], "  ");
                 continue;
             }
-            m_grid[weekIdx][dayIdx] = daysMarked;
-            m_chart += makeCell(to_string(daysMarked));
+            makeCell(m_grid[weekIdx][dayIdx], to_string(daysMarked + 1));
             daysMarked++;
         }
-        m_chart += '\n';
     }
+
+    fillChart();
 
     cout << m_chart << endl;
 }
@@ -732,4 +724,17 @@ void CalendarMonth::draw(ostream stream)
     stream << m_chart;
 }
 
-std::string m_chart;
+void CalendarMonth::fillChart()
+{
+    for (auto week = 0u; week < NumWeeksPerMonth; ++week)
+    {
+        for (auto lineIdx = 0u; lineIdx < CellHeight; ++lineIdx)
+        {
+            for (auto day = 0u; day < NumDaysInWeek; ++day)
+            {
+                m_chart += m_grid[week][day][lineIdx];
+            }
+            m_chart += '\n';
+        }
+    }
+}
