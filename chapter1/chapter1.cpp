@@ -562,24 +562,25 @@ Day getDayEnum(uint32_t dayNumber)
     return static_cast<Day>(dayNumber);
 }
 
+string makeCenteredString(const string& background, const string& content)
+{
+    string result = background;
+    auto index = (result.size() / 2) - (content.size() / 2);
+    copy(content.begin(), content.end(), result.begin() + index);
+    return result;
+}
+
 string makeCenteredDayString(Day day)
 {
     string line(CellWidth, ' ');
-    auto dayString = getDayString(day);
-
-    auto index = (CellWidth / 2) - (dayString.size() / 2);
-    copy(dayString.begin(), dayString.end(), line.begin() + index);
-    return line;
+    return makeCenteredString(line, getDayString(day));
 }
 
 string makeCenteredTitleString(Month month, uint32_t year)
 {
     string line(CellWidth * 7u, ' ');
     string title = getMonthString(month) + "  " + to_string(year);
-
-    auto index = ((CellWidth * 7u) / 2) - (title.size() / 2);
-    copy(title.begin(), title.end(), line.begin() + index);
-    return line;
+    return makeCenteredString(line, title);
 }
 
 void makeCell(Cell& cell, string value)
