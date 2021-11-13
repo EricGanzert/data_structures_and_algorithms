@@ -549,7 +549,7 @@ void writeOutSentence(const std::string& sentence)
 namespace
 {
 constexpr auto CellWidth = 13;
-constexpr auto CellHeight = 13;
+constexpr auto CellHeight = 7;
 
 const map<Day, string> dayStrings = {{Day::Sunday, "Sunday"}, {Day::Monday, "Monday"}, 
     {Day::Tuesday, "Tuesday"}, {Day::Wednesday, "Wednesday"}, {Day::Thursday, "Thursday"}, 
@@ -584,14 +584,44 @@ string makeCenteredTitleString(Month month, uint32_t year)
     copy(title.begin(), title.end(), line.begin() + index);
     return line;
 }
+
+string makeCell(string contents)
+{
+    string result;
+    result += string(CellWidth, '-');
+    result += '\n';
+
+    for (auto i = 0u; i < CellHeight; ++i)
+    {
+        if (i == 0 || i == CellHeight - 1)
+        {
+            continue;
+        }
+        string line(CellWidth, ' ');
+        line.front() = '|';
+        line.back() = '|';
+
+        if (i == CellHeight / 2)
+        {
+            auto index = (CellWidth / 2) - (contents.size() / 2);
+            copy(contents.begin(), contents.end(), line.begin() + index);
+        }
+        result += line + '\n';
+    }
+
+    result += string(CellWidth, '-');
+    result += '\n';
+    return result;
 }
 
-std::string getDayString(Day day)
+}
+
+string getDayString(Day day)
 {
     return dayStrings.at(day);
 }
 
-std::string getMonthString(Month month)
+string getMonthString(Month month)
 {
     return monthStrings.at(month);
 }
@@ -636,7 +666,29 @@ Day getDayOfWeek(uint32_t day, Month month, uint32_t year)
     return getDayEnum(dayNumber);    
 }
 
+uint32_t getNumDaysInMonth(Month month, uint32_t year)
+{
+    if (month == Month::April
+        || month == Month::June
+        || month == Month::September
+        || month == Month::November)
+    {
+        return 30u;
+    }
+    if (month == Month::February)
+    {
+        if (year % 4 == 0)
+        {
+            return 29u;
+        }
+        return 28u;
+    }
+    return 31u;
+}
+
 CalendarMonth::CalendarMonth(Month month, uint32_t year)
+    : m_month(month)
+    , m_year(year)
 {
     // main title
     m_chart += string(CellWidth * 7u, ' ') + "\n";
@@ -648,9 +700,36 @@ CalendarMonth::CalendarMonth(Month month, uint32_t year)
     {
         m_chart += makeCenteredDayString(day.first);
     }
+    m_chart += '\n';
+
+    auto startDay = getDayOfWeek(1u, m_month, m_year);
+    auto totalDays = getNumDaysInMonth(m_month, m_year);
+
+    auto daysMarked = 0u;
+
+    for (auto weekIdx = 0u; weekIdx < 5u; ++weekIdx)
+    {
+        for (auto dayIdx = 0u; dayIdx < 7u; ++dayIdx)
+        {
+            if ((weekIdx == 0 && dayIdx < static_cast<uint32_t>(startDay))
+                || (weekIdx == 4u && daysMarked >= totalDays))
+            {
+                m_chart += makeCell("  ");
+                continue;
+            }
+            m_grid[weekIdx][dayIdx] = daysMarked;
+            m_chart += makeCell(to_string(daysMarked));
+            daysMarked++;
+        }
+        m_chart += '\n';
+    }
+
     cout << m_chart << endl;
 }
 
-void draw(std::ostream stream);
+void CalendarMonth::draw(ostream stream)
+{
+    stream << m_chart;
+}
 
 std::string m_chart;

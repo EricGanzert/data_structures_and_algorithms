@@ -201,5 +201,8 @@ public:
     void draw(std::ostream stream);
 
 private:
+    Month m_month;
+    uint32_t m_year{};
     std::string m_chart;
+    std::array<std::array<uint32_t, 7u>, 5u> m_grid{};
 };
