@@ -1,4 +1,5 @@
 #include "calendar_utils.h"
+#include <algorithm>
 #include <map>
 #include <math.h>
 
