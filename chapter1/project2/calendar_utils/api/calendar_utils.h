@@ -38,6 +38,7 @@ enum class Month : uint32_t {
 };
 
 std::string getMonthString(Month month);
+Month getMonthEnum(std::string month);
 
 Day getDayOfWeek(uint32_t day, Month month, uint32_t year);
 

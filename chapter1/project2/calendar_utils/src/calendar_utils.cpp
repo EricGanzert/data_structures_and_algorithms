@@ -5,7 +5,8 @@
 
 using namespace std;
 
-namespace calendar {
+namespace {
+using namespace calendar;
 
 const map<Day, string> dayStrings = {{Day::Sunday, "Sunday"}, {Day::Monday, "Monday"}, 
     {Day::Tuesday, "Tuesday"}, {Day::Wednesday, "Wednesday"}, {Day::Thursday, "Thursday"}, 
@@ -15,6 +16,44 @@ const map<Month, string> monthStrings = {{Month::January, "January"}, {Month::Fe
     {Month::March, "March"}, {Month::April, "April"}, {Month::May, "May"}, {Month::June, "June"}, 
     {Month::July, "July"}, {Month::August, "August"}, {Month::September, "September"},
     {Month::October, "October"}, {Month::November, "November"}, {Month::December, "December"}};
+
+string makeCenteredString(const string& background, const string& content)
+{
+    string result = background;
+    auto index = (result.size() / 2) - (content.size() / 2);
+    copy(content.begin(), content.end(), result.begin() + index);
+    return result;
+}
+
+Day getDayEnum(uint32_t dayNumber)
+{
+    return static_cast<Day>(dayNumber);
+}
+} // namespace
+
+namespace calendar {
+
+Month getMonthEnum(std::string month)
+{
+    for (auto& c : month)
+    {
+        c = tolower(c);
+    }
+
+    for (auto m : monthStrings)
+    {
+        for (auto& c : m.second)
+        {
+            c = tolower(c);
+        }
+
+        if (month == m.second)
+        {
+            return m.first;
+        }
+    }
+    throw runtime_error("did not recognize month string");
+}
 
 array<Day, NumDaysInWeek> getWeek()
 {
@@ -26,19 +65,6 @@ array<Day, NumDaysInWeek> getWeek()
         *iter = day.first;
         iter++;
     }
-    return result;
-}
-
-Day getDayEnum(uint32_t dayNumber)
-{
-    return static_cast<Day>(dayNumber);
-}
-
-string makeCenteredString(const string& background, const string& content)
-{
-    string result = background;
-    auto index = (result.size() / 2) - (content.size() / 2);
-    copy(content.begin(), content.end(), result.begin() + index);
     return result;
 }
 
