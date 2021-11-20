@@ -1,12 +1,14 @@
 #include "chapter1.h"
 #include "steady_clock.h"
 
+#include <algorithm>
 #include <deque>
 #include <functional>
 #include <iostream>
 #include <math.h>
 #include <map>
 #include <unordered_set>
+#include <random>
 #include <string>
 #include <sstream>
 
@@ -545,3 +547,34 @@ void writeOutSentence(const std::string& sentence)
         cout << to_string(i + 1) << ". " << line << endl;
     }
 }
+
+vector<uint32_t> getRandomBirthdays(uint32_t n)
+{
+    random_device dev;
+    mt19937 rng(dev());
+    uniform_int_distribution<mt19937::result_type> days(1,365);
+
+    vector<uint32_t> result(n, 0u);
+    for_each(result.begin(), result.end(), [&](auto& item)
+    {
+        item = days(rng);
+    });
+    return result;
+}
+
+bool sharedBirthday(uint32_t n)
+{
+    auto birthdays = getRandomBirthdays(n);
+    unordered_set<decltype (birthdays)::value_type> seen;
+
+    for (const auto& item : birthdays)
+    {
+        if (seen.count(item))
+        {
+            return true;
+        }
+        seen.insert(item);
+    }
+    return false;
+}
+

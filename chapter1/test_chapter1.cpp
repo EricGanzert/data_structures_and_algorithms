@@ -716,3 +716,24 @@ TEST(GreatestCommonDivisor, NegativeNumbers)
     EXPECT_THAT(gcd(15, -3), 3);
     EXPECT_THAT(gcd(-15, -3), 3);
 }
+
+// P-1.3
+TEST(BirthdayParadox, BirthdayParadox)
+{
+    array<uint32_t, 20> numPeople{};
+    for (auto i=0u; i<20u; i++)
+    {
+        numPeople[i] = (i + 1) * 5;
+    }
+
+    for (const auto& n : numPeople)
+    {
+        auto numMatches = 0u;
+        for (auto test=1u; test<=10u; test++)
+        {
+            numMatches += static_cast<decltype(numMatches)>(sharedBirthday(n));
+        }
+        cout << "For a group of " << n << " people, in " << numMatches << 
+            " out of 10 tests there were matching birthdays" << endl;
+    }
+}

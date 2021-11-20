@@ -161,3 +161,7 @@ long powerOf2(uint32_t i);
 int gcd(int a, int b);
 
 void writeOutSentence(const std::string& sentence);
+
+std::vector<uint32_t> getRandomBirthdays(uint32_t n);
+
+bool sharedBirthday(uint32_t n);
