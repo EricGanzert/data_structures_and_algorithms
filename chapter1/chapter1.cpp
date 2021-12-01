@@ -142,6 +142,7 @@ void printArray(int** A, int m, int n)
         m_balance += payment * m_interestRate;
         m_balance -= payment;
         chargeFeeIfLate();
+        
         m_payPeriodStart = m_clock->now();
     }
 
@@ -183,7 +184,7 @@ void CreditCard::setLimit(double limit)
         return;
     }
 
-    m_limit = limit;
+    m_limit = static_cast<int>(limit);
 }
 
 AllKinds::AllKinds(int integer, long longInt, float flt) 
@@ -263,7 +264,7 @@ uint32_t numDividesBy2Above2(double x)
     
     auto asInt = int64_t(x + 0.5);
 
-    auto bits = log2(asInt);
+    auto bits = static_cast<uint32_t>(log2(asInt));
     return bits - 1;
 }
 

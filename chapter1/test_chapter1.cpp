@@ -573,7 +573,7 @@ TEST(CombineLetters, CombineLetters)
     allPossibleStrings(outs, abcdef);
     const auto result = outs.str();
 
-    const auto expectedNumWords = factorial(abcdef.size());
+    const auto expectedNumWords = factorial(static_cast<int>(abcdef.size()));
     auto resultWordCount = 0l;
     unordered_set<string> seen;
 
