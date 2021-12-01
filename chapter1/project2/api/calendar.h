@@ -4,6 +4,7 @@
 
 #include <array>
 #include <string>
+#include <sstream>
 
 namespace calendar {
 

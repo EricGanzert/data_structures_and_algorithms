@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <map>
 #include <math.h>
+#include <stdexcept>
 
 using namespace std;
 

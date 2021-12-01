@@ -4,7 +4,16 @@ project(data_structures_and_algorithms)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_compile_options(-Wall -Wextra -pedantic -Werror)
+if(UNIX)
+    add_compile_options(-Wall -Wextra -pedantic -Werror)
+endif()
+
+if(WIN32)
+add_compile_options(
+    "/W3"
+    "/WX" # Turn on warnings as errors
+)
+endif()
 
 add_subdirectory(chapter1)
 add_subdirectory(lib/googletest)
