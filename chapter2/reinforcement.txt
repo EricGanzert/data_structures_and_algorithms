@@ -21,3 +21,19 @@ Because users may want to use new file types in the future. And the demand for s
 
 R-2.5
 In VSCode the "Run" menu as a class has debugging related member functions including: Start Debugging, Toggle Breakpoint, New Breakpoint
+
+R-2.6
+class: Object
+fields: none
+methods: none
+^
+--------------------------------------------------------
+|                          \                            \
+class: Goat                 class: Pig                  class: Horse
+fields: tail                fields: nose                fields: height, color
+methods: milk, jump         methods: eat, wallow        methods: run, jump
+                                                        ^              ^
+                                                       /               |
+                                            class: Racer            class: Equestrian
+                                            fields: none            fields: weight
+                                            methods: race           methods: trot, isTrained
