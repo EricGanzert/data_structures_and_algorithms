@@ -1,0 +1,23 @@
+R-2.1
+One disadvantage of deep inheritance trees is that each virtual function call to a lower node on the inheritance tree will have to be looked up through many levels at runtime.
+Another disadvantage is the need to run the constructor and destructor of each level going down to or up from the inherited type.
+Thirdly a disadvantage is the complexity of the code structure which may be hard to maintain. 
+For example changes in distant base classes that authors and maintainers of derived classes need to account for.
+
+R-2.2
+A disadvantage of shallow inheritance trees is that many of the deriving classes may be repeating code that could be shared amoung groups of similar derived classes.
+Instead of many classes being derived from one base class, it may be easier to use composition to share the functionality of the base class. 
+Meaning that the logic and data of the base class could rather be encapsulated in a certain class that each of the other classes has an instance of.
+
+R-2.3
+Some examples of life critical pieces of software are the code that
+- operates a space shuttle while in flight.
+- delivers radiation doses in chemo therapy treatments.
+- allows GPS devices to provide location and navigation info in remote areas.
+
+R-2.4
+A file hosting site is an example of a software application where adaptability can mean the difference between long sales lifetime and bankruptcy.
+Because users may want to use new file types in the future. And the demand for storage space capacity may increase.
+
+R-2.5
+In VSCode the "Run" menu as a class has debugging related member functions including: Start Debugging, Toggle Breakpoint, New Breakpoint
