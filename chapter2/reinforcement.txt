@@ -49,3 +49,20 @@ So a call to p->firstValue() will be virtual and invoke GeomProgression::firstVa
 R-2.11
 No, you cannot cast a non-pointer / non-reference variable d of type Equestrian to type Racer. Even if d was a pointer to an Equestrian object,
 you could not cast it to the type Racer because they occupy different branches of the inheritance tree.
+
+R-2.12
+class: Person
+fields: name, height, weight
+methods: eat, sleep
+^
+------------------------------------------------------------------------
+|                                                                       \
+class: Student                                                           class: Faculty
+fields: ID number, class schedule                                        fields: salary
+methods: study                                                           methods: teach
+^                                                                        ^
+------------------------------------                                     -----------------------------------
+|                                   \                                    |                                  \
+class: UndergraduateStudent          class: GraduateStudent              class: Professor                    class: Instructor
+fields: debt                         fields: fear of real world          fields: tenure                      fields: desire to be professor
+methods: party                       methods: drinkCoffee                methods: sarcasticRemark            methods: mark homework
