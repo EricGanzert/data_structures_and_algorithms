@@ -27,3 +27,11 @@ protected:
     long second{};
     long prev{};
 };
+
+class ArithProgression : public Progression {
+public:
+    ArithProgression(std::ostream& s, long i = 1);
+protected:
+    virtual long nextValue();
+    long inc{};
+};

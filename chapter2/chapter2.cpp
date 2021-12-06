@@ -41,3 +41,11 @@ long FibonacciProgression::nextValue()
     cur = next;
     return cur;
 }
+
+ArithProgression::ArithProgression(ostream& s, long i) : Progression(s), inc(i) {}
+
+long ArithProgression::nextValue()
+{
+    cur += inc;
+    return cur;
+}
