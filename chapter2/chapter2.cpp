@@ -1,19 +1,17 @@
 #include "chapter2.h"
 
-#include <iostream>
-
 using namespace std;
 
-Progression::Progression(long f) : first(f), cur(f) {}
+Progression::Progression(ostream& stream, long f) : outs(stream), first(f), cur(f) {}
 
 void Progression::printProgression(int n)
 {
-    cout << firstValue();
+    outs << firstValue();
     for (int i = 2; i <= n; i++)
     {
-        cout << " " << nextValue();
+        outs << " " << nextValue();
     }
-    cout << endl;
+    outs << endl;
 }
 
 long Progression::firstValue()
@@ -25,4 +23,21 @@ long Progression::firstValue()
 long Progression::nextValue()
 {
     return ++cur;
+}
+
+FibonacciProgression::FibonacciProgression(ostream& stream, long f, long s) : Progression(stream, f), second(s) {}
+
+long FibonacciProgression::firstValue()
+{
+    cur = first;
+    prev = second - first;
+    return cur;
+}
+
+long FibonacciProgression::nextValue()
+{
+    auto next = cur + prev;
+    prev = cur;
+    cur = next;
+    return cur;
 }
