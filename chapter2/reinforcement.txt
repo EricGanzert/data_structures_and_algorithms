@@ -39,5 +39,5 @@ methods: milk, jump         methods: eat, wallow        methods: run, jump
                                             methods: race           methods: trot, isTrained
 
 R-2.7
-A derived class destructor cannot invoke it's base class destructor because a derived class always needs access to it's basse class elements.
-This is by definition of what it means to derive a class. The destructor of a derived class may need to use base class members to properly clean up after itself.
+A derived class destructor cannot invoke it's base class destructor because it always should have access to it's base class elements.
+This is by definition of what it means to derive a class. The destructor of a derived class may need to use base class members.
