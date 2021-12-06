@@ -41,3 +41,11 @@ methods: milk, jump         methods: eat, wallow        methods: run, jump
 R-2.7
 A derived class destructor cannot invoke it's base class destructor because it always should have access to it's base class elements.
 This is by definition of what it means to derive a class. The destructor of a derived class may need to use base class members.
+
+R-2.10
+the pointer p which is of type Progression really points to a GeomProgression object.
+So a call to p->firstValue() will be virtual and invoke GeomProgression::firstValue
+
+R-2.11
+No, you cannot cast a non-pointer / non-reference variable d of type Equestrian to type Racer. Even if d was a pointer to an Equestrian object,
+you could not cast it to the type Racer because they occupy different branches of the inheritance tree.

@@ -21,12 +21,18 @@ TEST(Fibbonacci, SeventhValueFrom3and4)
     EXPECT_THAT(result, Eq(string("3 4 7 11 18 29 47\n")));
 }
 
+// R-2.9
 TEST(ArithmeticOverflow, ArithmeticOverflow)
 {
     // I'm not sure how I should test this. Because nextValue is protected and
     // the string produced by printProgression would be unreasonably large
     auto maxValue = numeric_limits<long>::max();
     auto result = maxValue / 128;
+    if (maxValue % 128 == 0)
+    {
+        result--;
+    }
+    
     cout << "If we chose inc=128, we could call ArithProgression::nextValue "
         << result << " times before we cause long integer overflow." << endl;
 }
