@@ -35,3 +35,14 @@ protected:
     virtual long nextValue();
     long inc{};
 };
+
+class Object
+{ public: virtual void printMe() = 0; };
+class Place : public Object
+{ public: virtual void printMe() {std::cout << "Buy it." << std::endl;} };
+class Region : public Place
+{ public: virtual void printMe() {std::cout << "Box it." << std::endl;} };
+class State : public Region
+{ public: virtual void printMe() {std::cout << "Ship it." << std::endl;} };
+class MaryLand : public State
+{ public: virtual void printMe() {std::cout << "Read it." << std::endl;} };

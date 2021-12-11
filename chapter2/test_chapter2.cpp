@@ -56,3 +56,38 @@ TEST(PerformArrayReference, OutOfBounds)
         cout << e.what() << endl;
     }
 }
+
+// R-2.14
+TEST(ClassPointerCasting, WhatIsOutput)
+{
+    shared_ptr<Region> mid = make_shared<State>();
+    shared_ptr<State> md = make_shared<MaryLand>();
+    shared_ptr<Object> obj = make_shared<Place>();
+    shared_ptr<Place> usa = make_shared<Region>();
+
+    md->printMe(); // Read it.
+    mid->printMe(); // Ship it.
+
+    if (auto ptr = dynamic_cast<Place*>(obj.get()))
+    {
+        ptr->printMe(); // Buy it.
+    }
+
+    obj = md;
+    if (auto ptr = dynamic_cast<MaryLand*>(obj.get()))
+    {
+        ptr->printMe(); // Read it.
+    }
+
+    obj = usa;
+    if (auto ptr = dynamic_cast<Place*>(obj.get()))
+    {
+        ptr->printMe(); // Box it.
+    }
+
+    usa = md;
+    if (auto ptr = dynamic_cast<Place*>(usa.get()))
+    {
+        ptr->printMe(); // Read it.
+    }
+}
