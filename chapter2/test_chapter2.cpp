@@ -2,6 +2,9 @@
 
 #include <gmock/gmock.h>
 
+#include <array>
+#include <numeric>
+
 using namespace std;
 using namespace testing;
 
@@ -35,4 +38,21 @@ TEST(ArithmeticOverflow, ArithmeticOverflow)
     
     cout << "If we chose inc=128, we could call ArithProgression::nextValue "
         << result << " times before we cause long integer overflow." << endl;
+}
+
+// R-2.13
+TEST(PerformArrayReference, OutOfBounds)
+{
+    // It looks like trying to access an array out of bounds 
+    // is undefined behaviour and may not on some platforms
+    // throw exceptions. In any case gmock doesn't seem to like it
+    // when I try to catch an exception from an out of bounds reference
+    try
+    {
+        throw(exception("test exception"));
+    }
+    catch (exception e)
+    {
+        cout << e.what() << endl;
+    }
 }
