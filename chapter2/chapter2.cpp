@@ -66,7 +66,7 @@ size_t countVowels(const string& line)
 
     if (!count)
     {
-        if (line.find(string("y")) != string::npos)
+        if (line.find("y") != string::npos)
         {
             count++;
         }
