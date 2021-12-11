@@ -91,3 +91,39 @@ TEST(ClassPointerCasting, WhatIsOutput)
         ptr->printMe(); // Read it.
     }
 }
+
+// R-2.15
+TEST(CountVowels, NoVowel)
+{
+    EXPECT_THAT(countVowels("bcdfgh"), size_t(0));
+}
+
+TEST(CountVowels, LowerCase)
+{
+    EXPECT_THAT(countVowels("eric"), size_t(2));
+}
+
+TEST(CountVowels, UpperCase)
+{
+    EXPECT_THAT(countVowels("ERIC"), size_t(2));
+}
+
+TEST(CountVowels, MixedCase)
+{
+    EXPECT_THAT(countVowels("ERic"), size_t(2));
+}
+
+TEST(CountVowels, MultipleWords)
+{
+    EXPECT_THAT(countVowels("time for lunch"), size_t(4));
+}
+
+TEST(CountVowels, VowelIsY)
+{
+    EXPECT_THAT(countVowels("fly"), size_t(1));
+}
+
+TEST(CountVowels, OnlyCountYifNoOtherVowels)
+{
+    EXPECT_THAT(countVowels("mary"), size_t(1));
+}

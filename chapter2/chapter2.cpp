@@ -1,5 +1,7 @@
 #include "chapter2.h"
 
+#include <algorithm>
+
 using namespace std;
 
 Progression::Progression(ostream& stream, long f) : outs(stream), first(f), cur(f) {}
@@ -48,4 +50,27 @@ long ArithProgression::nextValue()
 {
     cur += inc;
     return cur;
+}
+
+size_t countVowels(const string& line)
+{
+    const string vowels = "aeiou";
+    size_t count{};
+
+    for_each(line.begin(), line.end(), [&vowels, &count] (auto letter){
+        if (vowels.find(tolower(letter)) != string::npos)
+        {
+            count++;
+        }
+    });
+
+    if (!count)
+    {
+        if (line.find(string("y")) != string::npos)
+        {
+            count++;
+        }
+    }
+
+    return count;
 }
