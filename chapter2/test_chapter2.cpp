@@ -127,3 +127,11 @@ TEST(CountVowels, OnlyCountYifNoOtherVowels)
 {
     EXPECT_THAT(countVowels("mary"), size_t(1));
 }
+
+// R-2.16
+TEST(RemovePunctuation, ExampleString)
+{
+    string input = "Let's try, Mike.";
+    removePunctuation(input);
+    EXPECT_THAT(input, Eq(string("Lets try Mike")));
+}

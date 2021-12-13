@@ -48,3 +48,5 @@ class MaryLand : public State
 { public: virtual void printMe() {std::cout << "Read it." << std::endl;} };
 
 size_t countVowels(const std::string& line);
+
+void removePunctuation(std::string& s);

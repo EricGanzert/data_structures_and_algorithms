@@ -74,3 +74,18 @@ size_t countVowels(const string& line)
 
     return count;
 }
+
+void removePunctuation(string& s)
+{
+    string result;
+    const string allowed = " abcdefghijklmnopqrstuvwxyz";
+    for (auto letter : s)
+    {
+        if (allowed.find(tolower(letter)) != string::npos)
+        {
+            result += letter;
+        }
+    }
+
+    swap(s, result);
+}
