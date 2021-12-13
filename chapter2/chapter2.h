@@ -50,3 +50,5 @@ class MaryLand : public State
 size_t countVowels(const std::string& line);
 
 void removePunctuation(std::string& s);
+
+bool correctArithmeticFormula(int a, int b, int c);

@@ -135,3 +135,31 @@ TEST(RemovePunctuation, ExampleString)
     removePunctuation(input);
     EXPECT_THAT(input, Eq(string("Lets try Mike")));
 }
+
+// R-2.17
+TEST(ArithmeticOperatores, DivideByZeroSafe)
+{
+    bool result{};
+    EXPECT_NO_THROW(result = correctArithmeticFormula(3, 0, 1));
+    EXPECT_FALSE(result);
+    EXPECT_NO_THROW(result = correctArithmeticFormula(3, 1, 0));
+    EXPECT_FALSE(result);
+}
+
+TEST(ArithmeticOperatores, ShouldBeTrue)
+{
+    EXPECT_TRUE(correctArithmeticFormula(1, 7, 8)); // a + b == c
+    EXPECT_TRUE(correctArithmeticFormula(8, 1, 7)); // a - b == c
+    EXPECT_TRUE(correctArithmeticFormula(3, 2, 6)); // a * b == c
+    EXPECT_TRUE(correctArithmeticFormula(6, 2, 3)); // a / b == c
+
+    EXPECT_TRUE(correctArithmeticFormula(8, 7, 1)); // a == b + c
+    EXPECT_TRUE(correctArithmeticFormula(7, 8, 1)); // a == b - c
+    EXPECT_TRUE(correctArithmeticFormula(6, 2, 3)); // a == b * c
+    EXPECT_TRUE(correctArithmeticFormula(3, 6, 2)); // a == b / c
+}
+
+TEST(ArithmeticOperatores, ShouldBeFalse)
+{
+    EXPECT_FALSE(correctArithmeticFormula(1, 5, 10));
+}

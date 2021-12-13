@@ -1,6 +1,8 @@
 #include "chapter2.h"
 
 #include <algorithm>
+#include <functional>
+#include <type_traits>
 
 using namespace std;
 
@@ -88,4 +90,47 @@ void removePunctuation(string& s)
     }
 
     swap(s, result);
+}
+
+using IntOperator = function<int(int, int)>; 
+
+bool division(IntOperator op)
+{
+    return op.target_type() == IntOperator(divides<int>()).target_type();
+}
+
+bool correctArithmeticFormula(int a, int b, int c)
+{
+    // a + b = c
+    // a - b = c
+    // a * b = c
+    // a / b = c
+
+    // a = b + c
+    // a = b - c
+    // a = b * c
+    // a = b / c
+
+    vector<IntOperator> operators = {plus<int>(), minus<int>(), multiplies<int>(), divides<int>()};
+    for (auto& op : operators)
+    {
+        auto isDivide = division(op);
+        if (!(isDivide && b == 0))
+        {
+            if (op(a, b) == c)
+            {
+                return true;
+            }
+        }
+
+        if (!(isDivide && c == 0))
+        {
+            if (a == op(b, c))
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
