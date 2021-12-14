@@ -10,3 +10,6 @@ target_link_libraries(test_chapter2
         gmock
         chapter2
 )
+
+add_executable(quine quine.cpp
+)
