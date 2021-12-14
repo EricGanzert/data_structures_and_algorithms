@@ -49,9 +49,9 @@ TEST(PerformArrayReference, OutOfBounds)
     // when I try to catch an exception from an out of bounds reference
     try
     {
-        throw(exception("test exception"));
+        throw(runtime_error("test exception"));
     }
-    catch (exception e)
+    catch (exception& e)
     {
         cout << e.what() << endl;
     }
