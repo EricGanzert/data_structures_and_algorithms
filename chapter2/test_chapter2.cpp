@@ -163,3 +163,13 @@ TEST(ArithmeticOperatores, ShouldBeFalse)
 {
     EXPECT_FALSE(correctArithmeticFormula(1, 5, 10));
 }
+
+// R-2.18
+TEST(PairClass, PairClass)
+{
+    MyPair<int, string> pair1(12, "Hello");
+    MyPair<float, long> pair2(1.1f, 1000l);
+    MyPair<uint8_t, uint64_t> pair3(0xff, 0xffffffff);
+    MyPair<string, string> pair4("One", "Another");
+    MyPair<MyPair<int, string>, string> pair5(pair1, "Last one");
+}

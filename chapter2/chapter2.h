@@ -52,3 +52,17 @@ size_t countVowels(const std::string& line);
 void removePunctuation(std::string& s);
 
 bool correctArithmeticFormula(int a, int b, int c);
+
+template<typename A, typename B>
+class MyPair {
+public:
+    MyPair(A first, B second) : m_first(first)
+        , m_second(second) {}
+
+    A first() {return m_first;}
+    B second() {return m_second;}
+
+private:        
+    A m_first{};
+    B m_second{};
+};
