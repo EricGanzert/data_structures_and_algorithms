@@ -66,3 +66,11 @@ private:
     A m_first{};
     B m_second{};
 };
+
+enum class MyType : int {
+    One,
+    Two,
+    Three
+};
+
+void hasUnreachableCode(MyType arg);

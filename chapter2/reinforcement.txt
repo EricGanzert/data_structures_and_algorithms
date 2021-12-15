@@ -66,3 +66,18 @@ methods: study                                                           methods
 class: UndergraduateStudent          class: GraduateStudent              class: Professor                    class: Instructor
 fields: debt                         fields: fear of real world          fields: tenure                      fields: desire to be professor
 methods: party                       methods: drinkCoffee                methods: sarcasticRemark            methods: mark homework
+
+
+C-2.2
+An inheritance diagram for an eBook Reader
+
+class: Display                      class: Library
+fields: window, menu                fields: titles
+methods: refresh, powerOn           methods: openBook
+^                                   ^
+|                                   |
+-------------------------------------
+|
+class: myEbook
+fields: price
+methods: searchForBook

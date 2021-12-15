@@ -134,3 +134,24 @@ bool correctArithmeticFormula(int a, int b, int c)
 
     return false;
 }
+
+// C-2.3
+void hasUnreachableCode(MyType arg)
+{
+    switch(arg)
+    {
+    case MyType::One:
+        cout << "One" << endl;
+        break;
+    case MyType::Two:
+        cout << "Two" << endl;
+        break;
+    case MyType::Three:
+        cout << "Three" << endl;
+        break;
+    default:
+        // This code is unreachable unless MyType definition is changed.
+        // Should still be compiled though 
+        cout << "Unknown" << endl;
+    };
+}
