@@ -74,3 +74,16 @@ enum class MyType : int {
 };
 
 void hasUnreachableCode(MyType arg);
+
+// represents a line y = a*x + b
+class Line {
+public:
+    Line(double a, double b);
+    double intersect(const Line& line);
+    double a() const;
+    double b() const;
+
+private:
+    double m_a{};
+    double m_b{};
+};

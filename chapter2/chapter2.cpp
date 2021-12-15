@@ -155,3 +155,26 @@ void hasUnreachableCode(MyType arg)
         cout << "Unknown" << endl;
     };
 }
+
+Line::Line(double a, double b) : m_a(a), m_b(b)
+{}
+
+double Line::a() const
+{
+    return m_a;
+}
+
+double Line::b() const
+{
+    return m_b;
+}
+
+double Line::intersect(const Line& line)
+{
+    if (line.a() == m_a)
+    {
+        throw runtime_error("Lines are parallel");
+    }
+
+    return (line.b() - m_b) / (m_a - line.a());
+}

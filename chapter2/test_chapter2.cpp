@@ -173,3 +173,33 @@ TEST(PairClass, PairClass)
     MyPair<string, string> pair4("One", "Another");
     MyPair<MyPair<int, string>, string> pair5(pair1, "Last one");
 }
+
+// C-2.4
+TEST(LineIntersect, ParallelLinesThrow)
+{
+    EXPECT_THROW(Line(2, 1).intersect(Line(2, 2)), runtime_error);
+}
+
+TEST(LineIntersect, NonParallelNoThrow)
+{
+    EXPECT_NO_THROW(Line(2, 1).intersect(Line(3, 4)));
+}
+
+TEST(LineIntersect, IntersctionPoint)
+{
+    auto intersect = Line(2, 1).intersect(Line(1, 2));
+    EXPECT_DOUBLE_EQ(intersect, 1.0);
+
+    intersect = Line(3, -5).intersect(Line(12, 1.11));
+    auto expectedAnswer = (1.11 + 5.0) / (3.0 - 12.0);
+    EXPECT_DOUBLE_EQ(intersect, expectedAnswer);
+
+    try
+    {
+        Line(2, 1).intersect(Line(2, 2));
+    }
+    catch(exception& e)
+    {
+        cout << "Failed to find intersection point - " << e.what() << endl;
+    }
+}
