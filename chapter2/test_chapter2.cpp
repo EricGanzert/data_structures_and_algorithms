@@ -225,3 +225,11 @@ TEST(SqrtProgression, SqrtProgression)
     auto result = outs.str();
     EXPECT_EQ(result, string("65536 256 16 4\n"));
 }
+
+// C-2.7
+TEST(BaseClassMember, BaseClassMember)
+{
+    C myClass;
+    EXPECT_THAT(myClass.getXFromBase(), 1);
+    EXPECT_THAT(myClass.getX(), 3);
+}

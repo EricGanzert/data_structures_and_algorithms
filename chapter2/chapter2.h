@@ -126,3 +126,25 @@ private:
     double m_a{};
     double m_b{};
 };
+
+class A {
+public:
+    virtual int getX() { return x; }
+protected:
+    int x = 1;
+};
+
+class B : public A {
+public:
+    virtual int getX() { return x; }
+protected:
+    int x = 2;
+};
+
+class C final : public B {
+public:
+    virtual int getX() { return x; }
+    int getXFromBase() { return A::x; };
+private:
+    int x = 3;
+};
