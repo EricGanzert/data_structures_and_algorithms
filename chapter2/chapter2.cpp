@@ -54,6 +54,41 @@ long ArithProgression::nextValue()
     return cur;
 }
 
+AbsDifference::AbsDifference(ostream& outs) : Progression(outs, 2), second(200) {}
+
+AbsDifference::AbsDifference(ostream& outs, long f, long s) : Progression(outs, f), second(s) {}
+
+long AbsDifference::nextValue()
+{
+    auto temp = cur;
+    cur = abs(cur - prev);
+    prev = temp;
+    return cur;
+}
+
+long AbsDifference::firstValue()
+{
+    prev = first;
+    return prev;
+}
+
+long AbsDifference::secondValue()
+{
+    cur = second;
+    return cur;
+}
+
+void AbsDifference::printProgression(int n)
+{
+    outs << firstValue() << " " << secondValue();
+
+    for (auto i = 2; i < n; ++i)
+    {
+        outs << " " << nextValue();
+    }
+    outs << endl;
+}
+
 size_t countVowels(const string& line)
 {
     const string vowels = "aeiou";

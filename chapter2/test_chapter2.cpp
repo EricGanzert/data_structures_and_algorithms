@@ -203,3 +203,14 @@ TEST(LineIntersect, IntersctionPoint)
         cout << "Failed to find intersection point - " << e.what() << endl;
     }
 }
+
+// C-2.5
+TEST(AbsDiffProgression, AbsDiffProgression)
+{
+    stringstream outs;
+    AbsDifference absDiff(outs);
+    absDiff.printProgression(10);
+
+    auto result = outs.str();
+    EXPECT_EQ(result, string("2 200 198 2 196 194 2 192 190 2\n"));
+}

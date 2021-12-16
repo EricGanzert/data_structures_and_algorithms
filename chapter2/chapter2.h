@@ -36,6 +36,21 @@ protected:
     long inc{};
 };
 
+class AbsDifference : public Progression {
+public:
+    AbsDifference(std::ostream& outs);
+    AbsDifference(std::ostream& outs, long f, long s);
+
+    void printProgression(int n);
+protected:
+    virtual long nextValue();
+    virtual long firstValue();
+    virtual long secondValue();
+
+    long second{};
+    long prev{};
+};
+
 class Object
 { public: virtual void printMe() = 0; };
 class Place : public Object
