@@ -6,29 +6,6 @@
 
 using namespace std;
 
-Progression::Progression(ostream& stream, long f) : outs(stream), first(f), cur(f) {}
-
-void Progression::printProgression(int n)
-{
-    outs << firstValue();
-    for (int i = 2; i <= n; i++)
-    {
-        outs << " " << nextValue();
-    }
-    outs << endl;
-}
-
-long Progression::firstValue()
-{
-    cur = first;
-    return cur;
-}
-
-long Progression::nextValue()
-{
-    return ++cur;
-}
-
 FibonacciProgression::FibonacciProgression(ostream& stream, long f, long s) : Progression(stream, f), second(s) {}
 
 long FibonacciProgression::firstValue()

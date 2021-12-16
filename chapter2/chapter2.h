@@ -1,23 +1,39 @@
 #include <iostream>
 
+template<typename T>
 class Progression {
 public:
     // f is the starting value of the progression
-    Progression(std::ostream& stream, long f = 0);
+    Progression(std::ostream& stream, T f = 0) : outs(stream), first(f), cur(f) {}
     virtual ~Progression() = default;
     // print the first n values
-    void printProgression(int n);
+    void printProgression(int n)
+    {
+        outs << firstValue();
+        for (int i = 2; i <= n; i++)
+        {
+            outs << " " << nextValue();
+        }
+        outs << endl;
+    }
 
 protected:
-    virtual long firstValue();
-    virtual long nextValue();
+    virtual T firstValue()
+    {
+        cur = first;
+        return cur;
+    }
+    virtual T nextValue()
+    {
+        return ++cur;
+    }
 
     std::ostream& outs;
-    long first{};
-    long cur{};
+    T first{};
+    T cur{};
 };
 
-class FibonacciProgression : public Progression {
+class FibonacciProgression : public Progression<long> {
 public:
     FibonacciProgression(std::ostream& stream, long f = 0, long s = 1);
 protected:
@@ -28,7 +44,7 @@ protected:
     long prev{};
 };
 
-class ArithProgression : public Progression {
+class ArithProgression : public Progression<long> {
 public:
     ArithProgression(std::ostream& s, long i = 1);
 protected:
@@ -36,7 +52,7 @@ protected:
     long inc{};
 };
 
-class AbsDifference : public Progression {
+class AbsDifference : public Progression<long> {
 public:
     AbsDifference(std::ostream& outs);
     AbsDifference(std::ostream& outs, long f, long s);
