@@ -67,6 +67,14 @@ protected:
     long prev{};
 };
 
+class SqrtProgression : public Progression<double> {
+public:
+    SqrtProgression(std::ostream& outs) : Progression(outs, 65'536.0) {}
+    SqrtProgression(std::ostream& outs, double f) : Progression(outs, f) {}
+protected:
+    virtual double nextValue();
+};
+
 class Object
 { public: virtual void printMe() = 0; };
 class Place : public Object

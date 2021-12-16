@@ -214,3 +214,14 @@ TEST(AbsDiffProgression, AbsDiffProgression)
     auto result = outs.str();
     EXPECT_EQ(result, string("2 200 198 2 196 194 2 192 190 2\n"));
 }
+
+// C-2.6
+TEST(SqrtProgression, SqrtProgression)
+{
+    stringstream outs;
+    SqrtProgression sqrtProg(outs);
+    sqrtProg.printProgression(4);
+
+    auto result = outs.str();
+    EXPECT_EQ(result, string("65536 256 16 4\n"));
+}

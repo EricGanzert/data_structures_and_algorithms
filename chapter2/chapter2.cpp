@@ -66,6 +66,12 @@ void AbsDifference::printProgression(int n)
     outs << endl;
 }
 
+double SqrtProgression::nextValue()
+{
+    cur = sqrt(cur);
+    return cur;
+}
+
 size_t countVowels(const string& line)
 {
     const string vowels = "aeiou";
