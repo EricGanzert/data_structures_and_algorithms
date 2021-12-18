@@ -259,7 +259,7 @@ InternetUser::~InternetUser()
 
 void InternetUser::sendPacket(Packet packet, shared_ptr<InternetUser> recipient)
 {
-    cout << "User " << m_name << " sends packet: " << packet << endl;
+    // cout << "User " << m_name << " sends packet: " << packet << endl;
     m_internet->sendPacket(packet, recipient);
 }
 
@@ -284,7 +284,7 @@ void InternetUser::processPackets()
             packet = m_arrivedPackets.front();
             m_arrivedPackets.pop_front();
         }
-        cout << "User " << m_name << " received packet: " << packet << endl;
+        // cout << "User " << m_name << " received packet: " << packet << endl;
         m_numPacketsProcessed++;
         m_lastPacketProcessed = packet;
     }

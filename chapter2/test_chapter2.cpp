@@ -272,3 +272,33 @@ TEST(InternetMockup, AliceSendsPacketToBob)
 
     EXPECT_TRUE(received);
 }
+
+TEST(InternetMockup, Timing10000Packets)
+{
+    constexpr int NumPackets = 10000;
+    Packet testPacket = 0;
+    auto internet = make_shared<Internet>();
+    auto alice = make_shared<InternetUser>("Alice", internet);
+    auto bob = make_shared<InternetUser>("Bob", internet);
+
+    auto startTime = steady_clock::now();
+    for (auto i=0; i<NumPackets; ++i)
+    {
+        alice->sendPacket(testPacket++, bob);
+    }
+
+    // make sure the packet gets to Bob
+    bool finished = false;
+    while ((steady_clock::now() - startTime) < 3s)
+    {
+        if (bob->numPacketsProcessed() >= NumPackets)
+        {
+            finished = true;
+            break;
+        }
+    }
+
+    EXPECT_TRUE(finished);
+    auto elapsedTime = duration_cast<microseconds>(steady_clock::now() - startTime);
+    cout << "It took " << elapsedTime.count() << " microseconds to pass " << NumPackets << " packets" << endl;
+}
