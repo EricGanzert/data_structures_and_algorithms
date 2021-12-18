@@ -3,10 +3,19 @@
 #include <gmock/gmock.h>
 
 #include <array>
+#include <chrono>
 #include <numeric>
 
 using namespace std;
+using namespace std::chrono;
 using namespace testing;
+
+namespace
+{
+// Without using mocks for InternetUser I don't see a better way
+// than using a timeout
+constexpr auto PacketTripTimeout = 10ms;
+}
 
 int main(int argc, char **argv) {
     InitGoogleTest(&argc, argv);
@@ -232,4 +241,34 @@ TEST(BaseClassMember, BaseClassMember)
     C myClass;
     EXPECT_THAT(myClass.getXFromBase(), 1);
     EXPECT_THAT(myClass.getX(), 3);
+}
+
+// C-2.8
+TEST(InternetMockup, InternetUserWithoutInternetThrows)
+{
+    EXPECT_THROW(InternetUser("Steve", nullptr), runtime_error);
+}
+
+TEST(InternetMockup, AliceSendsPacketToBob)
+{
+    constexpr Packet TestPacket = 12345;
+    auto internet = make_shared<Internet>();
+    auto alice = make_shared<InternetUser>("Alice", internet);
+    auto bob = make_shared<InternetUser>("Bob", internet);
+
+    auto startTime = steady_clock::now();
+    alice->sendPacket(Packet(TestPacket), bob);
+
+    bool received = false;
+    while ((steady_clock::now() - startTime) < PacketTripTimeout)
+    {
+        if (bob->numPacketsProcessed())
+        {
+            EXPECT_THAT(bob->lastPacketProcessed(), TestPacket);
+            received = true;
+            break;
+        }
+    }
+
+    EXPECT_TRUE(received);
 }

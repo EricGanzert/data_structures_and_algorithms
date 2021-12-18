@@ -1,4 +1,11 @@
+#include <atomic>
+#include <condition_variable>
 #include <iostream>
+#include <deque>
+#include <math.h>
+#include <mutex>
+#include <thread>
+#include <unordered_set>
 
 template<typename T>
 class Progression {
@@ -14,7 +21,7 @@ public:
         {
             outs << " " << nextValue();
         }
-        outs << endl;
+        outs << std::endl;
     }
 
 protected:
@@ -147,4 +154,49 @@ public:
     int getXFromBase() { return A::x; };
 private:
     int x = 3;
+};
+
+using Packet = uint32_t;
+
+class InternetUser;
+
+class Internet {
+public:
+    Internet();
+    ~Internet();
+
+    bool sendPacket(Packet packet, std::shared_ptr<InternetUser> recipient);
+
+private:
+    void deliveryWorker();
+
+    std::deque<std::pair<Packet, std::shared_ptr<InternetUser>>> m_toSend;
+    std::mutex m_packetMutex;
+
+    std::atomic<bool> m_keepDelivering;
+    std::thread m_deliveryThread;
+};
+
+class InternetUser {
+public:
+    InternetUser(std::string name, std::shared_ptr<Internet> internet);
+    virtual ~InternetUser();
+
+    void sendPacket(Packet packet, std::shared_ptr<InternetUser> recipient);
+    void receivePacket(Packet packet);
+
+    size_t numPacketsProcessed();
+    Packet lastPacketProcessed();
+private:
+    std::string m_name;
+    std::shared_ptr<Internet> m_internet;
+
+    std::deque<Packet> m_arrivedPackets;
+    std::mutex m_arrivedPacketsMutex;
+
+    void processPackets();
+    std::atomic<bool> m_processPackets;
+    std::thread m_pktProcessThread;
+    std::atomic<size_t> m_numPacketsProcessed{};
+    std::atomic<Packet> m_lastPacketProcessed{};
 };

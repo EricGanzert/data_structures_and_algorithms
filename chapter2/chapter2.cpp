@@ -196,3 +196,106 @@ double Line::intersect(const Line& line)
 
     return (line.b() - m_b) / (m_a - line.a());
 }
+
+Internet::Internet() : m_keepDelivering(true)
+    , m_deliveryThread(&Internet::deliveryWorker, this)
+{}
+
+Internet::~Internet()
+{
+    m_keepDelivering = false;
+    m_deliveryThread.join();
+}
+
+bool Internet::sendPacket(Packet packet, shared_ptr<InternetUser> recipient)
+{
+    if (!recipient)
+    {
+        return false;
+    }
+
+    lock_guard<mutex> lk(m_packetMutex);
+    m_toSend.emplace_back(make_pair(move(packet), recipient));
+    return true;
+}
+
+void Internet::deliveryWorker()
+{
+    while (m_keepDelivering)
+    {
+        decltype(m_toSend)::value_type packetInfo{};
+        {
+            lock_guard<mutex> lk(m_packetMutex);
+            if (m_toSend.empty())
+            {
+                continue;
+            }
+            packetInfo = m_toSend.front();
+            m_toSend.pop_front();
+        }
+        packetInfo.second->receivePacket(packetInfo.first);
+    }
+}
+
+InternetUser::InternetUser(string name, shared_ptr<Internet> internet)
+    : m_name(name)
+    , m_internet([&internet] {
+        if (!internet)
+        {
+            throw runtime_error("InternetUser created with null internet");
+        }
+        return internet;
+        }())
+    , m_processPackets(true) 
+    , m_pktProcessThread(&InternetUser::processPackets, this)
+{
+}
+
+InternetUser::~InternetUser()
+{
+    m_processPackets = false;
+    m_pktProcessThread.join();
+}
+
+void InternetUser::sendPacket(Packet packet, shared_ptr<InternetUser> recipient)
+{
+    cout << "User " << m_name << " sends packet: " << packet << endl;
+    m_internet->sendPacket(packet, recipient);
+}
+
+void InternetUser::receivePacket(Packet packet)
+{
+    lock_guard<mutex> lk(m_arrivedPacketsMutex);
+    m_arrivedPackets.emplace_back(packet);
+}
+
+void InternetUser::processPackets()
+{
+    while(m_processPackets)
+    {
+        decltype(m_arrivedPackets)::value_type packet{};
+        {
+            lock_guard<mutex> lk(m_arrivedPacketsMutex);
+            if (m_arrivedPackets.empty())
+            {
+                continue;
+            }
+
+            packet = m_arrivedPackets.front();
+            m_arrivedPackets.pop_front();
+        }
+        cout << "User " << m_name << " received packet: " << packet << endl;
+        m_numPacketsProcessed++;
+        m_lastPacketProcessed = packet;
+    }
+}
+
+size_t InternetUser::numPacketsProcessed()
+{
+    return m_numPacketsProcessed;
+}
+
+Packet InternetUser::lastPacketProcessed()
+{
+    return m_lastPacketProcessed;
+}
