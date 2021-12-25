@@ -301,19 +301,47 @@ Packet InternetUser::lastPacketProcessed()
 }
 
 
-Term::Term(double coefficient, int exponent, ostream& outs) : 
+Term::Term(double coefficient, int exponent) : 
     m_coefficient(coefficient)
     , m_exponent(exponent)
-    , m_outs(outs)
 {}
 
-void Term::print()
+void Term::print(ostream& outs) const
 {
-    m_outs << m_coefficient << "x^" << m_exponent;
+    outs << (m_coefficient > 0 ? "+" : "-") << m_coefficient << "x^" << m_exponent;
 }
 
 void Term::derive()
 {
     m_coefficient *= m_exponent;
     m_exponent--;
+}
+
+
+Polynomial::Polynomial(const vector<Term>& terms, ostream& outs) :
+    m_termList([&]{
+        deque<Term> result;
+        for (const auto& item : terms)
+        {
+            result.emplace_back(item);
+        }
+        return result;
+    }())
+    , m_outs(outs)
+{}
+
+void Polynomial::derive()
+{
+    for (auto& item : m_termList)
+    {
+        item.derive();
+    }
+}
+
+void Polynomial::print() const
+{
+    for (const auto& item : m_termList)
+    {
+        item.print(m_outs);
+    }
 }

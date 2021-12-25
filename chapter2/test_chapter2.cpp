@@ -307,19 +307,30 @@ TEST(InternetMockup, Timing10000Packets)
 TEST(Polynomial, TermPrint)
 {
     stringstream ss;
-    Term polynomial(2.0, 3, ss); // 2x^3
-    polynomial.print();
+    Term polynomial(2.0, 3); // 2x^3
+    polynomial.print(ss);
     auto result = ss.str();
-    EXPECT_EQ(result, string("2x^3"));
+    EXPECT_EQ(result, string("+2x^3"));
 }
 
 TEST(Polynomial, TermDerive)
 {
     stringstream ss;
-    Term polynomial(2.0, 3, ss); // 2x^3
+    Term polynomial(2.0, 3); // 2x^3
     polynomial.derive();
-    polynomial.print();
+    polynomial.print(ss);
 
     auto result = ss.str();
-    EXPECT_EQ(result, string("6x^2"));
+    EXPECT_EQ(result, string("+6x^2"));
+}
+
+TEST(Polynomial, ConstructAndPrint)
+{
+    stringstream ss;
+    vector<Term> terms = {Term(2, 3), Term(4, 1), Term(1, 0)};
+    Polynomial polynomial(terms, ss);
+
+    polynomial.print();
+    auto result = ss.str();
+    EXPECT_EQ(result, string("+2x^3+4x^1+1x^0"));
 }

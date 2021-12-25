@@ -203,12 +203,21 @@ private:
 
 class Term {
 public:
-    Term(double coefficient, int exponent, std::ostream& outs = std::cout);
-    void print();
+    Term(double coefficient, int exponent);
+    void print(std::ostream& outs = std::cout) const;
     void derive();
 
 private:
-    std::ostream& m_outs;
     double m_coefficient{};
     int m_exponent{};
+};
+
+class Polynomial {
+public:
+    Polynomial(const std::vector<Term>& terms, std::ostream& outs = std::cout);
+    void derive();
+    void print() const;
+private:
+    std::deque<Term> m_termList;
+    std::ostream& m_outs;
 };
