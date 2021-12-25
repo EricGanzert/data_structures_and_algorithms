@@ -200,3 +200,15 @@ private:
     std::atomic<size_t> m_numPacketsProcessed{};
     std::atomic<Packet> m_lastPacketProcessed{};
 };
+
+class Term {
+public:
+    Term(double coefficient, int exponent, std::ostream& outs = std::cout);
+    void print();
+    void derive();
+
+private:
+    std::ostream& m_outs;
+    double m_coefficient{};
+    int m_exponent{};
+};

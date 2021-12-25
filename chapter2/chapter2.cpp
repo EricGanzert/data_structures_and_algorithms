@@ -299,3 +299,21 @@ Packet InternetUser::lastPacketProcessed()
 {
     return m_lastPacketProcessed;
 }
+
+
+Term::Term(double coefficient, int exponent, ostream& outs) : 
+    m_coefficient(coefficient)
+    , m_exponent(exponent)
+    , m_outs(outs)
+{}
+
+void Term::print()
+{
+    m_outs << m_coefficient << "x^" << m_exponent;
+}
+
+void Term::derive()
+{
+    m_coefficient *= m_exponent;
+    m_exponent--;
+}

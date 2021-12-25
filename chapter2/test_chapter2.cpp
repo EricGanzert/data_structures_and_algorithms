@@ -289,7 +289,7 @@ TEST(InternetMockup, Timing10000Packets)
 
     // make sure the packet gets to Bob
     bool finished = false;
-    while ((steady_clock::now() - startTime) < 3s)
+    while ((steady_clock::now() - startTime) < PacketTripTimeout * NumPackets)
     {
         if (bob->numPacketsProcessed() >= NumPackets)
         {
@@ -301,4 +301,25 @@ TEST(InternetMockup, Timing10000Packets)
     EXPECT_TRUE(finished);
     auto elapsedTime = duration_cast<microseconds>(steady_clock::now() - startTime);
     cout << "It took " << elapsedTime.count() << " microseconds to pass " << NumPackets << " packets" << endl;
+}
+
+// C-2.9
+TEST(Polynomial, TermPrint)
+{
+    stringstream ss;
+    Term polynomial(2.0, 3, ss); // 2x^3
+    polynomial.print();
+    auto result = ss.str();
+    EXPECT_EQ(result, string("2x^3"));
+}
+
+TEST(Polynomial, TermDerive)
+{
+    stringstream ss;
+    Term polynomial(2.0, 3, ss); // 2x^3
+    polynomial.derive();
+    polynomial.print();
+
+    auto result = ss.str();
+    EXPECT_EQ(result, string("6x^2"));
 }
