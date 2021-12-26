@@ -317,30 +317,47 @@ void Term::derive()
     m_exponent--;
 }
 
+double Term::coefficient() const
+{
+    return m_coefficient;
+}
 
-Polynomial::Polynomial(const vector<Term>& terms, ostream& outs) :
-    m_termList([&]{
-        deque<Term> result;
-        for (const auto& item : terms)
-        {
-            result.emplace_back(item);
-        }
-        return result;
+int Term::exponent() const
+{
+    return m_exponent;
+}
+
+bool operator >(const Term& a, const Term& b)
+{
+    return a.exponent() > b.exponent();
+}
+
+Polynomial::Polynomial(const vector<Term>& terms, ostream& outs)
+    : m_termList([&]{
+        decltype(m_termList) t(terms);
+        sort(t.begin(), t.end(), greater<>());
+        return move(t);
     }())
     , m_outs(outs)
 {}
 
 void Polynomial::derive()
 {
-    for (auto& item : m_termList)
+    for (auto item = m_termList.begin(); item != m_termList.end();)
     {
-        item.derive();
+        item->derive();
+        if (item->exponent() < 0)
+        {
+            item = m_termList.erase(item);
+            continue;
+        }
+        item++;
     }
 }
 
 void Polynomial::print() const
 {
-    for (const auto& item : m_termList)
+    for (auto& item : m_termList)
     {
         item.print(m_outs);
     }

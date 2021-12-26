@@ -2,6 +2,7 @@
 #include <condition_variable>
 #include <iostream>
 #include <deque>
+#include <list>
 #include <math.h>
 #include <mutex>
 #include <thread>
@@ -207,6 +208,9 @@ public:
     void print(std::ostream& outs = std::cout) const;
     void derive();
 
+    double coefficient() const;
+    int exponent() const;
+
 private:
     double m_coefficient{};
     int m_exponent{};
@@ -218,6 +222,6 @@ public:
     void derive();
     void print() const;
 private:
-    std::deque<Term> m_termList;
+    std::vector<Term> m_termList;
     std::ostream& m_outs;
 };

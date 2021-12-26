@@ -334,3 +334,28 @@ TEST(Polynomial, ConstructAndPrint)
     auto result = ss.str();
     EXPECT_EQ(result, string("+2x^3+4x^1+1x^0"));
 }
+
+TEST(Polynomial, OrdersTerms)
+{
+    stringstream ss;
+    vector<Term> terms = {Term(4, 1), Term(2, 3), Term(1, 0)};
+    Polynomial polynomial(terms, ss);
+
+    polynomial.print();
+    auto result = ss.str();
+    EXPECT_EQ(result, string("+2x^3+4x^1+1x^0"));
+}
+
+
+TEST(Polynomial, PolynomialDerive)
+{
+    stringstream ss;
+    // +2x^3+4x^1+1x^0
+    vector<Term> terms = {Term(2, 3), Term(4, 1), Term(1, 0)};
+    Polynomial polynomial(terms, ss);
+
+    polynomial.derive();
+    polynomial.print();
+    auto result = ss.str();
+    EXPECT_EQ(result, string("+6x^2+4x^0"));
+}
