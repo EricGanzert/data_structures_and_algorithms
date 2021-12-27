@@ -362,3 +362,13 @@ void Polynomial::print() const
         item.print(m_outs);
     }
 }
+
+size_t numTimesDivideBy2(int arg)
+{
+    if (arg <= 2)
+    {
+        return 0;
+    }
+
+    return floor(log2(arg));
+}

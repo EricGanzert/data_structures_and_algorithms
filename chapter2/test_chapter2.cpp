@@ -359,3 +359,18 @@ TEST(Polynomial, PolynomialDerive)
     auto result = ss.str();
     EXPECT_EQ(result, string("+6x^2+4x^0"));
 }
+
+// P-2.1
+TEST(DivideBy2, ReturnsZeroIfArgIsTwoOrLess)
+{
+    EXPECT_EQ(numTimesDivideBy2(0), size_t(0));
+    EXPECT_EQ(numTimesDivideBy2(1), size_t(0));
+    EXPECT_EQ(numTimesDivideBy2(2), size_t(0));
+}
+
+TEST(DivideBy2, DivideBy2)
+{
+    EXPECT_EQ(numTimesDivideBy2(4), size_t(2));
+    EXPECT_EQ(numTimesDivideBy2(15), size_t(3));
+    EXPECT_EQ(numTimesDivideBy2(32), size_t(5));
+}

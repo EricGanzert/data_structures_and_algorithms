@@ -225,3 +225,7 @@ private:
     std::vector<Term> m_termList;
     std::ostream& m_outs;
 };
+
+// returns the number of times you can divide arg by 2 before it becomes less than 2
+// arg must be greater than 2 or else the function will return 0
+size_t numTimesDivideBy2(int arg);
