@@ -437,7 +437,7 @@ struct VectorTest : public testing::Test
     Vector<ElementType> vecB;
 };
 
-using MyTypes = testing::Types<int, double>;
+using MyTypes = testing::Types<int, double, Complex>;
 TYPED_TEST_SUITE(VectorTest, MyTypes);
 
 TYPED_TEST(VectorTest, Addition)
@@ -461,19 +461,19 @@ TYPED_TEST(VectorTest, Subtraction)
 TYPED_TEST(VectorTest, MultiplyScalar)
 {
     using ElementType  = typename TestFixture::ElementType;
-    constexpr ElementType Scalar(5);
+    const ElementType scalar(5);
 
-    auto product = vecA * Scalar;
+    auto product = vecA * scalar;
     for (auto i=0u; i<VectorSize; i++)
     {
-        EXPECT_THAT(product.at(i), Eq(vecA.at(i) * Scalar));
+        EXPECT_THAT(product.at(i), Eq(vecA.at(i) * scalar));
     }
 
     // reversed operator order
-    product = Scalar * vecA;
+    product = scalar * vecA;
     for (auto i=0u; i<VectorSize; i++)
     {
-        EXPECT_THAT(product.at(i), Eq(vecA.at(i) * Scalar));
+        EXPECT_THAT(product.at(i), Eq(vecA.at(i) * scalar));
     }
 }
 
@@ -485,4 +485,31 @@ TYPED_TEST(VectorTest, DotProduct)
     // both vectors are {0, 1, 2, 3, 4}
     // see test fixture
     EXPECT_THAT(dotProduct, Eq(ElementType(30)));
+}
+
+TEST(Complex, Add)
+{
+    Complex a(1, 2);
+    Complex b(3, 4);
+    auto sum = a + b;
+
+    EXPECT_THAT(sum, Complex(4, 6));
+}
+
+TEST(Complex, Subtract)
+{
+    Complex a(1, 2);
+    Complex b(3, 4);
+    auto diff = a - b;
+
+    EXPECT_THAT(diff, Complex(-2, -2));
+}
+
+TEST(Complex, Multiply)
+{
+    Complex a(1, 2);
+    Complex b(3, 4);
+    auto product = a * b;
+
+    EXPECT_THAT(product, Complex(-5, 10));
 }

@@ -7,6 +7,13 @@
 
 using namespace std;
 
+namespace {
+bool doubleEq(double a, double b)
+{
+    return fabs(a - b) < 0.000001;
+}
+}
+
 FibonacciProgression::FibonacciProgression(ostream& stream, long f, long s) : Progression(stream, f), second(s) {}
 
 long FibonacciProgression::firstValue()
@@ -400,5 +407,56 @@ Change makeChange(double charged, double given)
 
     return result;
 }
+}
 
+Complex::Complex()
+    : m_i(0)
+    , m_j(0)
+{}
+
+Complex::Complex(double i, double j)
+    : m_i(i)
+    , m_j(j)
+{}
+
+double Complex::i() const
+{
+    return m_i;
+}
+
+double Complex::j() const
+{
+    return m_j;
+}
+
+Complex operator +(const Complex& lhs, const Complex& rhs)
+{
+    return Complex(lhs.i() + rhs.i(), lhs.j() + rhs.j());
+}
+
+Complex& operator +=(Complex& lhs, const Complex& rhs)
+{
+    lhs = Complex((lhs.i() + rhs.i()), (lhs.j() + rhs.j()));
+    return lhs;
+}
+
+Complex operator -(const Complex& lhs, const Complex& rhs)
+{
+    return Complex(lhs.i() - rhs.i(), lhs.j() - rhs.j());
+}
+
+Complex operator *(const Complex& lhs, const Complex& rhs)
+{
+    auto i1 = lhs.i();
+    auto j1 = lhs.j();
+
+    auto i2 = rhs.i();
+    auto j2 = rhs.j();
+
+    return Complex((i1*i2 - j1*j2), (i1*j2 + i2*j1));
+}
+
+bool operator ==(const Complex& lhs, const Complex& rhs)
+{
+    return doubleEq(lhs.i(), rhs.i()) && doubleEq(lhs.j(), rhs.j());
 }

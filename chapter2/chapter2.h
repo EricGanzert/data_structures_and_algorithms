@@ -337,3 +337,23 @@ T operator *(const Vector<T>& a, const Vector<T>& b)
     }
     return result;
 }
+
+class Complex {
+public:
+    Complex();
+    Complex(double i, double j = 0.0);
+    double i() const;
+    double j() const;
+
+private:
+    double m_i{};
+    double m_j{};
+};
+
+Complex operator +(const Complex& lhs, const Complex& rhs);
+Complex& operator +=(Complex& lhs, const Complex& rhs);
+
+Complex operator -(const Complex& lhs, const Complex& rhs);
+Complex operator *(const Complex& lhs, const Complex& rhs);
+
+bool operator ==(const Complex& lhs, const Complex& rhs);
