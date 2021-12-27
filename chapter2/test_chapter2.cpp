@@ -6,6 +6,7 @@
 #include <chrono>
 #include <numeric>
 
+using namespace money;
 using namespace std;
 using namespace std::chrono;
 using namespace testing;

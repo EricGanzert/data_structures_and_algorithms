@@ -374,6 +374,8 @@ size_t numTimesDivideBy2(int arg)
     return size_t(log2(arg));
 }
 
+namespace money {
+
 Change makeChange(double charged, double given)
 {
     Change result{};
@@ -397,4 +399,6 @@ Change makeChange(double charged, double given)
     }
 
     return result;
+}
+
 }

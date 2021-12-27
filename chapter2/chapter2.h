@@ -231,7 +231,9 @@ private:
 // arg must be greater than 2 or else the function will return 0
 size_t numTimesDivideBy2(int arg);
 
+namespace money {
 using Count = size_t;
 using ValueCents = uint32_t;
 using Change = std::map<ValueCents, Count, std::greater<>>;
 Change makeChange(double charged, double given);
+}
