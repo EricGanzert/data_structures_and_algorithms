@@ -1,6 +1,7 @@
 #include "chapter2.h"
 
 #include <algorithm>
+#include <array>
 #include <functional>
 #include <type_traits>
 
@@ -370,5 +371,30 @@ size_t numTimesDivideBy2(int arg)
         return 0;
     }
 
-    return floor(log2(arg));
+    return size_t(log2(arg));
+}
+
+Change makeChange(double charged, double given)
+{
+    Change result{};
+    if (given <= charged)
+    {
+        return result;
+    }
+
+    auto diffCents = ValueCents(((given - charged) * 100) + 0.5);
+
+    constexpr array<ValueCents, 11> CentDenominations = 
+        {10000, 5000, 2000, 1000, 500, 200, 100, 25, 10, 5, 1};
+
+    for (const auto& cents : CentDenominations)
+    {
+        while (diffCents / cents)
+        {
+            result[cents]++;
+            diffCents -= cents;
+        }
+    }
+
+    return result;
 }

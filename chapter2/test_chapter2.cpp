@@ -374,3 +374,42 @@ TEST(DivideBy2, DivideBy2)
     EXPECT_EQ(numTimesDivideBy2(15), size_t(3));
     EXPECT_EQ(numTimesDivideBy2(32), size_t(5));
 }
+
+// P-2.2
+TEST(MakeChange, NoChangeIfNotEnoughGiven)
+{
+    const Change empty{};
+    EXPECT_EQ(makeChange(200, 100), empty);
+    EXPECT_EQ(makeChange(100, 100), empty);
+    
+}
+
+TEST(MakeChange, MakesChange)
+{
+    constexpr ValueCents TenDollarBill = 1000;
+    constexpr ValueCents Loonie = 100;
+    constexpr ValueCents Quarter = 25;
+    constexpr ValueCents Penny = 1;
+
+    auto change = makeChange(188.24, 200);
+
+    cout << "item costs $188.24, paid $200 so change is:" << endl;
+    for (const auto& item : change)
+    {
+        cout << "$" << item.first / 100.0 << " x " << item.second << endl;
+    }
+
+    EXPECT_THAT(change.size(), size_t(4));
+
+    ASSERT_THAT(change.count(TenDollarBill), size_t(1));
+    EXPECT_THAT(change[TenDollarBill], size_t(1));
+
+    ASSERT_THAT(change.count(Loonie), size_t(1));
+    EXPECT_THAT(change[Loonie], size_t(1));
+
+    ASSERT_THAT(change.count(Quarter), size_t(1));
+    EXPECT_THAT(change[Quarter], size_t(3));
+
+    ASSERT_THAT(change.count(Penny), size_t(1));
+    EXPECT_THAT(change[Penny], size_t(1));    
+}
