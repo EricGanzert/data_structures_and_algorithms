@@ -15,7 +15,7 @@ namespace
 {
 // Without using mocks for InternetUser I don't see a better way
 // than using a timeout
-constexpr auto PacketTripTimeout = 10ms;
+constexpr auto PacketTripTimeout = 50ms;
 }
 
 int main(int argc, char **argv) {
@@ -413,4 +413,76 @@ TEST(MakeChange, MakesChange)
 
     ASSERT_THAT(change.count(Penny), size_t(1));
     EXPECT_THAT(change[Penny], size_t(1));    
+}
+
+constexpr auto VectorSize = 5;
+
+template<typename T>
+struct VectorTest : public testing::Test
+{
+    using ElementType = T;
+
+    VectorTest()
+        : vecA(VectorSize)
+        , vecB(VectorSize)
+    {
+        for (auto i=0u; i<VectorSize; i++)
+        {
+            vecA.at(i) = i;
+            vecB.at(i) = i;
+        }
+    }
+
+    Vector<ElementType> vecA;
+    Vector<ElementType> vecB;
+};
+
+using MyTypes = testing::Types<int, double>;
+TYPED_TEST_SUITE(VectorTest, MyTypes);
+
+TYPED_TEST(VectorTest, Addition)
+{
+    auto sum = vecA + vecB;
+    for (auto i=0u; i<VectorSize; i++)
+    {
+        EXPECT_THAT(sum.at(i), Eq(vecA.at(i) + vecB.at(i)));
+    }
+}
+
+TYPED_TEST(VectorTest, Subtraction)
+{
+    auto diff = vecA - vecB;
+    for (auto i=0u; i<VectorSize; i++)
+    {
+        EXPECT_THAT(diff.at(i), Eq(vecA.at(i) - vecB.at(i)));
+    }
+}
+
+TYPED_TEST(VectorTest, MultiplyScalar)
+{
+    using ElementType  = typename TestFixture::ElementType;
+    constexpr ElementType Scalar(5);
+
+    auto product = vecA * Scalar;
+    for (auto i=0u; i<VectorSize; i++)
+    {
+        EXPECT_THAT(product.at(i), Eq(vecA.at(i) * Scalar));
+    }
+
+    // reversed operator order
+    product = Scalar * vecA;
+    for (auto i=0u; i<VectorSize; i++)
+    {
+        EXPECT_THAT(product.at(i), Eq(vecA.at(i) * Scalar));
+    }
+}
+
+TYPED_TEST(VectorTest, DotProduct)
+{
+    using ElementType  = typename TestFixture::ElementType;
+    auto dotProduct = vecA * vecB;
+
+    // both vectors are {0, 1, 2, 3, 4}
+    // see test fixture
+    EXPECT_THAT(dotProduct, Eq(ElementType(30)));
 }

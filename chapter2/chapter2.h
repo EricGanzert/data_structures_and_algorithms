@@ -237,3 +237,103 @@ using ValueCents = uint32_t;
 using Change = std::map<ValueCents, Count, std::greater<>>;
 Change makeChange(double charged, double given);
 }
+
+template <typename T>
+class Vector {
+public:
+    Vector(size_t size) : m_vec(size, T{})
+    {}
+
+    size_t size() const
+    {
+        return m_vec.size();
+    }
+
+    T& at(size_t index)
+    {
+        if (index >= size())
+        {
+            throw runtime_error("Error: Trying to access element out of range");
+        }
+
+        return m_vec[index];
+    }
+
+    const T& at(size_t index) const
+    {
+        if (index >= size())
+        {
+            throw runtime_error("Error: Trying to access element out of range");
+        }
+
+        return m_vec[index];
+    }
+private:
+    std::vector<T> m_vec;
+};
+
+template <typename T>
+Vector<T> operator +(const Vector<T>& a, const Vector<T>& b)
+{
+    if (a.size() != b.size())
+    {
+        throw runtime_error("Error: Trying to add vectors of different sizes");
+    }
+    
+    Vector<T> result(a.size());
+    for (auto i=0u; i<result.size(); i++)
+    {
+        result.at(i) = a.at(i) + b.at(i);
+    }
+    return result;
+}
+
+template <typename T>
+Vector<T> operator -(const Vector<T>& a, const Vector<T>& b)
+{
+    if (a.size() != b.size())
+    {
+        throw runtime_error("Error: Trying to subtract vectors of different sizes");
+    }
+    
+    Vector<T> result(a.size());
+    for (auto i=0u; i<result.size(); i++)
+    {
+        result.at(i) = a.at(i) - b.at(i);
+    }
+    return result;
+}
+
+
+template <typename T>
+Vector<T> operator *(const T& scalar, const Vector<T>& vec)
+{
+    Vector<T> result(vec.size());
+    for (auto i=0u; i < vec.size(); i++)
+    {
+        result.at(i) = vec.at(i) * scalar;
+    }
+    return result;
+}
+
+template <typename T>
+Vector<T> operator *(const Vector<T>& vec, const T& scalar)
+{
+    return scalar * vec;
+}
+
+template <typename T>
+T operator *(const Vector<T>& a, const Vector<T>& b)
+{
+    if (a.size() != b.size())
+    {
+        throw runtime_error("Error: Trying to find dot product for vectors of different sizes");
+    }
+    T result{};
+
+    for (auto i=0u; i<a.size(); i++)
+    {
+        result += a.at(i) * b.at(i);
+    }
+    return result;
+}
