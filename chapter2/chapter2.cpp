@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <array>
 #include <functional>
+#include <random>
 #include <type_traits>
 
 using namespace std;
@@ -459,4 +460,47 @@ Complex operator *(const Complex& lhs, const Complex& rhs)
 bool operator ==(const Complex& lhs, const Complex& rhs)
 {
     return doubleEq(lhs.i(), rhs.i()) && doubleEq(lhs.j(), rhs.j());
+}
+
+shared_ptr<Animal> interact(shared_ptr<Animal>& a, shared_ptr<Animal>& b)
+{
+    // if they are different types of Animal nothing happens
+    if (a->speciesName() != b->speciesName())
+    {
+        return nullptr;
+    }
+
+    // if they are different genders they will create a new animal
+    if (a->gender() != b->gender())
+    {
+        random_device dev;
+        mt19937 rng(dev());
+        uniform_int_distribution<mt19937::result_type> genders(0,1);
+        auto gender = static_cast<bool>(genders(rng));
+        auto strength = (a->strength() + b->strength()) / 2;
+
+        if (a->speciesName() == string("Dog"))
+        {
+            return make_shared<Dog>(gender, strength);
+        }
+        else if (a->speciesName() == string("Chicken"))
+        {
+            return make_shared<Chicken>(gender, strength);
+        }
+        else
+        {
+            throw runtime_error("unknown Animal type");
+        }
+    }
+
+    // when both are the same gender only the stronger one will survive
+    if (a->strength() < b->strength())
+    {
+        a.reset();
+    }
+    else
+    {
+        b.reset();
+    }
+    return nullptr;
 }

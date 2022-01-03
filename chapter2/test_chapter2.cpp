@@ -513,3 +513,48 @@ TEST(Complex, Multiply)
 
     EXPECT_THAT(product, Complex(-5, 10));
 }
+
+TEST(AnimalTest, DifferentTypesNothingHappens)
+{
+    shared_ptr<Animal> dog = make_shared<Dog>(true, 1.0f);
+    shared_ptr<Animal> chicken = make_shared<Chicken>(false, 0.2f);
+
+    auto result = interact(dog, chicken);
+
+    EXPECT_THAT(dog, Not(IsNull()));
+    EXPECT_THAT(chicken, Not(IsNull()));
+    EXPECT_THAT(result, IsNull());
+}
+
+template<typename T>
+struct AnimalTest : public testing::Test
+{
+    using ElementType = T;
+};
+
+using AnimalTypes = testing::Types<Dog, Chicken>;
+TYPED_TEST_SUITE(AnimalTest, AnimalTypes);
+
+TYPED_TEST(AnimalTest, OnlyStrongerSurvives)
+{
+    shared_ptr<Animal> strong = make_shared<ElementType>(true, 2.0f);
+    shared_ptr<Animal> weak = make_shared<ElementType>(true, 1.0f);
+
+    auto result = interact(strong, weak);
+    
+    EXPECT_THAT(strong, Not(IsNull()));
+    EXPECT_THAT(weak, IsNull());
+    EXPECT_THAT(result, IsNull());
+}
+
+TYPED_TEST(AnimalTest, DifferentGendersMate)
+{
+    shared_ptr<Animal> male = make_shared<ElementType>(true, 2.0f);
+    shared_ptr<Animal> female = make_shared<ElementType>(false, 1.0f);
+
+    auto result = interact(male, female);
+    
+    EXPECT_THAT(male, Not(IsNull()));
+    EXPECT_THAT(female, Not(IsNull()));
+    EXPECT_THAT(result, Not(IsNull()));
+}

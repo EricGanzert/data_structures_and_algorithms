@@ -357,3 +357,44 @@ Complex operator -(const Complex& lhs, const Complex& rhs);
 Complex operator *(const Complex& lhs, const Complex& rhs);
 
 bool operator ==(const Complex& lhs, const Complex& rhs);
+
+class Animal {
+public:
+    Animal(bool gender, float strength)
+        : m_gender(gender), m_strength(strength) {}
+    
+    virtual ~Animal() = default;
+
+    bool gender() {return m_gender;}
+    float strength() {return m_strength;}
+
+    virtual std::string speciesName() = 0;
+
+private:
+    bool m_gender{};
+    float m_strength{};
+};
+
+class Chicken : public Animal {
+public:
+    Chicken(bool gender, float strength)
+        : Animal(gender, strength) {}
+
+    virtual std::string speciesName() override
+    {
+        return std::string("Chicken");
+    }
+};
+
+class Dog : public Animal {
+public:
+    Dog(bool gender, float strength)
+        : Animal(gender, strength) {}
+
+    virtual std::string speciesName() override
+    {
+        return std::string("Dog");
+    }
+};
+
+std::shared_ptr<Animal> interact(std::shared_ptr<Animal>& a, std::shared_ptr<Animal>& b);
