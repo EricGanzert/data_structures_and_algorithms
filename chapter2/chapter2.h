@@ -436,3 +436,12 @@ public:
 private:
     double m_sideLength{};
 };
+
+class Hexagon : public Polygon {
+public:
+    Hexagon(double radius);
+    double area() const final;
+    double perimeter() const final;
+private:
+    double m_sideLength{};
+};

@@ -552,3 +552,17 @@ double Pentagon::perimeter() const
 {
     return 5 * m_sideLength;
 }
+
+Hexagon::Hexagon(double radius)
+    : m_sideLength(radius) // source wikipedia
+{}
+
+double Hexagon::area() const
+{
+    return m_sideLength * m_sideLength * ((sqrt(3) * 3) / 2); // source wikipedia
+}
+
+double Hexagon::perimeter() const
+{
+    return 6 * m_sideLength;
+}

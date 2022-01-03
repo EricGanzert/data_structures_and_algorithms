@@ -422,6 +422,7 @@ TEST(MakeChange, MakesChange)
     EXPECT_THAT(change[Penny], size_t(1));    
 }
 
+// P-2.3
 constexpr auto VectorSize = 5;
 
 template<typename T>
@@ -521,6 +522,7 @@ TEST(Complex, Multiply)
     EXPECT_THAT(product, Complex(-5, 10));
 }
 
+// P-2.4
 TEST(AnimalTest, DifferentTypesNothingHappens)
 {
     shared_ptr<Animal> dog = make_shared<Dog>(true, 1.0f);
@@ -566,6 +568,7 @@ TYPED_TEST(AnimalTest, DifferentGendersMate)
     EXPECT_THAT(result, Not(IsNull()));
 }
 
+// P-2.5
 TEST(Polygon, TriangleAreaPerimeter)
 {
     Triangle myTriangle(5, 3);
@@ -593,4 +596,16 @@ TEST(Polygon, PentagonAreaPerimeter)
 
     auto expectedArea = sideLength * sideLength * 1.25 * sqrt((5 + sqrt(5)) / 2); // source wikipedia
     EXPECT_TRUE(doubleEq(myPentagon.area(), expectedArea));
+}
+
+TEST(Polygon, HexagonAreaPerimeter)
+{
+    constexpr auto Radius = 5.0;
+    Hexagon myHexagon(Radius);
+
+    auto expectedPerimeter = 6 * Radius; // radius == side length
+    EXPECT_TRUE(doubleEq(myHexagon.perimeter(), expectedPerimeter));
+
+    auto expectedArea = Radius * Radius * ((sqrt(3) * 3) / 2); // source wikipedia
+    EXPECT_TRUE(doubleEq(myHexagon.area(), expectedArea));
 }
