@@ -16,6 +16,13 @@ namespace
 // Without using mocks for InternetUser I don't see a better way
 // than using a timeout
 constexpr auto PacketTripTimeout = 50ms;
+
+bool doubleEq(double a, double b, double tolerance = 0.000001)
+{
+    return fabs(a - b) < tolerance;
+}
+
+constexpr auto Pi = 3.14159265;
 }
 
 int main(int argc, char **argv) {
@@ -529,7 +536,7 @@ TEST(AnimalTest, DifferentTypesNothingHappens)
 template<typename T>
 struct AnimalTest : public testing::Test
 {
-    using ElementType = T;
+    using Species = T;
 };
 
 using AnimalTypes = testing::Types<Dog, Chicken>;
@@ -537,8 +544,8 @@ TYPED_TEST_SUITE(AnimalTest, AnimalTypes);
 
 TYPED_TEST(AnimalTest, OnlyStrongerSurvives)
 {
-    shared_ptr<Animal> strong = make_shared<ElementType>(true, 2.0f);
-    shared_ptr<Animal> weak = make_shared<ElementType>(true, 1.0f);
+    shared_ptr<Animal> strong = make_shared<Species>(true, 2.0f);
+    shared_ptr<Animal> weak = make_shared<Species>(true, 1.0f);
 
     auto result = interact(strong, weak);
     
@@ -549,12 +556,41 @@ TYPED_TEST(AnimalTest, OnlyStrongerSurvives)
 
 TYPED_TEST(AnimalTest, DifferentGendersMate)
 {
-    shared_ptr<Animal> male = make_shared<ElementType>(true, 2.0f);
-    shared_ptr<Animal> female = make_shared<ElementType>(false, 1.0f);
+    shared_ptr<Animal> male = make_shared<Species>(true, 2.0f);
+    shared_ptr<Animal> female = make_shared<Species>(false, 1.0f);
 
     auto result = interact(male, female);
     
     EXPECT_THAT(male, Not(IsNull()));
     EXPECT_THAT(female, Not(IsNull()));
     EXPECT_THAT(result, Not(IsNull()));
+}
+
+TEST(Polygon, TriangleAreaPerimeter)
+{
+    Triangle myTriangle(5, 3);
+
+    EXPECT_TRUE(doubleEq(myTriangle.area(), 7.5));
+    EXPECT_TRUE(doubleEq(myTriangle.perimeter(), 8 + sqrt(34)));
+}
+
+TEST(Polygon, QuadrilateralAreaPerimeter)
+{
+    Quadrilateral myQuad(11, 4);
+
+    EXPECT_TRUE(doubleEq(myQuad.area(), 44));
+    EXPECT_TRUE(doubleEq(myQuad.perimeter(), 30));
+}
+
+TEST(Polygon, PentagonAreaPerimeter)
+{
+    constexpr auto Radius = 5.0;
+    const auto sideLength = 2 * sin(Pi / 5) * Radius; // source wikipedia
+    Pentagon myPentagon(Radius);
+
+    auto expectedPerimeter = sideLength * 5;
+    EXPECT_TRUE(doubleEq(myPentagon.perimeter(), expectedPerimeter));
+
+    auto expectedArea = sideLength * sideLength * 1.25 * sqrt((5 + sqrt(5)) / 2); // source wikipedia
+    EXPECT_TRUE(doubleEq(myPentagon.area(), expectedArea));
 }

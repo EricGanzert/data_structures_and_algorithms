@@ -398,3 +398,41 @@ public:
 };
 
 std::shared_ptr<Animal> interact(std::shared_ptr<Animal>& a, std::shared_ptr<Animal>& b);
+
+class Polygon {
+public:
+    virtual ~Polygon() = default;
+    virtual double area() const = 0;
+    virtual double perimeter() const = 0;
+};
+
+class Triangle : public Polygon {
+public:
+    Triangle(double height, double width);
+    double area() const final;
+    double perimeter() const final;
+
+private:
+    double m_height{};
+    double m_width{};
+};
+
+class Quadrilateral : public Polygon {
+public:
+    Quadrilateral(double height, double width);
+    double area() const final;
+    double perimeter() const final;
+
+private:
+    double m_height{};
+    double m_width{};
+};
+
+class Pentagon : public Polygon {
+public:
+    Pentagon(double radius);
+    double area() const final;
+    double perimeter() const final;
+private:
+    double m_sideLength{};
+};

@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <array>
 #include <functional>
+#include <math.h>
 #include <random>
 #include <type_traits>
 
@@ -13,6 +14,8 @@ bool doubleEq(double a, double b)
 {
     return fabs(a - b) < 0.000001;
 }
+
+constexpr auto Pi = 3.14159265;
 }
 
 FibonacciProgression::FibonacciProgression(ostream& stream, long f, long s) : Progression(stream, f), second(s) {}
@@ -503,4 +506,49 @@ shared_ptr<Animal> interact(shared_ptr<Animal>& a, shared_ptr<Animal>& b)
         b.reset();
     }
     return nullptr;
+}
+
+
+Triangle::Triangle(double height, double width)
+    : m_height(height)
+    , m_width(width)
+{}
+
+double Triangle::area() const
+{
+    return (m_height * m_width) / 2;
+}
+
+double Triangle::perimeter() const
+{
+    return m_height + m_width + sqrt(m_height * m_height + m_width * m_width);
+}
+
+Quadrilateral::Quadrilateral(double height, double width)
+    : m_height(height)
+    , m_width(width)
+{}
+
+double Quadrilateral::area() const
+{
+    return m_height * m_width;
+}
+
+double Quadrilateral::perimeter() const
+{
+    return 2 * m_height + 2 * m_width;
+}
+
+Pentagon::Pentagon(double radius)
+    : m_sideLength(2 * sin(Pi / 5) * radius) // source wikipedia
+{}
+
+double Pentagon::area() const
+{
+    return m_sideLength * m_sideLength * 1.25 * sqrt((5 + sqrt(5)) / 2); // source wikipedia
+}
+
+double Pentagon::perimeter() const
+{
+    return 5 * m_sideLength;
 }
