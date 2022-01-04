@@ -445,3 +445,12 @@ public:
 private:
     double m_sideLength{};
 };
+
+class Octagon : public Polygon {
+public:
+    Octagon(double radius);
+    double area() const final;
+    double perimeter() const final;
+private:
+    double m_sideLength{};
+};

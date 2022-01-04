@@ -609,3 +609,16 @@ TEST(Polygon, HexagonAreaPerimeter)
     auto expectedArea = Radius * Radius * ((sqrt(3) * 3) / 2); // source wikipedia
     EXPECT_TRUE(doubleEq(myHexagon.area(), expectedArea));
 }
+
+TEST(Polygon, OctagonAreaPerimeter)
+{
+    constexpr auto Radius = 5.0;
+    const auto sideLength = Radius / (sqrt(4 + 2 * sqrt(2)) / 2); // source wikipedia
+    Octagon myOctagon(Radius);
+
+    auto expectedPerimeter = 8 * sideLength;
+    EXPECT_TRUE(doubleEq(myOctagon.perimeter(), expectedPerimeter));
+
+    auto expectedArea = 2 * (1 + sqrt(2)) * sideLength * sideLength;
+    EXPECT_TRUE(doubleEq(myOctagon.area(), expectedArea));
+}

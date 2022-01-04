@@ -566,3 +566,17 @@ double Hexagon::perimeter() const
 {
     return 6 * m_sideLength;
 }
+
+Octagon::Octagon(double radius)
+    : m_sideLength(radius / (sqrt(4 + 2 * sqrt(2)) / 2))
+{}
+
+double Octagon::area() const
+{
+    return 2 * (1 + sqrt(2)) * m_sideLength * m_sideLength;
+}
+
+double Octagon::perimeter() const
+{
+    return 8 * m_sideLength;
+}
