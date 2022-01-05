@@ -622,3 +622,28 @@ TEST(Polygon, OctagonAreaPerimeter)
     auto expectedArea = 2 * (1 + sqrt(2)) * sideLength * sideLength;
     EXPECT_TRUE(doubleEq(myOctagon.area(), expectedArea));
 }
+
+TEST(Polygon, IsocelesTriangleAreaPerimeter)
+{
+    constexpr auto Height = 5.0;
+    constexpr auto Width = 3.0;
+    IsoscelesTriangle myIsoTriangle(Height, Width);
+
+    auto expectedArea = (Width * Height) / 2;
+    EXPECT_TRUE(doubleEq(myIsoTriangle.area(), expectedArea));
+
+    auto wallLength = sqrt(Height * Height + (Width / 2) * (Width / 2));
+    auto expectedPerimeter = 2 * wallLength + Width;
+    EXPECT_TRUE(doubleEq(myIsoTriangle.perimeter(), expectedPerimeter));
+}
+
+TEST(Polygon, EquilateralTriangle)
+{
+    constexpr auto Width = 5.0;
+    EquilateralTriangle myEquiTriangle(Width);
+
+    auto expectedArea = (sqrt(3) / 4) * Width * Width;
+    EXPECT_TRUE(doubleEq(myEquiTriangle.area(), expectedArea));
+
+    EXPECT_TRUE(doubleEq(myEquiTriangle.perimeter(), 3 * Width));
+}

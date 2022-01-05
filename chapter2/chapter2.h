@@ -409,10 +409,10 @@ public:
 class Triangle : public Polygon {
 public:
     Triangle(double height, double width);
-    double area() const final;
-    double perimeter() const final;
+    double area() const override;
+    double perimeter() const override;
 
-private:
+protected:
     double m_height{};
     double m_width{};
 };
@@ -453,4 +453,19 @@ public:
     double perimeter() const final;
 private:
     double m_sideLength{};
+};
+
+class IsoscelesTriangle : public Triangle {
+public:
+    IsoscelesTriangle(double height, double width);
+    double perimeter() const final;
+private:
+    double m_wallLength{};
+};
+
+class EquilateralTriangle : public Triangle {
+public:
+    EquilateralTriangle(double width);
+    double area() const final;
+    double perimeter() const final;
 };

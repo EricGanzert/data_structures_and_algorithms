@@ -580,3 +580,26 @@ double Octagon::perimeter() const
 {
     return 8 * m_sideLength;
 }
+
+IsoscelesTriangle::IsoscelesTriangle(double height, double width)
+    : Triangle(height, width)
+    , m_wallLength(sqrt(m_height * m_height + (m_width / 2) * (m_width / 2))) 
+{}
+
+double IsoscelesTriangle::perimeter() const
+{
+    return m_wallLength * 2 + m_width; 
+}
+
+EquilateralTriangle::EquilateralTriangle(double width)
+    : Triangle(sqrt(width * width - (width / 2) * (width / 2)), width) {}
+
+double EquilateralTriangle::area() const
+{
+    return (sqrt(3) / 4) * m_width * m_width;
+}
+
+double EquilateralTriangle::perimeter() const
+{
+    return 3 * m_width;
+}
