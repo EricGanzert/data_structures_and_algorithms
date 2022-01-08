@@ -648,7 +648,26 @@ TEST(Polygon, EquilateralTriangleAreaPerimeter)
     EXPECT_TRUE(doubleEq(myEquiTriangle.perimeter(), 3 * Width));
 }
 
-TEST(Polygon, UserInput)
+TEST(Polygon, RectangleAreaPerimeter)
+{
+    constexpr auto Width = 5.0;
+    constexpr auto Height = 2.0;
+    Rectangle myRectangle(Height, Width);
+
+    EXPECT_TRUE(doubleEq(myRectangle.area(), Width * Height));
+    EXPECT_TRUE(doubleEq(myRectangle.perimeter(), Width * 2 + Height * 2));
+}
+
+TEST(Polygon, SquareAreaPerimeter)
+{
+    constexpr auto EdgeLength = 5.0;
+    Square mySquare(EdgeLength);
+
+    EXPECT_TRUE(doubleEq(mySquare.area(), EdgeLength * EdgeLength));
+    EXPECT_TRUE(doubleEq(mySquare.perimeter(), EdgeLength * 4));
+}
+
+TEST(Polygon, DISABLED_UserInput)
 {
     inputPolygon();
 }

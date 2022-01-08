@@ -417,15 +417,40 @@ protected:
     double m_width{};
 };
 
+class IsoscelesTriangle : public Triangle {
+public:
+    IsoscelesTriangle(double height, double width);
+    double perimeter() const final;
+private:
+    double m_wallLength{};
+};
+
+class EquilateralTriangle : public Triangle {
+public:
+    EquilateralTriangle(double width);
+    double area() const final;
+    double perimeter() const final;
+};
+
 class Quadrilateral : public Polygon {
 public:
     Quadrilateral(double height, double width);
-    double area() const final;
-    double perimeter() const final;
+    double area() const override;
+    double perimeter() const override;
 
 private:
     double m_height{};
     double m_width{};
+};
+
+class Rectangle : public Quadrilateral {
+public:
+    Rectangle(double height, double width);
+};
+
+class Square : public Rectangle {
+public:
+    Square(double edgeLength);
 };
 
 class Pentagon : public Polygon {
@@ -453,21 +478,6 @@ public:
     double perimeter() const final;
 private:
     double m_sideLength{};
-};
-
-class IsoscelesTriangle : public Triangle {
-public:
-    IsoscelesTriangle(double height, double width);
-    double perimeter() const final;
-private:
-    double m_wallLength{};
-};
-
-class EquilateralTriangle : public Triangle {
-public:
-    EquilateralTriangle(double width);
-    double area() const final;
-    double perimeter() const final;
 };
 
 void inputPolygon();

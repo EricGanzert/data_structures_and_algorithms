@@ -607,6 +607,15 @@ double EquilateralTriangle::perimeter() const
     return 3 * m_width;
 }
 
+Rectangle::Rectangle(double height, double width)
+    : Quadrilateral(height, width)
+{}
+
+
+Square::Square(double edgeLength)
+    : Rectangle(edgeLength, edgeLength)
+{}
+
 void inputPolygon()
 {
     vector<string> shapes = {"Triangle", "IsoscelesTriangle", "EquilateralTriangle", 
