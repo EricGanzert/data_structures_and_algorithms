@@ -637,7 +637,7 @@ TEST(Polygon, IsocelesTriangleAreaPerimeter)
     EXPECT_TRUE(doubleEq(myIsoTriangle.perimeter(), expectedPerimeter));
 }
 
-TEST(Polygon, EquilateralTriangle)
+TEST(Polygon, EquilateralTriangleAreaPerimeter)
 {
     constexpr auto Width = 5.0;
     EquilateralTriangle myEquiTriangle(Width);
@@ -646,4 +646,9 @@ TEST(Polygon, EquilateralTriangle)
     EXPECT_TRUE(doubleEq(myEquiTriangle.area(), expectedArea));
 
     EXPECT_TRUE(doubleEq(myEquiTriangle.perimeter(), 3 * Width));
+}
+
+TEST(Polygon, UserInput)
+{
+    inputPolygon();
 }

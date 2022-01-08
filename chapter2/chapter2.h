@@ -469,3 +469,5 @@ public:
     double area() const final;
     double perimeter() const final;
 };
+
+void inputPolygon();

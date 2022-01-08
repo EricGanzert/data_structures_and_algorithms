@@ -3,8 +3,11 @@
 #include <algorithm>
 #include <array>
 #include <functional>
+#include <iostream>
+#include <iomanip>
 #include <math.h>
 #include <random>
+#include <string>
 #include <type_traits>
 
 using namespace std;
@@ -602,4 +605,79 @@ double EquilateralTriangle::area() const
 double EquilateralTriangle::perimeter() const
 {
     return 3 * m_width;
+}
+
+void inputPolygon()
+{
+    vector<string> shapes = {"Triangle", "IsoscelesTriangle", "EquilateralTriangle", 
+        "Quadrilateral", "Pentagon", "Hexagon", "Octagon"};
+
+    cout << "What type of polygon would you like to input?" << endl;
+    for (const auto& shape : shapes)
+    {
+        cout << shape << endl;
+    }
+    cout << "    :";
+
+    string userInput;
+    cin >> userInput;
+
+    cout << "You entered " << userInput << endl;
+    for (auto& c : userInput)
+    {
+        c = tolower(c);
+    }
+
+    for (auto& shape : shapes)
+    {
+        for (auto& c : shape)
+        {
+            c = tolower(c);
+        }
+    }
+
+    if (userInput.find("triangle") != string::npos)
+    {
+        unique_ptr<Triangle> triangle = nullptr;
+
+        if (userInput.find("equilateral") != string::npos)
+        {
+            double width{};
+            cout << "Enter the width for your Triangle" << endl << "    :";
+            cin >> width;
+            triangle = make_unique<EquilateralTriangle>(width);
+        }
+        else
+        {
+            double height{};
+            double width{};
+            cout << "Enter the height and width for your Triangle" << endl << "    :";
+            cin >> height >> width;
+
+            if (userInput.find("isosceles") != string::npos)
+            {
+                triangle = make_unique<IsoscelesTriangle>(height, width);
+            }
+            else
+            {
+                triangle = make_unique<Triangle>(height, width);
+            }
+        }
+
+        cout << "the area and perimeter are: " << setprecision(4) << triangle->area() << ", " << setprecision(4) << triangle->perimeter() << endl;
+        return;
+    }
+
+    if (userInput.find("quadrilateral") != string::npos)
+    {
+        double height{};
+        double width{};
+
+        cout << "Enter the height and width for your Quadrilateral" << endl << "    :";
+        cin >> height >> width;
+
+        Quadrilateral quad(height, width);
+        cout << "the area and perimeter are: " << setprecision(4) << quad.area() << ", " << setprecision(4) << quad.perimeter() << endl;
+        return;
+    }
 }
