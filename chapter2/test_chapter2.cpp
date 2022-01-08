@@ -578,12 +578,56 @@ TEST(Polygon, TriangleAreaPerimeter)
     EXPECT_TRUE(doubleEq(myTriangle.perimeter(), 8 + sqrt(34)));
 }
 
+TEST(Polygon, IsocelesTriangleAreaPerimeter)
+{
+    constexpr auto Height = 5.0;
+    constexpr auto Width = 3.0;
+    IsoscelesTriangle myIsoTriangle(Height, Width);
+
+    auto expectedArea = (Width * Height) / 2;
+    EXPECT_TRUE(doubleEq(myIsoTriangle.area(), expectedArea));
+
+    auto wallLength = sqrt(Height * Height + (Width / 2) * (Width / 2));
+    auto expectedPerimeter = 2 * wallLength + Width;
+    EXPECT_TRUE(doubleEq(myIsoTriangle.perimeter(), expectedPerimeter));
+}
+
+TEST(Polygon, EquilateralTriangleAreaPerimeter)
+{
+    constexpr auto Width = 5.0;
+    EquilateralTriangle myEquiTriangle(Width);
+
+    auto expectedArea = (sqrt(3) / 4) * Width * Width;
+    EXPECT_TRUE(doubleEq(myEquiTriangle.area(), expectedArea));
+
+    EXPECT_TRUE(doubleEq(myEquiTriangle.perimeter(), 3 * Width));
+}
+
 TEST(Polygon, QuadrilateralAreaPerimeter)
 {
     Quadrilateral myQuad(11, 4);
 
     EXPECT_TRUE(doubleEq(myQuad.area(), 44));
     EXPECT_TRUE(doubleEq(myQuad.perimeter(), 30));
+}
+
+TEST(Polygon, RectangleAreaPerimeter)
+{
+    constexpr auto Width = 5.0;
+    constexpr auto Height = 2.0;
+    Rectangle myRectangle(Height, Width);
+
+    EXPECT_TRUE(doubleEq(myRectangle.area(), Width * Height));
+    EXPECT_TRUE(doubleEq(myRectangle.perimeter(), Width * 2 + Height * 2));
+}
+
+TEST(Polygon, SquareAreaPerimeter)
+{
+    constexpr auto EdgeLength = 5.0;
+    Square mySquare(EdgeLength);
+
+    EXPECT_TRUE(doubleEq(mySquare.area(), EdgeLength * EdgeLength));
+    EXPECT_TRUE(doubleEq(mySquare.perimeter(), EdgeLength * 4));
 }
 
 TEST(Polygon, PentagonAreaPerimeter)
@@ -624,64 +668,45 @@ TEST(Polygon, OctagonAreaPerimeter)
     EXPECT_TRUE(doubleEq(myOctagon.area(), expectedArea));
 }
 
-TEST(Polygon, IsocelesTriangleAreaPerimeter)
+using UserInputStream = string;
+using ExpectedArea = double;
+using ExpectedPerimeter = double;
+using TestParams = tuple<UserInputStream, ExpectedArea, ExpectedPerimeter>;
+
+struct PolygonUserInputTest : public ::testing::Test, 
+                              public WithParamInterface<TestParams>
 {
-    constexpr auto Height = 5.0;
-    constexpr auto Width = 3.0;
-    IsoscelesTriangle myIsoTriangle(Height, Width);
+    static string testName(const TestParamInfo<TestParams>& p)
+    {
+        auto s = get<UserInputStream>(p.param);
+        replace(s.begin(), s.end(), ' ', '_');
+        return s;
+    }
+};
 
-    auto expectedArea = (Width * Height) / 2;
-    EXPECT_TRUE(doubleEq(myIsoTriangle.area(), expectedArea));
-
-    auto wallLength = sqrt(Height * Height + (Width / 2) * (Width / 2));
-    auto expectedPerimeter = 2 * wallLength + Width;
-    EXPECT_TRUE(doubleEq(myIsoTriangle.perimeter(), expectedPerimeter));
-}
-
-TEST(Polygon, EquilateralTriangleAreaPerimeter)
+TEST_P(PolygonUserInputTest, UserInput)
 {
-    constexpr auto Width = 5.0;
-    EquilateralTriangle myEquiTriangle(Width);
-
-    auto expectedArea = (sqrt(3) / 4) * Width * Width;
-    EXPECT_TRUE(doubleEq(myEquiTriangle.area(), expectedArea));
-
-    EXPECT_TRUE(doubleEq(myEquiTriangle.perimeter(), 3 * Width));
-}
-
-TEST(Polygon, RectangleAreaPerimeter)
-{
-    constexpr auto Width = 5.0;
-    constexpr auto Height = 2.0;
-    Rectangle myRectangle(Height, Width);
-
-    EXPECT_TRUE(doubleEq(myRectangle.area(), Width * Height));
-    EXPECT_TRUE(doubleEq(myRectangle.perimeter(), Width * 2 + Height * 2));
-}
-
-TEST(Polygon, SquareAreaPerimeter)
-{
-    constexpr auto EdgeLength = 5.0;
-    Square mySquare(EdgeLength);
-
-    EXPECT_TRUE(doubleEq(mySquare.area(), EdgeLength * EdgeLength));
-    EXPECT_TRUE(doubleEq(mySquare.perimeter(), EdgeLength * 4));
-}
-
-TEST(Polygon, UserInputTriangle)
-{
-    string userInput = "Triangle 5 6";
+    auto userInput = get<0>(GetParam());
     istringstream ins(userInput);
 
-    auto fut = async(inputPolygon, std::ref(ins));
-    if (fut.wait_for(100ms) == future_status::timeout)
-    {
-        FAIL() << "Timed out waiting for inputPolygon Triangle";
-    }
+    auto fut = async(launch::async, inputPolygon, std::ref(ins));
+    ASSERT_THAT(fut.wait_for(100ms), future_status::ready);
 
     auto polygon = fut.get();
     ASSERT_THAT(polygon, Ne(nullptr));
 
-    EXPECT_TRUE(doubleEq(polygon->area(), (5.0 * 6.0) / 2));
-    EXPECT_TRUE(doubleEq(polygon->perimeter(), 5.0 + 6.0 + sqrt(61.0)));
+    auto expectedArea = get<1>(GetParam());
+    EXPECT_TRUE(doubleEq(polygon->area(), expectedArea));
+
+    auto expectedPerimeter = get<2>(GetParam());
+    EXPECT_TRUE(doubleEq(polygon->perimeter(), expectedPerimeter));
 }
+
+INSTANTIATE_TEST_SUITE_P(PolygonUserInputTest, PolygonUserInputTest,
+                         Values(make_tuple(UserInputStream("Triangle 5 6"), Triangle(5, 6).area(), Triangle(5, 6).perimeter()),
+                                make_tuple(UserInputStream("IsoscelesTriangle 5 6"), IsoscelesTriangle(5, 6).area(), IsoscelesTriangle(5, 6).perimeter()),
+                                make_tuple(UserInputStream("EquilateralTriangle 5 6"), EquilateralTriangle(5).area(), EquilateralTriangle(5).perimeter()),
+                                make_tuple(UserInputStream("Quadrilateral 3 5"), Quadrilateral(3, 5).area(), Quadrilateral(3, 5).perimeter()),
+                                make_tuple(UserInputStream("Square 3"), Square(3).area(), Square(3).perimeter()),
+                                make_tuple(UserInputStream("Rectangle 3 1"), Rectangle(3, 1).area(), Rectangle(3, 1).perimeter())
+                                ), &PolygonUserInputTest::testName);

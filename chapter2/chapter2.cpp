@@ -621,17 +621,17 @@ shared_ptr<Polygon> inputPolygon(istream& ins)
     vector<string> shapes = {"Triangle", "IsoscelesTriangle", "EquilateralTriangle", 
         "Quadrilateral", "Pentagon", "Hexagon", "Octagon"};
 
-    cout << "What type of polygon would you like to input?" << endl;
-    for (const auto& shape : shapes)
-    {
-        cout << shape << endl;
-    }
-    cout << "    :";
+    // cout << "What type of polygon would you like to input?" << endl;
+    // for (const auto& shape : shapes)
+    // {
+    //     cout << shape << endl;
+    // }
+    // cout << "    :";
 
     string userInput;
     ins >> userInput;
 
-    cout << "You entered " << userInput << endl;
+    // cout << "You entered " << userInput << endl;
     for (auto& c : userInput)
     {
         c = tolower(c);
@@ -652,7 +652,7 @@ shared_ptr<Polygon> inputPolygon(istream& ins)
         if (userInput.find("equilateral") != string::npos)
         {
             double width{};
-            cout << "Enter the width for your Triangle" << endl << "    :";
+            // cout << "Enter the width" << endl << "    :";
             ins >> width;
             return make_shared<EquilateralTriangle>(width);
         }
@@ -660,7 +660,7 @@ shared_ptr<Polygon> inputPolygon(istream& ins)
         {
             double height{};
             double width{};
-            cout << "Enter the height and width for your Triangle" << endl << "    :";
+            // cout << "Enter the height and width" << endl << "    :";
             ins >> height >> width;
 
             if (userInput.find("isosceles") != string::npos)
@@ -674,14 +674,28 @@ shared_ptr<Polygon> inputPolygon(istream& ins)
         }
     }
 
-    if (userInput.find("quadrilateral") != string::npos)
+    if (userInput.find("quadrilateral") != string::npos
+        || userInput.find("square") != string::npos
+        || userInput.find("rectangle") != string::npos)
     {
+        if (userInput.find("square") != string::npos)
+        {
+            double edgeLength{};
+            // cout << "Enter the base width" << endl << "    :";
+            ins >> edgeLength;
+            return make_shared<Square>(edgeLength);
+        }
+
         double height{};
         double width{};
 
-        cout << "Enter the height and width for your Quadrilateral" << endl << "    :";
+        // cout << "Enter the height and width" << endl << "    :";
         ins >> height >> width;
 
+        if (userInput.find("rectangle") != string::npos)
+        {
+            return make_shared<Rectangle>(height, width);
+        }
         return make_shared<Quadrilateral>(height, width);
     }
 
