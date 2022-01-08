@@ -688,8 +688,9 @@ TEST_P(PolygonUserInputTest, UserInput)
 {
     auto userInput = get<0>(GetParam());
     istringstream ins(userInput);
+    ostringstream outs(userInput);
 
-    auto fut = async(launch::async, inputPolygon, std::ref(ins));
+    auto fut = async(launch::async, inputPolygon, std::ref(ins), std::ref(outs));
     ASSERT_THAT(fut.wait_for(100ms), future_status::ready);
 
     auto polygon = fut.get();
@@ -708,5 +709,8 @@ INSTANTIATE_TEST_SUITE_P(PolygonUserInputTest, PolygonUserInputTest,
                                 make_tuple(UserInputStream("EquilateralTriangle 5 6"), EquilateralTriangle(5).area(), EquilateralTriangle(5).perimeter()),
                                 make_tuple(UserInputStream("Quadrilateral 3 5"), Quadrilateral(3, 5).area(), Quadrilateral(3, 5).perimeter()),
                                 make_tuple(UserInputStream("Square 3"), Square(3).area(), Square(3).perimeter()),
-                                make_tuple(UserInputStream("Rectangle 3 1"), Rectangle(3, 1).area(), Rectangle(3, 1).perimeter())
-                                ), &PolygonUserInputTest::testName);
+                                make_tuple(UserInputStream("Rectangle 3 1"), Rectangle(3, 1).area(), Rectangle(3, 1).perimeter()),
+                                make_tuple(UserInputStream("Pentagon 3"), Pentagon(3).area(), Pentagon(3).perimeter()),
+                                make_tuple(UserInputStream("Hexagon 3"), Hexagon(3).area(), Hexagon(3).perimeter()),
+                                make_tuple(UserInputStream("Octagon 3"), Octagon(3).area(), Octagon(3).perimeter())), 
+                                &PolygonUserInputTest::testName);

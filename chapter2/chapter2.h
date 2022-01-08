@@ -480,4 +480,4 @@ private:
     double m_sideLength{};
 };
 
-std::shared_ptr<Polygon> inputPolygon(std::istream& ins);
+std::shared_ptr<Polygon> inputPolygon(std::istream& ins = std::cin, std::ostream& outs = std::cout);

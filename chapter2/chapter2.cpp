@@ -616,22 +616,22 @@ double Octagon::perimeter() const
     return 8 * m_sideLength;
 }
 
-shared_ptr<Polygon> inputPolygon(istream& ins)
+shared_ptr<Polygon> inputPolygon(istream& ins, ostream& outs)
 {
     vector<string> shapes = {"Triangle", "IsoscelesTriangle", "EquilateralTriangle", 
         "Quadrilateral", "Pentagon", "Hexagon", "Octagon"};
 
-    // cout << "What type of polygon would you like to input?" << endl;
-    // for (const auto& shape : shapes)
-    // {
-    //     cout << shape << endl;
-    // }
-    // cout << "    :";
+    outs << "What type of polygon would you like to input?" << endl;
+    for (const auto& shape : shapes)
+    {
+        outs << shape << endl;
+    }
+    outs << "    :";
 
     string userInput;
     ins >> userInput;
 
-    // cout << "You entered " << userInput << endl;
+    outs << "You entered " << userInput << endl;
     for (auto& c : userInput)
     {
         c = tolower(c);
@@ -652,7 +652,7 @@ shared_ptr<Polygon> inputPolygon(istream& ins)
         if (userInput.find("equilateral") != string::npos)
         {
             double width{};
-            // cout << "Enter the width" << endl << "    :";
+            outs << "Enter the width" << endl << "    :";
             ins >> width;
             return make_shared<EquilateralTriangle>(width);
         }
@@ -660,7 +660,7 @@ shared_ptr<Polygon> inputPolygon(istream& ins)
         {
             double height{};
             double width{};
-            // cout << "Enter the height and width" << endl << "    :";
+            outs << "Enter the height and width" << endl << "    :";
             ins >> height >> width;
 
             if (userInput.find("isosceles") != string::npos)
@@ -681,7 +681,7 @@ shared_ptr<Polygon> inputPolygon(istream& ins)
         if (userInput.find("square") != string::npos)
         {
             double edgeLength{};
-            // cout << "Enter the base width" << endl << "    :";
+            outs << "Enter the base width" << endl << "    :";
             ins >> edgeLength;
             return make_shared<Square>(edgeLength);
         }
@@ -689,7 +689,7 @@ shared_ptr<Polygon> inputPolygon(istream& ins)
         double height{};
         double width{};
 
-        // cout << "Enter the height and width" << endl << "    :";
+        outs << "Enter the height and width" << endl << "    :";
         ins >> height >> width;
 
         if (userInput.find("rectangle") != string::npos)
@@ -697,6 +697,23 @@ shared_ptr<Polygon> inputPolygon(istream& ins)
             return make_shared<Rectangle>(height, width);
         }
         return make_shared<Quadrilateral>(height, width);
+    }
+
+    double radius{};
+    outs << "Enter the radius of the enclosing circle" << endl << "    :";
+    ins >> radius;
+
+    if (userInput.find("pentagon") != string::npos)
+    {
+        return make_shared<Pentagon>(radius);
+    }
+    if (userInput.find("hexagon") != string::npos)
+    {
+        return make_shared<Hexagon>(radius);
+    }
+    if (userInput.find("octagon") != string::npos)
+    {
+        return make_shared<Octagon>(radius);
     }
 
     return nullptr;
