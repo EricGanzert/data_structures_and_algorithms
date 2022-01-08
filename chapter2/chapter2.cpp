@@ -616,7 +616,7 @@ double Octagon::perimeter() const
     return 8 * m_sideLength;
 }
 
-unique_ptr<Polygon> inputPolygon(istream& ins)
+shared_ptr<Polygon> inputPolygon(istream& ins)
 {
     vector<string> shapes = {"Triangle", "IsoscelesTriangle", "EquilateralTriangle", 
         "Quadrilateral", "Pentagon", "Hexagon", "Octagon"};
@@ -647,14 +647,14 @@ unique_ptr<Polygon> inputPolygon(istream& ins)
 
     if (userInput.find("triangle") != string::npos)
     {
-        unique_ptr<Triangle> triangle = nullptr;
+        shared_ptr<Triangle> triangle = nullptr;
 
         if (userInput.find("equilateral") != string::npos)
         {
             double width{};
             cout << "Enter the width for your Triangle" << endl << "    :";
             ins >> width;
-            return make_unique<EquilateralTriangle>(width);
+            return make_shared<EquilateralTriangle>(width);
         }
         else
         {
@@ -665,11 +665,11 @@ unique_ptr<Polygon> inputPolygon(istream& ins)
 
             if (userInput.find("isosceles") != string::npos)
             {
-                return make_unique<IsoscelesTriangle>(height, width);
+                return make_shared<IsoscelesTriangle>(height, width);
             }
             else
             {
-                return make_unique<Triangle>(height, width);
+                return make_shared<Triangle>(height, width);
             }
         }
     }
@@ -682,7 +682,7 @@ unique_ptr<Polygon> inputPolygon(istream& ins)
         cout << "Enter the height and width for your Quadrilateral" << endl << "    :";
         ins >> height >> width;
 
-        return make_unique<Quadrilateral>(height, width);
+        return make_shared<Quadrilateral>(height, width);
     }
 
     return nullptr;

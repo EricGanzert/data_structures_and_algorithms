@@ -4,6 +4,7 @@
 
 #include <array>
 #include <chrono>
+#include <future>
 #include <numeric>
 
 using namespace money;
@@ -667,11 +668,20 @@ TEST(Polygon, SquareAreaPerimeter)
     EXPECT_TRUE(doubleEq(mySquare.perimeter(), EdgeLength * 4));
 }
 
-TEST(Polygon, UserInput)
+TEST(Polygon, UserInputTriangle)
 {
     string userInput = "Triangle 5 6";
     istringstream ins(userInput);
-    auto polygon = inputPolygon(ins);
 
-    cout << "The area and perimeter are " << polygon->area() << ", " << polygon->perimeter() << endl;
+    auto fut = async(inputPolygon, std::ref(ins));
+    if (fut.wait_for(100ms) == future_status::timeout)
+    {
+        FAIL() << "Timed out waiting for inputPolygon Triangle";
+    }
+
+    auto polygon = fut.get();
+    ASSERT_THAT(polygon, Ne(nullptr));
+
+    EXPECT_TRUE(doubleEq(polygon->area(), (5.0 * 6.0) / 2));
+    EXPECT_TRUE(doubleEq(polygon->perimeter(), 5.0 + 6.0 + sqrt(61.0)));
 }
