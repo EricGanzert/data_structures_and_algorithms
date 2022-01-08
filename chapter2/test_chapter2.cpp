@@ -670,7 +670,7 @@ TEST(Polygon, OctagonAreaPerimeter)
 
 TEST(Polygon, UnrecognizedPolygonType)
 {
-    auto userInput = "Hexxagon";
+    auto userInput = "Hexxagon"; // should not work
     istringstream ins(userInput);
     ostringstream outs(userInput);
 
@@ -727,3 +727,17 @@ INSTANTIATE_TEST_SUITE_P(PolygonUserInputTest, PolygonUserInputTest,
                                 make_tuple(UserInputStream("Hexagon 3"), Hexagon(3).area(), Hexagon(3).perimeter()),
                                 make_tuple(UserInputStream("Octagon 3"), Octagon(3).area(), Octagon(3).perimeter())), 
                                 &PolygonUserInputTest::testName);
+
+TEST(Polygon, ReportsAreaAndPerimeter)
+{
+    string userInput = "Triangle 5 6";
+    istringstream ins(userInput);
+    ostringstream outs(userInput);
+
+    inputPolygonWrapper(ins, outs);
+
+    stringstream expectedResult;
+    expectedResult << "The area is " << setprecision(4) << Triangle(5, 6).area() << ", and the perimeter is " << setprecision(4) << Triangle(5, 6).perimeter() << endl;
+
+    EXPECT_THAT(outs.str().find(expectedResult.str()), Ne(string::npos));
+}

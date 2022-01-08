@@ -481,3 +481,5 @@ private:
 };
 
 std::shared_ptr<Polygon> inputPolygon(std::istream& ins = std::cin, std::ostream& outs = std::cout);
+
+void inputPolygonWrapper(std::istream& ins = std::cin, std::ostream& outs = std::cout);

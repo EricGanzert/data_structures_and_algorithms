@@ -725,3 +725,12 @@ shared_ptr<Polygon> inputPolygon(istream& ins, ostream& outs)
 
     return nullptr;
 }
+
+void inputPolygonWrapper(istream& ins, ostream& outs)
+{
+    auto polygon = inputPolygon(ins, outs);
+    if (polygon)
+    {
+        outs << "The area is " << setprecision(4) << polygon->area() << ", and the perimeter is " << setprecision(4) << polygon->perimeter() << endl;
+    }
+}
