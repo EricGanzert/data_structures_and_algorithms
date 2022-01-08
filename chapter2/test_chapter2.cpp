@@ -668,6 +668,19 @@ TEST(Polygon, OctagonAreaPerimeter)
     EXPECT_TRUE(doubleEq(myOctagon.area(), expectedArea));
 }
 
+TEST(Polygon, UnrecognizedPolygonType)
+{
+    auto userInput = "Hexxagon";
+    istringstream ins(userInput);
+    ostringstream outs(userInput);
+
+    auto fut = async(launch::async, inputPolygon, std::ref(ins), std::ref(outs));
+    ASSERT_THAT(fut.wait_for(100ms), future_status::ready);
+
+    auto polygon = fut.get();
+    EXPECT_THAT(polygon, Eq(nullptr));
+}
+
 using UserInputStream = string;
 using ExpectedArea = double;
 using ExpectedPerimeter = double;

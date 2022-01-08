@@ -619,7 +619,7 @@ double Octagon::perimeter() const
 shared_ptr<Polygon> inputPolygon(istream& ins, ostream& outs)
 {
     vector<string> shapes = {"Triangle", "IsoscelesTriangle", "EquilateralTriangle", 
-        "Quadrilateral", "Pentagon", "Hexagon", "Octagon"};
+        "Quadrilateral", "Square", "Rectangle", "Pentagon", "Hexagon", "Octagon"};
 
     outs << "What type of polygon would you like to input?" << endl;
     for (const auto& shape : shapes)
@@ -643,6 +643,13 @@ shared_ptr<Polygon> inputPolygon(istream& ins, ostream& outs)
         {
             c = tolower(c);
         }
+    }
+
+    if (none_of(shapes.begin(), shapes.end(), [&userInput](auto shape){
+        return shape.find(userInput) != string::npos; }))
+    {
+        outs << "Could not recognize the polygon type " << userInput << endl;
+        return nullptr;
     }
 
     if (userInput.find("triangle") != string::npos)
