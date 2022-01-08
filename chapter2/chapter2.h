@@ -480,4 +480,4 @@ private:
     double m_sideLength{};
 };
 
-void inputPolygon();
+std::unique_ptr<Polygon> inputPolygon(std::istream& ins);

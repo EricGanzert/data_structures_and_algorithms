@@ -667,7 +667,11 @@ TEST(Polygon, SquareAreaPerimeter)
     EXPECT_TRUE(doubleEq(mySquare.perimeter(), EdgeLength * 4));
 }
 
-TEST(Polygon, DISABLED_UserInput)
+TEST(Polygon, UserInput)
 {
-    inputPolygon();
+    string userInput = "Triangle 5 6";
+    istringstream ins(userInput);
+    auto polygon = inputPolygon(ins);
+
+    cout << "The area and perimeter are " << polygon->area() << ", " << polygon->perimeter() << endl;
 }

@@ -527,6 +527,29 @@ double Triangle::perimeter() const
     return m_height + m_width + sqrt(m_height * m_height + m_width * m_width);
 }
 
+IsoscelesTriangle::IsoscelesTriangle(double height, double width)
+    : Triangle(height, width)
+    , m_wallLength(sqrt(m_height * m_height + (m_width / 2) * (m_width / 2))) 
+{}
+
+double IsoscelesTriangle::perimeter() const
+{
+    return m_wallLength * 2 + m_width; 
+}
+
+EquilateralTriangle::EquilateralTriangle(double width)
+    : Triangle(sqrt(width * width - (width / 2) * (width / 2)), width) {}
+
+double EquilateralTriangle::area() const
+{
+    return (sqrt(3) / 4) * m_width * m_width;
+}
+
+double EquilateralTriangle::perimeter() const
+{
+    return 3 * m_width;
+}
+
 Quadrilateral::Quadrilateral(double height, double width)
     : m_height(height)
     , m_width(width)
@@ -541,6 +564,15 @@ double Quadrilateral::perimeter() const
 {
     return 2 * m_height + 2 * m_width;
 }
+
+Rectangle::Rectangle(double height, double width)
+    : Quadrilateral(height, width)
+{}
+
+
+Square::Square(double edgeLength)
+    : Rectangle(edgeLength, edgeLength)
+{}
 
 Pentagon::Pentagon(double radius)
     : m_sideLength(2 * sin(Pi / 5) * radius) // source wikipedia
@@ -584,39 +616,7 @@ double Octagon::perimeter() const
     return 8 * m_sideLength;
 }
 
-IsoscelesTriangle::IsoscelesTriangle(double height, double width)
-    : Triangle(height, width)
-    , m_wallLength(sqrt(m_height * m_height + (m_width / 2) * (m_width / 2))) 
-{}
-
-double IsoscelesTriangle::perimeter() const
-{
-    return m_wallLength * 2 + m_width; 
-}
-
-EquilateralTriangle::EquilateralTriangle(double width)
-    : Triangle(sqrt(width * width - (width / 2) * (width / 2)), width) {}
-
-double EquilateralTriangle::area() const
-{
-    return (sqrt(3) / 4) * m_width * m_width;
-}
-
-double EquilateralTriangle::perimeter() const
-{
-    return 3 * m_width;
-}
-
-Rectangle::Rectangle(double height, double width)
-    : Quadrilateral(height, width)
-{}
-
-
-Square::Square(double edgeLength)
-    : Rectangle(edgeLength, edgeLength)
-{}
-
-void inputPolygon()
+unique_ptr<Polygon> inputPolygon(istream& ins)
 {
     vector<string> shapes = {"Triangle", "IsoscelesTriangle", "EquilateralTriangle", 
         "Quadrilateral", "Pentagon", "Hexagon", "Octagon"};
@@ -629,7 +629,7 @@ void inputPolygon()
     cout << "    :";
 
     string userInput;
-    cin >> userInput;
+    ins >> userInput;
 
     cout << "You entered " << userInput << endl;
     for (auto& c : userInput)
@@ -653,28 +653,25 @@ void inputPolygon()
         {
             double width{};
             cout << "Enter the width for your Triangle" << endl << "    :";
-            cin >> width;
-            triangle = make_unique<EquilateralTriangle>(width);
+            ins >> width;
+            return make_unique<EquilateralTriangle>(width);
         }
         else
         {
             double height{};
             double width{};
             cout << "Enter the height and width for your Triangle" << endl << "    :";
-            cin >> height >> width;
+            ins >> height >> width;
 
             if (userInput.find("isosceles") != string::npos)
             {
-                triangle = make_unique<IsoscelesTriangle>(height, width);
+                return make_unique<IsoscelesTriangle>(height, width);
             }
             else
             {
-                triangle = make_unique<Triangle>(height, width);
+                return make_unique<Triangle>(height, width);
             }
         }
-
-        cout << "the area and perimeter are: " << setprecision(4) << triangle->area() << ", " << setprecision(4) << triangle->perimeter() << endl;
-        return;
     }
 
     if (userInput.find("quadrilateral") != string::npos)
@@ -683,10 +680,10 @@ void inputPolygon()
         double width{};
 
         cout << "Enter the height and width for your Quadrilateral" << endl << "    :";
-        cin >> height >> width;
+        ins >> height >> width;
 
-        Quadrilateral quad(height, width);
-        cout << "the area and perimeter are: " << setprecision(4) << quad.area() << ", " << setprecision(4) << quad.perimeter() << endl;
-        return;
+        return make_unique<Quadrilateral>(height, width);
     }
+
+    return nullptr;
 }
