@@ -300,18 +300,23 @@ void InternetUser::processPackets()
             m_arrivedPackets.pop_front();
         }
         // cout << "User " << m_name << " received packet: " << packet << endl;
-        m_numPacketsProcessed++;
-        m_lastPacketProcessed = packet;
+        {
+            lock_guard<mutex> lk(m_packetStatsMutex);
+            m_numPacketsProcessed++;
+            m_lastPacketProcessed = packet;
+        }
     }
 }
 
 size_t InternetUser::numPacketsProcessed()
 {
+    lock_guard<mutex> lk(m_packetStatsMutex);
     return m_numPacketsProcessed;
 }
 
 Packet InternetUser::lastPacketProcessed()
 {
+    lock_guard<mutex> lk(m_packetStatsMutex);
     return m_lastPacketProcessed;
 }
 

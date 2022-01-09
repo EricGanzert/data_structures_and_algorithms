@@ -199,6 +199,7 @@ private:
     void processPackets();
     std::atomic<bool> m_processPackets;
     std::thread m_pktProcessThread;
+    std::mutex m_packetStatsMutex;
     std::atomic<size_t> m_numPacketsProcessed{};
     std::atomic<Packet> m_lastPacketProcessed{};
 };
