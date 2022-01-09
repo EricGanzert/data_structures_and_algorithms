@@ -7,6 +7,7 @@
 #include <iomanip>
 #include <math.h>
 #include <random>
+#include <sstream>
 #include <string>
 #include <type_traits>
 
@@ -19,6 +20,20 @@ bool doubleEq(double a, double b)
 }
 
 constexpr auto Pi = 3.14159265;
+
+bool validPolygon(const vector<Vertex>& vertices)
+{
+    unordered_set<double> uniqueX;
+    unordered_set<double> uniqueY;
+
+    for (const auto& element : vertices)
+    {
+        uniqueX.insert(element.first);
+        uniqueY.insert(element.second);
+    }
+
+    return uniqueX.size() > 2 && uniqueY.size() > 2;
+}
 }
 
 FibonacciProgression::FibonacciProgression(ostream& stream, long f, long s) : Progression(stream, f), second(s) {}
@@ -738,4 +753,51 @@ void inputPolygonWrapper(istream& ins, ostream& outs)
     {
         outs << "The area is " << setprecision(4) << polygon->area() << ", and the perimeter is " << setprecision(4) << polygon->perimeter() << endl;
     }
+}
+
+string polygonSimilarity(vector<Vertex> polygonA, vector<Vertex> polygonB)
+{
+    stringstream result;
+    if (polygonA.size() < 3 || polygonB.size() < 3 || !validPolygon(polygonA) || !validPolygon(polygonB))
+    {
+        result << "One or both input polygons invalid, must each have at least 3 distinct points" << endl;
+        return result.str();
+    }
+
+    if (polygonA.size() != polygonB.size())
+    {
+        result << "The two polygons are not the same shape" << endl;
+        return result.str();
+    }
+
+    auto numVertices = polygonA.size();
+
+    if (numVertices == 3)
+    {
+        result << "the polygons are both Triangles" << endl;
+        // add checks for isosceles, equilateral
+    }
+
+    if (numVertices == 4)
+    {
+        result << "the polygons are both Quadrilaterals" << endl;
+        // add nested checks for rectangle, square
+    }
+
+    if (numVertices == 5)
+    {
+        result << "the polygons are both Pentagons" << endl;
+    }
+
+    if (numVertices == 6)
+    {
+        result << "the polygons are both Hexagons" << endl;
+    }
+
+    if (numVertices == 8)
+    {
+        result << "the polygons are both Octagons" << endl;
+    }
+
+    return result.str();
 }

@@ -484,3 +484,6 @@ private:
 std::shared_ptr<Polygon> inputPolygon(std::istream& ins = std::cin, std::ostream& outs = std::cout);
 
 void inputPolygonWrapper(std::istream& ins = std::cin, std::ostream& outs = std::cout);
+
+using Vertex = std::pair<double,double>;
+std::string polygonSimilarity(std::vector<Vertex> polygonA, std::vector<Vertex> polygonB);
