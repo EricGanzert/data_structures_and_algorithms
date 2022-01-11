@@ -21,7 +21,7 @@ bool doubleEq(double a, double b)
 
 constexpr auto Pi = 3.14159265;
 
-bool validPolygon(const vector<Vertex>& vertices)
+pair<size_t, size_t> distinctPoints(const vector<Vertex>& vertices)
 {
     unordered_set<double> uniqueX;
     unordered_set<double> uniqueY;
@@ -32,7 +32,62 @@ bool validPolygon(const vector<Vertex>& vertices)
         uniqueY.insert(element.second);
     }
 
-    return uniqueX.size() > 2 && uniqueY.size() > 2;
+    return make_pair<size_t, size_t>(uniqueX.size(), uniqueY.size());
+}
+
+bool isTriangle(const vector<Vertex>& vertices)
+{
+    if (vertices.size() != 3)
+    {
+        return false;
+    }
+
+    auto points = distinctPoints(vertices);
+    return points.first > 1 && points.second > 1;
+}
+
+bool isQuadrilateral(const vector<Vertex>& vertices)
+{
+    if (vertices.size() != 4)
+    {
+        return false;
+    }
+
+    auto points = distinctPoints(vertices);
+    return points.first > 1 && points.second > 1;
+}
+
+bool isPentagon(const vector<Vertex>& vertices)
+{
+    if (vertices.size() != 5)
+    {
+        return false;
+    }
+
+    auto points = distinctPoints(vertices);
+    return points.first >= 3 && points.second >= 3 && (points.first + points.second) >= 8;
+}
+
+bool isHexagon(const vector<Vertex>& vertices)
+{
+    if (vertices.size() != 6)
+    {
+        return false;
+    }
+
+    auto points = distinctPoints(vertices);
+    return points.first >= 3 && points.second >= 3 && (points.first + points.second) >= 7;
+}
+
+bool isOctagon(const vector<Vertex>& vertices)
+{
+    if (vertices.size() != 8)
+    {
+        return false;
+    }
+
+    auto points = distinctPoints(vertices);
+    return points.first >= 4 && points.second >= 4 && (points.first + points.second) >= 8;
 }
 }
 
@@ -755,12 +810,16 @@ void inputPolygonWrapper(istream& ins, ostream& outs)
     }
 }
 
-string polygonSimilarity(vector<Vertex> polygonA, vector<Vertex> polygonB)
+string polygonSimilarity(const vector<Vertex>& polygonA, const vector<Vertex>& polygonB)
 {
     stringstream result;
-    if (polygonA.size() < 3 || polygonB.size() < 3 || !validPolygon(polygonA) || !validPolygon(polygonB))
+    auto distinctPointsA = distinctPoints(polygonA);
+    auto distinctPointsB = distinctPoints(polygonB);
+
+    if (distinctPoints(polygonA).first < 2 || distinctPoints(polygonA).second < 2 
+        || distinctPoints(polygonB).first < 2 || distinctPoints(polygonB).second < 2)
     {
-        result << "One or both input polygons invalid, must each have at least 3 distinct points" << endl;
+        result << "One or both input polygons invalid" << endl;
         return result.str();
     }
 
@@ -772,29 +831,29 @@ string polygonSimilarity(vector<Vertex> polygonA, vector<Vertex> polygonB)
 
     auto numVertices = polygonA.size();
 
-    if (numVertices == 3)
+    if (isTriangle(polygonA) && isTriangle(polygonB))
     {
         result << "the polygons are both Triangles" << endl;
         // add checks for isosceles, equilateral
     }
 
-    if (numVertices == 4)
+    if (isQuadrilateral(polygonA) && isQuadrilateral(polygonB))
     {
         result << "the polygons are both Quadrilaterals" << endl;
         // add nested checks for rectangle, square
     }
 
-    if (numVertices == 5)
+    if (isPentagon(polygonA) && isPentagon(polygonB))
     {
         result << "the polygons are both Pentagons" << endl;
     }
 
-    if (numVertices == 6)
+    if (isHexagon(polygonA) && isHexagon(polygonB))
     {
         result << "the polygons are both Hexagons" << endl;
     }
 
-    if (numVertices == 8)
+    if (isOctagon(polygonA) && isOctagon(polygonB))
     {
         result << "the polygons are both Octagons" << endl;
     }
