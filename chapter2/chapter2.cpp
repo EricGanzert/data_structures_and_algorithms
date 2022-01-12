@@ -14,17 +14,25 @@
 using namespace std;
 
 namespace {
-bool doubleEq(double a, double b)
+bool doubleEq(double a, double b, double tolerance = 0.000001)
 {
     return fabs(a - b) < 0.000001;
 }
 
 constexpr auto Pi = 3.14159265;
 
+struct DoubleEqComparator {
+    bool operator()(const double& a, const double& b) const {
+        return doubleEq(a, b);
+    };
+};
+
+using UniqueDoublesContainer = unordered_set<double, hash<double>, DoubleEqComparator>;
+
 pair<size_t, size_t> distinctPoints(const vector<Vertex>& vertices)
 {
-    unordered_set<double> uniqueX;
-    unordered_set<double> uniqueY;
+    UniqueDoublesContainer uniqueX;
+    UniqueDoublesContainer uniqueY;
 
     for (const auto& element : vertices)
     {
@@ -144,11 +152,11 @@ bool isRectangle(const vector<Vertex>& vertices)
 
     auto sideLengths = quadrilateralSideLengths(vertices);
 
-    unordered_set<double> uniqueLengths;
-    uniqueLengths.insert(sideLengths[0]);
-    uniqueLengths.insert(sideLengths[1]);
-    uniqueLengths.insert(sideLengths[2]);
-    uniqueLengths.insert(sideLengths[3]);
+    UniqueDoublesContainer uniqueLengths;
+    for (const auto& length : sideLengths)
+    {
+        uniqueLengths.insert(length);
+    }
 
     return uniqueLengths.size() > 0 && uniqueLengths.size() < 3;
 }
@@ -162,11 +170,11 @@ bool isSquare(const vector<Vertex>& vertices)
 
     auto sideLengths = quadrilateralSideLengths(vertices);
 
-    unordered_set<double> uniqueLengths;
-    uniqueLengths.insert(sideLengths[0]);
-    uniqueLengths.insert(sideLengths[1]);
-    uniqueLengths.insert(sideLengths[2]);
-    uniqueLengths.insert(sideLengths[3]);
+    UniqueDoublesContainer uniqueLengths;
+    for (const auto& length : sideLengths)
+    {
+        uniqueLengths.insert(length);
+    }
 
     return uniqueLengths.size() == 1;
 }
