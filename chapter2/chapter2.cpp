@@ -46,6 +46,56 @@ bool isTriangle(const vector<Vertex>& vertices)
     return points.first > 1 && points.second > 1;
 }
 
+array<double, 3> triangleSideLengths(const vector<Vertex>& vertices)
+{
+    if (!isTriangle(vertices))
+    {
+        throw runtime_error("Invalid input to triangleSideLengths");
+    }
+
+    auto x1 = vertices[0].first;
+    auto y1 = vertices[0].second;
+
+    auto x2 = vertices[1].first;
+    auto y2 = vertices[1].second;
+
+    auto x3 = vertices[2].first;
+    auto y3 = vertices[2].second;
+
+    auto lengthA = sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2));
+    auto lengthB = sqrt(pow(x3 - x2, 2) + pow(y3 - y2, 2));
+    auto lengthC = sqrt(pow(x3 - x1, 2) + pow(y3 - y1, 2));
+
+    array<double, 3> result = {lengthA, lengthB, lengthC};
+    return result;
+}
+
+bool isIsoscelesTriangle(const vector<Vertex>& vertices)
+{
+    if (!isTriangle(vertices))
+    {
+        return false;
+    }
+
+    auto sideLengths = triangleSideLengths(vertices);
+
+    return (doubleEq(sideLengths[0], sideLengths[1]) && !doubleEq(sideLengths[0], sideLengths[2])) 
+        || (doubleEq(sideLengths[1], sideLengths[2]) && !doubleEq(sideLengths[1], sideLengths[0])) 
+        || (doubleEq(sideLengths[2], sideLengths[0])  && !doubleEq(sideLengths[2], sideLengths[1]));
+}
+
+bool isEquilateralTriangle(const vector<Vertex>& vertices)
+{
+    if (!isTriangle(vertices))
+    {
+        return false;
+    }
+
+    auto sideLengths = triangleSideLengths(vertices);
+
+    return doubleEq(sideLengths[0], sideLengths[1]) && doubleEq(sideLengths[1], sideLengths[2]);
+}
+
 bool isQuadrilateral(const vector<Vertex>& vertices)
 {
     if (vertices.size() != 4)
@@ -55,6 +105,70 @@ bool isQuadrilateral(const vector<Vertex>& vertices)
 
     auto points = distinctPoints(vertices);
     return points.first > 1 && points.second > 1;
+}
+
+array<double, 4> quadrilateralSideLengths(const vector<Vertex>& vertices)
+{
+    if (!isQuadrilateral(vertices))
+    {
+        throw runtime_error("Invalid input to quadrilateralSideLengths");
+    }
+
+    auto x1 = vertices[0].first;
+    auto y1 = vertices[0].second;
+
+    auto x2 = vertices[1].first;
+    auto y2 = vertices[1].second;
+
+    auto x3 = vertices[2].first;
+    auto y3 = vertices[2].second;
+
+    auto x4 = vertices[3].first;
+    auto y4 = vertices[3].second;
+    
+    auto lengthA = sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2));
+    auto lengthB = sqrt(pow(x3 - x2, 2) + pow(y3 - y2, 2));
+    auto lengthC = sqrt(pow(x4 - x3, 2) + pow(y4 - y3, 2));
+    auto lengthD = sqrt(pow(x1 - x4, 2) + pow(y1 - y4, 2));
+
+    array<double, 4> result = {lengthA, lengthB, lengthC, lengthD};
+    return result;
+}
+
+bool isRectangle(const vector<Vertex>& vertices)
+{
+    if (!isQuadrilateral(vertices))
+    {
+        return false;
+    }
+
+    auto sideLengths = quadrilateralSideLengths(vertices);
+
+    unordered_set<double> uniqueLengths;
+    uniqueLengths.insert(sideLengths[0]);
+    uniqueLengths.insert(sideLengths[1]);
+    uniqueLengths.insert(sideLengths[2]);
+    uniqueLengths.insert(sideLengths[3]);
+
+    return uniqueLengths.size() > 0 && uniqueLengths.size() < 3;
+}
+
+bool isSquare(const vector<Vertex>& vertices)
+{
+    if (!isRectangle(vertices))
+    {
+        return false;
+    }
+
+    auto sideLengths = quadrilateralSideLengths(vertices);
+
+    unordered_set<double> uniqueLengths;
+    uniqueLengths.insert(sideLengths[0]);
+    uniqueLengths.insert(sideLengths[1]);
+    uniqueLengths.insert(sideLengths[2]);
+    uniqueLengths.insert(sideLengths[3]);
+
+    return uniqueLengths.size() == 1;
 }
 
 bool isPentagon(const vector<Vertex>& vertices)
@@ -834,13 +948,31 @@ string polygonSimilarity(const vector<Vertex>& polygonA, const vector<Vertex>& p
     if (isTriangle(polygonA) && isTriangle(polygonB))
     {
         result << "the polygons are both Triangles" << endl;
-        // add checks for isosceles, equilateral
+
+        if (isIsoscelesTriangle(polygonA), isIsoscelesTriangle(polygonB))
+        {
+            result << "the polygons are both Isosceles Triangles" << endl;
+        }
+
+        if (isEquilateralTriangle(polygonA), isEquilateralTriangle(polygonB))
+        {
+            result << "the polygons are both Equilateral Triangles" << endl;
+        }
     }
 
     if (isQuadrilateral(polygonA) && isQuadrilateral(polygonB))
     {
         result << "the polygons are both Quadrilaterals" << endl;
-        // add nested checks for rectangle, square
+        
+        if (isRectangle(polygonA) && isRectangle(polygonB))
+        {
+            result << "the polygons are both Rectangles" << endl;
+
+            if (isSquare(polygonA) && isSquare(polygonB))
+            {
+                result << "the polygons are both Squares" << endl;
+            }
+        }
     }
 
     if (isPentagon(polygonA) && isPentagon(polygonB))
