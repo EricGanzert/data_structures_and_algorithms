@@ -24,6 +24,16 @@ bool doubleEq(double a, double b, double tolerance = 0.000001)
 }
 
 constexpr auto Pi = 3.14159265;
+
+string makeAllLowerCase(const string& str)
+{
+    auto result = str;
+    for (auto& c : result)
+    {
+        c = tolower(c);
+    }
+    return result;
+}
 }
 
 int main(int argc, char **argv) {
@@ -740,4 +750,103 @@ TEST(Polygon, ReportsAreaAndPerimeter)
     expectedResult << "The area is " << setprecision(4) << Triangle(5, 6).area() << ", and the perimeter is " << setprecision(4) << Triangle(5, 6).perimeter() << endl;
 
     EXPECT_THAT(outs.str().find(expectedResult.str()), Ne(string::npos));
+}
+
+TEST(PolygonSimilarity, Triangles)
+{
+    vector<Vertex> polygonA = {Vertex{1,1}, Vertex{4,1}, Vertex{2,3}};
+    auto polygonB = polygonA;
+
+    auto result = makeAllLowerCase(polygonSimilarity(polygonA, polygonB));
+    // make sure it can detect a triangle 
+    EXPECT_THAT(result.find("triangles"), Ne(string::npos));
+
+    // make it isosceles
+    polygonA = {Vertex{1,1}, Vertex{3,1}, Vertex{2,3}};
+    polygonB = polygonA;
+    result = makeAllLowerCase(polygonSimilarity(polygonA, polygonB));
+    EXPECT_THAT(result.find("isosceles triangles"), Ne(string::npos));
+
+    // make it equilateral
+    polygonA = {Vertex{0,0}, Vertex{5,0}, Vertex{2.5, sqrt(25 - pow(2.5, 2))}};
+    polygonB = polygonA;
+    result = makeAllLowerCase(polygonSimilarity(polygonA, polygonB));
+    EXPECT_THAT(result.find("equilateral triangles"), Ne(string::npos));
+
+    // make the triangles a bit different
+    polygonB.front().first += 5/3;
+    result = makeAllLowerCase(polygonSimilarity(polygonA, polygonB));
+    EXPECT_THAT(result.find("triangles"), Ne(string::npos));
+    EXPECT_THAT(result.find("isosceles"), Eq(string::npos));
+    EXPECT_THAT(result.find("equilateral"), Eq(string::npos));
+}
+
+TEST(PolygonSimilarity, Quadrilaterals)
+{
+    vector<Vertex> polygonA = {Vertex{0,0}, Vertex{3,0}, Vertex{4,4}, Vertex{0,4}};
+    auto polygonB = polygonA;
+
+    auto result = makeAllLowerCase(polygonSimilarity(polygonA, polygonB));
+    // make sure it can detect a quadrilateral 
+    EXPECT_THAT(result.find("quadrilaterals"), Ne(string::npos));
+
+    // make it a rectangle
+    polygonA = {Vertex{0,0}, Vertex{4,0}, Vertex{4,2}, Vertex{0,2}};
+    polygonB = polygonA;
+    result = makeAllLowerCase(polygonSimilarity(polygonA, polygonB));
+    EXPECT_THAT(result.find("rectangles"), Ne(string::npos));
+
+    // make it square
+    polygonA = {Vertex{0,0}, Vertex{4,0}, Vertex{4,4}, Vertex{0,4}};
+    polygonB = polygonA;
+    result = makeAllLowerCase(polygonSimilarity(polygonA, polygonB));
+    EXPECT_THAT(result.find("squares"), Ne(string::npos));
+
+    // make the quadrilaterals a bit different
+    polygonB.front().first += 5/3;
+    result = makeAllLowerCase(polygonSimilarity(polygonA, polygonB));
+    EXPECT_THAT(result.find("quadrilaterals"), Ne(string::npos));
+    EXPECT_THAT(result.find("rectangles"), Eq(string::npos));
+    EXPECT_THAT(result.find("squares"), Eq(string::npos));
+}
+
+TEST(PolygonSimilarity, Pentagons)
+{
+    vector<Vertex> polygonA = {Vertex{2,1}, Vertex{4,1}, Vertex{5,3}, Vertex{3,4}, Vertex{1,3}};
+    auto polygonB = polygonA;
+    auto result = makeAllLowerCase(polygonSimilarity(polygonA, polygonB));
+    EXPECT_THAT(result.find("pentagons"), Ne(string::npos));
+
+    // make them a bit different
+    polygonB.front().first += 0.345;
+    result = makeAllLowerCase(polygonSimilarity(polygonA, polygonB));
+    EXPECT_THAT(result.find("pentagons"), Ne(string::npos));  
+}
+
+TEST(PolygonSimilarity, Hexagons)
+{
+    vector<Vertex> polygonA = {Vertex{2,1}, Vertex{3,1}, Vertex{4,2}, Vertex{3,3}, Vertex{2,3}, 
+        Vertex{1,2}};
+    auto polygonB = polygonA;
+    auto result = makeAllLowerCase(polygonSimilarity(polygonA, polygonB));
+    EXPECT_THAT(result.find("hexagons"), Ne(string::npos));
+
+    // make them a bit different
+    polygonB.front().first += 0.345;
+    result = makeAllLowerCase(polygonSimilarity(polygonA, polygonB));
+    EXPECT_THAT(result.find("hexagons"), Ne(string::npos));  
+}
+
+TEST(PolygonSimilarity, Octagons)
+{
+    vector<Vertex> polygonA = {Vertex{2,1}, Vertex{3,1}, Vertex{4,2}, Vertex{4,3}, 
+        Vertex{3,4}, Vertex{2,4}, Vertex{1,3}, Vertex{1,2}};
+    auto polygonB = polygonA;
+    auto result = makeAllLowerCase(polygonSimilarity(polygonA, polygonB));
+    EXPECT_THAT(result.find("octagons"), Ne(string::npos));
+
+    // make them a bit different
+    polygonB.front().first += 0.345;
+    result = makeAllLowerCase(polygonSimilarity(polygonA, polygonB));
+    EXPECT_THAT(result.find("octagons"), Ne(string::npos));  
 }
