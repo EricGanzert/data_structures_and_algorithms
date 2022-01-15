@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <array>
 #include <functional>
+#include <fstream>
 #include <iostream>
 #include <iomanip>
 #include <math.h>
@@ -999,4 +1000,42 @@ string polygonSimilarity(const vector<Vertex>& polygonA, const vector<Vertex>& p
     }
 
     return result.str();
+}
+
+void barChartCharacterCount(const string& filepath)
+{
+    string word;
+    ifstream inputFile(filepath);
+    map<char, size_t> characterCount;
+    const string alphabet = "abcdefghijklmnopqrstuvwxyz";
+
+    for (auto c : alphabet)
+    {
+        characterCount[c] = 0;
+    }
+
+    if (inputFile.is_open())
+    {
+        while (inputFile >> word)
+        {
+            for (auto c : word)
+            {
+                c = tolower(c);
+                if (alphabet.find(c) != string::npos)
+                {
+                    characterCount[c]++;
+                }    
+            } 
+        }
+        inputFile.close();
+    }
+    else {
+        cout << "failed to open file" << endl;
+        return;
+    }
+
+    for (const auto& item : characterCount)
+    {
+        cout << item.first << " " << item.second << endl;
+    }
 }

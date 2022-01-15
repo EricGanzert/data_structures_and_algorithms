@@ -850,3 +850,8 @@ TEST(PolygonSimilarity, Octagons)
     result = makeAllLowerCase(polygonSimilarity(polygonA, polygonB));
     EXPECT_THAT(result.find("octagons"), Ne(string::npos));  
 }
+
+TEST(BarChartWordFrequency, BarChartWordFrequency)
+{
+    barChartCharacterCount("../../../chapter2/example_text_file.txt");
+}
