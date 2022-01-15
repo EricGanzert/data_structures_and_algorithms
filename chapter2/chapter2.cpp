@@ -1002,7 +1002,7 @@ string polygonSimilarity(const vector<Vertex>& polygonA, const vector<Vertex>& p
     return result.str();
 }
 
-void barChartCharacterCount(const string& filepath)
+map<char, size_t> textFileCharacterCount(const string& filepath)
 {
     string word;
     ifstream inputFile(filepath);
@@ -1030,12 +1030,21 @@ void barChartCharacterCount(const string& filepath)
         inputFile.close();
     }
     else {
-        cout << "failed to open file" << endl;
-        return;
+        throw runtime_error("failed to open file");
     }
 
+    return characterCount;
+}
+
+void printBarChart(const map<char, size_t>& characterCount)
+{
     for (const auto& item : characterCount)
     {
-        cout << item.first << " " << item.second << endl;
+        cout << item.first << ": ";
+        for (auto i=0u; i < item.second; i++)
+        {
+            cout << "-";
+        }
+        cout << endl;
     }
 }

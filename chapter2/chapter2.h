@@ -488,4 +488,6 @@ void inputPolygonWrapper(std::istream& ins = std::cin, std::ostream& outs = std:
 using Vertex = std::pair<double,double>;
 std::string polygonSimilarity(const std::vector<Vertex>& polygonA, const std::vector<Vertex>& polygonB);
 
-void barChartCharacterCount(const std::string& filepath);
+std::map<char, size_t> textFileCharacterCount(const std::string& filepath);
+
+void printBarChart(const std::map<char, size_t>& characterCount);

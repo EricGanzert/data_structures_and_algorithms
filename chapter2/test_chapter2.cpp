@@ -851,7 +851,8 @@ TEST(PolygonSimilarity, Octagons)
     EXPECT_THAT(result.find("octagons"), Ne(string::npos));  
 }
 
-TEST(BarChartWordFrequency, BarChartWordFrequency)
+TEST(BarChartCharacterFrequency, BarChartCharacterFrequency)
 {
-    barChartCharacterCount("../../../chapter2/example_text_file.txt");
+    auto characterCount = textFileCharacterCount("../../../chapter2/example_text_file.txt");
+    printBarChart(characterCount);
 }
