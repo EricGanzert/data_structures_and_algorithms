@@ -5,6 +5,7 @@
 #include <array>
 #include <chrono>
 #include <future>
+#include <fstream>
 #include <numeric>
 
 using namespace money;
@@ -853,6 +854,20 @@ TEST(PolygonSimilarity, Octagons)
 
 TEST(BarChartCharacterFrequency, BarChartCharacterFrequency)
 {
-    auto characterCount = textFileCharacterCount("../../../chapter2/example_text_file.txt");
+    const string contents = "this is an example of a file that contains text";
+    ofstream outFile("example_file.txt");
+    ASSERT_TRUE(outFile.is_open());
+    outFile << contents;
+    outFile.close();
+
+    auto characterCount = textFileCharacterCount("example_file.txt");
+    // make expectation for result
+    constexpr char alphabet[] = "abcdefghijklmnopqrstuvwxyz";
+
+    for (auto c : alphabet)
+    {
+        EXPECT_EQ(characterCount[c], count(contents.begin(), contents.end(), c));
+    }
+
     printBarChart(characterCount);
 }
