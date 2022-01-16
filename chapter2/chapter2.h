@@ -491,3 +491,5 @@ std::string polygonSimilarity(const std::vector<Vertex>& polygonA, const std::ve
 std::map<char, size_t> textFileCharacterCount(const std::string& filepath);
 
 void printBarChart(const std::map<char, size_t>& characterCount);
+
+std::map<std::string, size_t> wordCount(const std::string& listOfWords);

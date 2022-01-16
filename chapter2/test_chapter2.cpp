@@ -852,6 +852,7 @@ TEST(PolygonSimilarity, Octagons)
     EXPECT_THAT(result.find("octagons"), Ne(string::npos));  
 }
 
+// P-2.6
 TEST(BarChartCharacterFrequency, BarChartCharacterFrequency)
 {
     const string contents = "this is an example of a file that contains text";
@@ -870,4 +871,22 @@ TEST(BarChartCharacterFrequency, BarChartCharacterFrequency)
     }
 
     printBarChart(characterCount);
+}
+
+// P-2.7
+TEST(WordCount, WordCount)
+{
+    string input = "one two two three three three four four four four";
+    auto count = wordCount(input);
+    EXPECT_THAT(count["one"], Eq(1));
+    EXPECT_THAT(count["two"], Eq(2));
+    EXPECT_THAT(count["three"], Eq(3));
+    EXPECT_THAT(count["four"], Eq(4));
+}
+
+TEST(WordCount, IgnoresCase)
+{
+    string input = "hello Hello";
+    auto count = wordCount(input);
+    EXPECT_THAT(count["hello"], Eq(2));
 }

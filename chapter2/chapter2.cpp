@@ -1048,3 +1048,28 @@ void printBarChart(const map<char, size_t>& characterCount)
         cout << endl;
     }
 }
+
+map<string, size_t> wordCount(const string& listOfWords)
+{
+    const string alphabet = "abcdefghijklmnopqrstuvwxyz";
+    map<string, size_t> result;
+    stringstream strStream(listOfWords);
+
+    string word;
+    while(strStream >> word)
+    {
+        // remove punctuation and make all lower case
+        string formatted;
+        for (auto c : word)
+        {
+            c = tolower(c);
+            if (alphabet.find(c) != string::npos)
+            {
+                formatted += c;
+            }
+        }
+        result[formatted]++;
+    }
+
+    return result;
+}
