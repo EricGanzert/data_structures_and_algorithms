@@ -17,7 +17,7 @@ using namespace std;
 namespace {
 bool doubleEq(double a, double b, double tolerance = 0.000001)
 {
-    return fabs(a - b) < 0.000001;
+    return fabs(a - b) < tolerance;
 }
 
 constexpr auto Pi = 3.14159265;
@@ -939,8 +939,8 @@ string polygonSimilarity(const vector<Vertex>& polygonA, const vector<Vertex>& p
     auto distinctPointsA = distinctPoints(polygonA);
     auto distinctPointsB = distinctPoints(polygonB);
 
-    if (distinctPoints(polygonA).first < 2 || distinctPoints(polygonA).second < 2 
-        || distinctPoints(polygonB).first < 2 || distinctPoints(polygonB).second < 2)
+    if (distinctPointsA.first < 2 || distinctPointsA.second < 2 
+        || distinctPointsB.first < 2 || distinctPointsB.second < 2)
     {
         result << "One or both input polygons invalid" << endl;
         return result.str();
@@ -951,8 +951,6 @@ string polygonSimilarity(const vector<Vertex>& polygonA, const vector<Vertex>& p
         result << "The two polygons are not the same shape" << endl;
         return result.str();
     }
-
-    auto numVertices = polygonA.size();
 
     if (isTriangle(polygonA) && isTriangle(polygonB))
     {

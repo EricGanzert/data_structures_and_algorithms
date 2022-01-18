@@ -6,6 +6,7 @@
 #include <chrono>
 #include <future>
 #include <fstream>
+#include <memory>
 #include <numeric>
 
 using namespace money;
@@ -462,19 +463,19 @@ TYPED_TEST_SUITE(VectorTest, MyTypes);
 
 TYPED_TEST(VectorTest, Addition)
 {
-    auto sum = vecA + vecB;
+    auto sum = TestFixture::vecA + TestFixture::vecB;
     for (auto i=0u; i<VectorSize; i++)
     {
-        EXPECT_THAT(sum.at(i), Eq(vecA.at(i) + vecB.at(i)));
+        EXPECT_THAT(sum.at(i), Eq(TestFixture::vecA.at(i) + TestFixture::vecB.at(i)));
     }
 }
 
 TYPED_TEST(VectorTest, Subtraction)
 {
-    auto diff = vecA - vecB;
+    auto diff = TestFixture::vecA - TestFixture::vecB;
     for (auto i=0u; i<VectorSize; i++)
     {
-        EXPECT_THAT(diff.at(i), Eq(vecA.at(i) - vecB.at(i)));
+        EXPECT_THAT(diff.at(i), Eq(TestFixture::vecA.at(i) - TestFixture::vecB.at(i)));
     }
 }
 
@@ -483,24 +484,24 @@ TYPED_TEST(VectorTest, MultiplyScalar)
     using ElementType  = typename TestFixture::ElementType;
     const ElementType scalar(5);
 
-    auto product = vecA * scalar;
+    auto product = TestFixture::vecA * scalar;
     for (auto i=0u; i<VectorSize; i++)
     {
-        EXPECT_THAT(product.at(i), Eq(vecA.at(i) * scalar));
+        EXPECT_THAT(product.at(i), Eq(TestFixture::vecA.at(i) * scalar));
     }
 
     // reversed operator order
-    product = scalar * vecA;
+    product = scalar * TestFixture::vecA;
     for (auto i=0u; i<VectorSize; i++)
     {
-        EXPECT_THAT(product.at(i), Eq(vecA.at(i) * scalar));
+        EXPECT_THAT(product.at(i), Eq(TestFixture::vecA.at(i) * scalar));
     }
 }
 
 TYPED_TEST(VectorTest, DotProduct)
 {
     using ElementType  = typename TestFixture::ElementType;
-    auto dotProduct = vecA * vecB;
+    auto dotProduct = TestFixture::vecA * TestFixture::vecB;
 
     // both vectors are {0, 1, 2, 3, 4}
     // see test fixture
@@ -558,6 +559,7 @@ TYPED_TEST_SUITE(AnimalTest, AnimalTypes);
 
 TYPED_TEST(AnimalTest, OnlyStrongerSurvives)
 {
+    using Species  = typename TestFixture::Species;
     shared_ptr<Animal> strong = make_shared<Species>(true, 2.0f);
     shared_ptr<Animal> weak = make_shared<Species>(true, 1.0f);
 
@@ -570,6 +572,7 @@ TYPED_TEST(AnimalTest, OnlyStrongerSurvives)
 
 TYPED_TEST(AnimalTest, DifferentGendersMate)
 {
+    using Species  = typename TestFixture::Species;
     shared_ptr<Animal> male = make_shared<Species>(true, 2.0f);
     shared_ptr<Animal> female = make_shared<Species>(false, 1.0f);
 

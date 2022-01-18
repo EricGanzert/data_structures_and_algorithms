@@ -6,8 +6,10 @@
 #include <map>
 #include <math.h>
 #include <mutex>
+#include <stdexcept>
 #include <thread>
 #include <unordered_set>
+#include <vector>
 
 template<typename T>
 class Progression {
@@ -254,7 +256,7 @@ public:
     {
         if (index >= size())
         {
-            throw runtime_error("Error: Trying to access element out of range");
+            throw std::runtime_error("Error: Trying to access element out of range");
         }
 
         return m_vec[index];
@@ -264,7 +266,7 @@ public:
     {
         if (index >= size())
         {
-            throw runtime_error("Error: Trying to access element out of range");
+            throw std::runtime_error("Error: Trying to access element out of range");
         }
 
         return m_vec[index];
@@ -278,7 +280,7 @@ Vector<T> operator +(const Vector<T>& a, const Vector<T>& b)
 {
     if (a.size() != b.size())
     {
-        throw runtime_error("Error: Trying to add vectors of different sizes");
+        throw std::runtime_error("Error: Trying to add vectors of different sizes");
     }
     
     Vector<T> result(a.size());
@@ -294,7 +296,7 @@ Vector<T> operator -(const Vector<T>& a, const Vector<T>& b)
 {
     if (a.size() != b.size())
     {
-        throw runtime_error("Error: Trying to subtract vectors of different sizes");
+        throw std::runtime_error("Error: Trying to subtract vectors of different sizes");
     }
     
     Vector<T> result(a.size());
@@ -328,7 +330,7 @@ T operator *(const Vector<T>& a, const Vector<T>& b)
 {
     if (a.size() != b.size())
     {
-        throw runtime_error("Error: Trying to find dot product for vectors of different sizes");
+        throw std::runtime_error("Error: Trying to find dot product for vectors of different sizes");
     }
     T result{};
 
