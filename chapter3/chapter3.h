@@ -17,6 +17,7 @@ public:
 
     void add(const GameEntry& e);
     GameEntry remove(int i);
+    GameEntry at(int i) const;
 private:
     int maxEntries;
     int numEntries;

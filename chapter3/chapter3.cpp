@@ -62,7 +62,17 @@ GameEntry Scores::remove(int i)
     {
         entries[j-1] = entries[j];
     }
-    
+
     numEntries--;
     return e;
+}
+
+GameEntry Scores::at(int i) const
+{
+    if (i < 0 || i >= numEntries)
+    {
+        throw runtime_error("Invalid index");
+    }
+
+    return entries[i]; 
 }
