@@ -1,5 +1,6 @@
 #include "chapter3.h"
 
+#include <algorithm>
 #include <stdexcept>
 
 using namespace std;
@@ -20,12 +21,8 @@ int GameEntry::getScore() const
 Scores::Scores(int maxEnt) 
     : maxEntries(maxEnt)
     , numEntries(0)
-    , entries(new GameEntry[maxEntries])
+    , entries(maxEntries)
 {}
-
-Scores::~Scores() {
-    delete[] entries;
-}
 
 void Scores::add(const GameEntry& e)
 {
@@ -36,6 +33,10 @@ void Scores::add(const GameEntry& e)
         {
             return;
         }
+    }
+    else if (hasMaxEntries(e))
+    {
+        return;
     }
     else {
         numEntries++;
@@ -75,4 +76,24 @@ GameEntry Scores::at(int i) const
     }
 
     return entries[i]; 
+}
+
+bool Scores::hasMaxEntries(const GameEntry& e) const
+{
+    size_t entriesByThisPlayer = count_if(entries.begin(), entries.end(), [&e](const auto& entry)
+    {
+        return e.getName() == entry.getName(); 
+    });
+
+    return entriesByThisPlayer >= static_cast<size_t>(maxEntries) / 2;
+}
+
+int Scores::maxEntriesAllowedForOnePlayer() const
+{
+    return maxEntries / 2;
+}
+
+int Scores::numScores() const
+{
+    return numEntries;
 }

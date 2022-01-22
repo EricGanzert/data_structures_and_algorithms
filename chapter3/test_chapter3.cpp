@@ -25,9 +25,13 @@ TEST(Scores, AddScore)
     GameEntry bill("Bill", 110);
 
     Scores gameScores;
+    EXPECT_THAT(gameScores.numScores(), Eq(0));
     gameScores.add(eric);
+    EXPECT_THAT(gameScores.numScores(), Eq(1));
     gameScores.add(joe);
+    EXPECT_THAT(gameScores.numScores(), Eq(2));
     gameScores.add(bill);
+    EXPECT_THAT(gameScores.numScores(), Eq(3));
 
     auto firstPlace = gameScores.at(0);
     auto secondPlace = gameScores.at(1);
@@ -55,6 +59,7 @@ TEST(Scores, RemoveScore)
     gameScores.add(bill);
 
     gameScores.remove(1);
+    EXPECT_THAT(gameScores.numScores(), Eq(2));
 
     auto firstPlace = gameScores.at(0);
     auto secondPlace = gameScores.at(1);
@@ -64,4 +69,17 @@ TEST(Scores, RemoveScore)
 
     EXPECT_THAT(secondPlace.getName(), Eq(joe.getName()));
     EXPECT_THAT(secondPlace.getScore(), Eq(joe.getScore()));
+}
+
+TEST(Scores, MaxScoresForOnePlayer)
+{
+    Scores gameScores(10);
+     // try to add one too many
+    auto numEntriesToAdd = gameScores.maxEntriesAllowedForOnePlayer() + 1; 
+    for (auto i=0; i<numEntriesToAdd; i++)
+    {
+        gameScores.add({"Eric", i * 10});
+    }
+
+    EXPECT_THAT(gameScores.numScores(), Eq(gameScores.maxEntriesAllowedForOnePlayer()));
 }
