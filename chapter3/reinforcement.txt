@@ -1,0 +1,4 @@
+R-3.2
+If 2 entries of an array A are equal to each other their order will not be changed by the insertion sort algorithm in code fragment 3.7
+This is because it will only switch the places of 2 elements if the lower indexed element is larger. It would be unnecessary to cary out that switch.
+

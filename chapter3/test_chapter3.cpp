@@ -5,6 +5,26 @@
 using namespace std;
 using namespace testing;
 
+namespace {
+void printMatrix(const Matrix& m)
+{
+    if (m.empty())
+    {
+        return;
+    }
+
+    for (auto i=0u; i<m.size(); i++)
+    {
+        for (auto j=0u; j<m.begin()->size(); j++)
+        {
+            cout << m[i][j] << " ";
+        }
+        cout << endl;
+    }
+    cout << endl;
+}
+}
+
 int main(int argc, char **argv) {
     InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
@@ -75,11 +95,43 @@ TEST(Scores, MaxScoresForOnePlayer)
 {
     Scores gameScores(10);
      // try to add one too many
-    auto numEntriesToAdd = gameScores.maxEntriesAllowedForOnePlayer() + 1; 
+    auto numEntriesToAdd = gameScores.maxEntriesPerPlayer() + 1; 
     for (auto i=0; i<numEntriesToAdd; i++)
     {
         gameScores.add({"Eric", i * 10});
     }
 
-    EXPECT_THAT(gameScores.numScores(), Eq(gameScores.maxEntriesAllowedForOnePlayer()));
+    EXPECT_THAT(gameScores.numScores(), Eq(gameScores.maxEntriesPerPlayer()));
+}
+
+TEST(TransposeMatrix, TransposeMatrix)
+{
+    constexpr auto Rows = 10u;
+    constexpr auto Cols = Rows;
+
+    Matrix myMatrix(Rows, vector<float>(Cols));
+
+    for (auto i=0u; i<Rows; i++)
+    {
+        for (auto j=0u; j<Cols; j++)
+        {
+            myMatrix[i][j] = static_cast<float>(i);
+        }
+    }
+    
+    cout << "original matrix" << endl;
+    printMatrix(myMatrix);
+
+    Matrix t = (myMatrix);
+    transpose(t);
+    cout << "transpose matrix" << endl;
+    printMatrix(t);
+
+    for (auto i=0u; i<Rows; i++)
+    {
+        for (auto j=0u; j<Cols; j++)
+        {
+            ASSERT_THAT(t[i][j], Eq(myMatrix[j][i]));
+        }
+    }
 }

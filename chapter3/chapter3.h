@@ -19,10 +19,14 @@ public:
     GameEntry remove(int i);
     GameEntry at(int i) const;
     int numScores() const; 
-    int maxEntriesAllowedForOnePlayer() const;
+    int maxEntriesPerPlayer() const;
 private:
     bool hasMaxEntries(const GameEntry& e) const;
     int maxEntries;
     int numEntries;
     std::vector<GameEntry> entries;
 };
+
+using Matrix = std::vector<std::vector<float>>;
+
+void transpose(Matrix& matrix);

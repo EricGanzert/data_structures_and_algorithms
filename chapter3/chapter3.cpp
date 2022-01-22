@@ -88,7 +88,7 @@ bool Scores::hasMaxEntries(const GameEntry& e) const
     return entriesByThisPlayer >= static_cast<size_t>(maxEntries) / 2;
 }
 
-int Scores::maxEntriesAllowedForOnePlayer() const
+int Scores::maxEntriesPerPlayer() const
 {
     return maxEntries / 2;
 }
@@ -96,4 +96,28 @@ int Scores::maxEntriesAllowedForOnePlayer() const
 int Scores::numScores() const
 {
     return numEntries;
+}
+
+void transpose(Matrix& matrix)
+{
+    auto rows = matrix.size();
+    if (rows < 2)
+    {
+        return;
+    }
+    auto cols = matrix.begin()->size();
+    if (cols < 2 || rows != cols)
+    {
+        return;
+    }
+
+    for (auto i=0u; i<rows; i++)
+    {
+        for (auto j=i; j<cols; j++)
+        {
+            auto temp = matrix[i][j];
+            matrix[i][j] = matrix[j][i];
+            matrix[j][i] = temp;
+        }
+    }
 }
