@@ -30,3 +30,5 @@ private:
 using Matrix = std::vector<std::vector<float>>;
 
 void transpose(Matrix& matrix);
+
+float recursiveSum(const Matrix& matrix);

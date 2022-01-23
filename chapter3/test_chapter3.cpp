@@ -118,7 +118,7 @@ TEST(TransposeMatrix, TransposeMatrix)
             myMatrix[i][j] = static_cast<float>(i);
         }
     }
-    
+
     cout << "original matrix" << endl;
     printMatrix(myMatrix);
 
@@ -134,4 +134,28 @@ TEST(TransposeMatrix, TransposeMatrix)
             ASSERT_THAT(t[i][j], Eq(myMatrix[j][i]));
         }
     }
+}
+
+TEST(RecursiveSumMatrix, RecursiveSumMatrix)
+{
+    constexpr auto Rows = 5u;
+    constexpr auto Cols = Rows;
+
+    Matrix myMatrix(Rows, vector<float>(Cols));
+
+    float expectedSum = 0;
+    for (auto i=0u; i<Rows; i++)
+    {
+        for (auto j=0u; j<Cols; j++)
+        {
+            myMatrix[i][j] = static_cast<float>(i);
+            expectedSum += static_cast<float>(i);
+        }
+    }
+
+    printMatrix(myMatrix);
+    cout << "expectedSum is " << expectedSum << endl;
+
+    auto result = recursiveSum(myMatrix);
+    EXPECT_THAT(result, Eq(expectedSum));
 }

@@ -1,9 +1,30 @@
 #include "chapter3.h"
 
 #include <algorithm>
+#include <numeric>
 #include <stdexcept>
 
 using namespace std;
+
+namespace {
+float arraySum(const vector<float>& row, size_t index)
+{
+    if (index==0)
+    {
+        return row[0];
+    }
+    return row[index] + arraySum(row, index-1);
+}
+
+float recursiveSumInternal(const Matrix& matrix, int index, size_t maxSize)
+{
+    if (index == maxSize - 1)
+    {
+        return arraySum(matrix[index], matrix[index].size()-1);
+    }
+    return arraySum(matrix[index], matrix[index].size()-1) + recursiveSumInternal(matrix, index+1, maxSize);
+}
+}
 
 GameEntry::GameEntry(const string& n, int s)
     : name(n), score(s) {}
@@ -120,4 +141,19 @@ void transpose(Matrix& matrix)
             matrix[j][i] = temp;
         }
     }
+}
+
+float recursiveSum(const Matrix& matrix)
+{
+    if (matrix.empty())
+    {
+        return 0;
+    }
+
+    if (matrix.size() == 1)
+    {
+        return arraySum(matrix.front(), matrix.front().size()-1);
+    }
+
+    return recursiveSumInternal(matrix, 0, matrix.size());
 }
