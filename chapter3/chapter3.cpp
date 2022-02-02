@@ -24,6 +24,19 @@ float recursiveSumInternal(const Matrix& matrix, int index, size_t maxSize)
     }
     return arraySum(matrix[index], matrix[index].size()-1) + recursiveSumInternal(matrix, index+1, maxSize);
 }
+
+void addNodes(StringLinkedList& list, vector<string>& items)
+{
+    if (items.empty())
+    {
+        return;
+    }
+
+    auto item = items.back();
+    items.pop_back();
+    list.addFront(item);
+    addNodes(list, items);
+}
 }
 
 GameEntry::GameEntry(const string& n, int s)
@@ -156,4 +169,46 @@ float recursiveSum(const Matrix& matrix)
     }
 
     return recursiveSumInternal(matrix, 0, matrix.size());
+}
+
+StringLinkedList::StringLinkedList() : head(nullptr)
+{}
+
+StringLinkedList::~StringLinkedList()
+{
+    while (!empty())
+    {
+        removeFront();
+    }
+}
+
+bool StringLinkedList::empty()
+{
+    return head == nullptr;
+}
+
+const string& StringLinkedList::front() const
+{
+    return head->elem;
+}
+
+void StringLinkedList::addFront(const string& e)
+{
+    StringNode* v = new StringNode;
+    v->elem = e;
+    v->next = head;
+    head = v;
+}
+
+void StringLinkedList::removeFront()
+{
+    StringNode* old = head;
+    head = old->next;
+    delete old;
+}
+
+void recursivelyDefineList(StringLinkedList& list, const vector<string>& items)
+{
+    addNodes(list, vector<string>(items));
+    return;
 }

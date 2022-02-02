@@ -32,3 +32,26 @@ using Matrix = std::vector<std::vector<float>>;
 void transpose(Matrix& matrix);
 
 float recursiveSum(const Matrix& matrix);
+
+class StringNode {
+private:
+    std::string elem;
+    StringNode* next;
+
+    friend class StringLinkedList;
+};
+
+class StringLinkedList {
+public:
+    StringLinkedList();
+    ~StringLinkedList();
+
+    bool empty();
+    const std::string& front() const;
+    void addFront(const std::string& e);
+    void removeFront();
+private:
+    StringNode* head;
+};
+
+void recursivelyDefineList(StringLinkedList& list, const std::vector<std::string>& items);

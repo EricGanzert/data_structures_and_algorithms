@@ -104,6 +104,7 @@ TEST(Scores, MaxScoresForOnePlayer)
     EXPECT_THAT(gameScores.numScores(), Eq(gameScores.maxEntriesPerPlayer()));
 }
 
+// R-3.3
 TEST(TransposeMatrix, TransposeMatrix)
 {
     constexpr auto Rows = 10u;
@@ -136,6 +137,7 @@ TEST(TransposeMatrix, TransposeMatrix)
     }
 }
 
+// R-3.4
 TEST(RecursiveSumMatrix, RecursiveSumMatrix)
 {
     constexpr auto Rows = 5u;
@@ -158,4 +160,38 @@ TEST(RecursiveSumMatrix, RecursiveSumMatrix)
 
     auto result = recursiveSum(myMatrix);
     EXPECT_THAT(result, Eq(expectedSum));
+}
+
+TEST(SinglyLinkedList, AddAndRemove)
+{
+    StringLinkedList myList;
+    myList.addFront("A");
+    EXPECT_THAT(myList.front(), Eq(string("A")));
+    myList.addFront("B");
+    EXPECT_THAT(myList.front(), Eq(string("B")));
+    myList.addFront("C");
+    EXPECT_THAT(myList.front(), Eq(string("C")));
+
+    myList.removeFront();
+    EXPECT_THAT(myList.front(), Eq(string("B")));
+    myList.removeFront();
+    EXPECT_THAT(myList.front(), Eq(string("A")));
+    myList.removeFront();
+    EXPECT_THAT(myList.empty(), Eq(true));
+}
+
+// R-3.5
+TEST(SinglyLinkedList, RecursivelyDefinedList)
+{
+    vector<string> items = {"Eric", "Adam", "Joe"};
+    StringLinkedList myList;
+    recursivelyDefineList(myList, items);
+
+    EXPECT_THAT(myList.front(), Eq(string("Eric")));
+    myList.removeFront();
+    EXPECT_THAT(myList.front(), Eq(string("Adam")));
+    myList.removeFront();
+    EXPECT_THAT(myList.front(), Eq(string("Joe")));
+    myList.removeFront();
+    EXPECT_THAT(myList.empty(), Eq(true));
 }
