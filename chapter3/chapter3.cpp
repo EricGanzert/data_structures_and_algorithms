@@ -198,6 +198,7 @@ void StringLinkedList::addFront(const string& e)
     v->elem = e;
     v->next = head;
     head = v;
+    numElements++;
 }
 
 void StringLinkedList::removeFront()
@@ -205,6 +206,12 @@ void StringLinkedList::removeFront()
     StringNode* old = head;
     head = old->next;
     delete old;
+    numElements--;
+}
+
+size_t StringLinkedList::size()
+{
+    return numElements;
 }
 
 void recursivelyDefineList(StringLinkedList& list, const vector<string>& items)

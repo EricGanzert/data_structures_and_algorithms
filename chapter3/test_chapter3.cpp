@@ -195,3 +195,18 @@ TEST(SinglyLinkedList, RecursivelyDefinedList)
     myList.removeFront();
     EXPECT_THAT(myList.empty(), Eq(true));
 }
+
+// R-3.6
+TEST(SinglyLinkedList, Size)
+{
+    StringLinkedList myList;
+    EXPECT_THAT(myList.size(), Eq(0));
+    myList.addFront("A");
+    myList.addFront("B");
+    myList.addFront("C");
+    EXPECT_THAT(myList.size(), Eq(3));
+    myList.removeFront();
+    myList.removeFront();
+    myList.removeFront();
+    EXPECT_THAT(myList.size(), Eq(0));
+}

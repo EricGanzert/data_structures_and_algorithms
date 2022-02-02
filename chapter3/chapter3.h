@@ -50,8 +50,10 @@ public:
     const std::string& front() const;
     void addFront(const std::string& e);
     void removeFront();
+    size_t size();
 private:
     StringNode* head;
+    size_t numElements = 0;
 };
 
 void recursivelyDefineList(StringLinkedList& list, const std::vector<std::string>& items);
