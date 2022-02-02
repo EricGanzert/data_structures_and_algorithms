@@ -34,6 +34,11 @@ void transpose(Matrix& matrix);
 float recursiveSum(const Matrix& matrix);
 
 class StringNode {
+public:
+    std::string element() const
+    {
+        return elem;
+    }
 private:
     std::string elem;
     StringNode* next;
@@ -50,6 +55,8 @@ public:
     const std::string& front() const;
     void addFront(const std::string& e);
     void removeFront();
+    // returns a pointer to the second to last node
+    StringNode* penultimate();
     size_t size();
 private:
     StringNode* head;

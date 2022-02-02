@@ -219,3 +219,22 @@ void recursivelyDefineList(StringLinkedList& list, const vector<string>& items)
     addNodes(list, vector<string>(items));
     return;
 }
+
+StringNode* StringLinkedList::penultimate()
+{
+    if (numElements < 2)
+    {
+        return nullptr;
+    }
+
+    auto leader = head;
+    auto follower = head;
+
+    while (leader->next)
+    {
+        follower = leader;
+        leader = leader->next;
+    }
+    
+    return follower;
+}

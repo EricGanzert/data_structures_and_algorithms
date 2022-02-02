@@ -210,3 +210,16 @@ TEST(SinglyLinkedList, Size)
     myList.removeFront();
     EXPECT_THAT(myList.size(), Eq(0));
 }
+
+// R-3.7
+TEST(SinglyLinkedList, Penultimate)
+{
+    StringLinkedList myList;
+    myList.addFront("A");
+    myList.addFront("B");
+    myList.addFront("C");
+
+    auto secondToLast = myList.penultimate();
+    ASSERT_NE(secondToLast, nullptr);
+    EXPECT_THAT(secondToLast->element(), Eq(string("B")));
+}
