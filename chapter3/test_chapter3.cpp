@@ -223,3 +223,62 @@ TEST(SinglyLinkedList, Penultimate)
     ASSERT_NE(secondToLast, nullptr);
     EXPECT_THAT(secondToLast->element(), Eq(string("B")));
 }
+
+// R-3.8
+TEST(DLinkedList, EmptyAndNotEmpty)
+{
+    DLinkedList<int> myList;
+    EXPECT_TRUE(myList.empty());
+    myList.addBack(1);
+    EXPECT_FALSE(myList.empty());
+}
+
+TEST(DLinkedList, AddBack)
+{
+    DLinkedList<int> myList;
+    myList.addBack(4);
+    EXPECT_THAT(myList.back(), Eq(4));
+    myList.addBack(5);
+    EXPECT_THAT(myList.back(), Eq(5));
+    myList.addBack(6);
+    EXPECT_THAT(myList.back(), Eq(6));
+}
+
+TEST(DLinkedList, AddFront)
+{
+    DLinkedList<int> myList;
+    myList.addFront(4);
+    EXPECT_THAT(myList.front(), Eq(4));
+    myList.addFront(5);
+    EXPECT_THAT(myList.front(), Eq(5));
+    myList.addFront(6);
+    EXPECT_THAT(myList.front(), Eq(6));
+}
+
+TEST(DLinkedList, RemoveBack)
+{
+    DLinkedList<int> myList;
+    myList.addBack(1);
+    myList.addBack(2);
+    myList.addBack(3);
+    myList.removeBack();
+    EXPECT_THAT(myList.back(), Eq(2));
+    myList.removeBack();
+    EXPECT_THAT(myList.back(), Eq(1));
+    myList.removeBack();
+    EXPECT_TRUE(myList.empty());
+}
+
+TEST(DLinkedList, RemoveFront)
+{
+    DLinkedList<int> myList;
+    myList.addBack(1);
+    myList.addBack(2);
+    myList.addBack(3);
+    myList.removeFront();
+    EXPECT_THAT(myList.front(), Eq(2));
+    myList.removeFront();
+    EXPECT_THAT(myList.front(), Eq(3));
+    myList.removeFront();
+    EXPECT_TRUE(myList.empty());
+}
