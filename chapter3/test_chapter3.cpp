@@ -282,3 +282,28 @@ TEST(DLinkedList, RemoveFront)
     myList.removeFront();
     EXPECT_TRUE(myList.empty());
 }
+
+// R-3.9
+TEST(DLinkedList, ThrowsIfCallFrontWhenEmpty)
+{
+    DLinkedList<string> myList;
+    EXPECT_THROW(myList.front(), runtime_error);
+}
+
+TEST(DLinkedList, ThrowsIfCallBackWhenEmpty)
+{
+    DLinkedList<string> myList;
+    EXPECT_THROW(myList.back(), runtime_error);
+}
+
+TEST(DLinkedList, ThrowsIfCallRemoveFrontWhenEmpty)
+{
+    DLinkedList<string> myList;
+    EXPECT_THROW(myList.removeFront(), runtime_error);
+}
+
+TEST(DLinkedList, ThrowsIfCallRemoveBackWhenEmpty)
+{
+    DLinkedList<string> myList;
+    EXPECT_THROW(myList.removeBack(), runtime_error);
+}

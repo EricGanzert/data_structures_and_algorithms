@@ -124,12 +124,20 @@ bool DLinkedList<T>::empty() const
 template<typename T>
 const T& DLinkedList<T>::front() const
 {
+    if (empty())
+    {
+        throw runtime_error("tried to get front element of an empty list");
+    }
     return header->next->elem;
 }
 
 template<typename T>
 const T& DLinkedList<T>::back() const
 {
+    if (empty())
+    {
+        throw runtime_error("tried to get back element of an empty list");
+    }
     return trailer->prev->elem;
 }
 
@@ -170,11 +178,19 @@ void DLinkedList<T>::remove(DNode<T>* toRemove)
 template<typename T>
 void DLinkedList<T>::removeFront()
 {
+    if (empty())
+    {
+        throw runtime_error("tried to remove front from an empty list");
+    }
     remove(header->next);
 }
 
 template<typename T>
 void DLinkedList<T>::removeBack()
 {
+    if (empty())
+    {
+        throw runtime_error("tried to remove back from an empty list");
+    }
     remove(trailer->prev);
 }
