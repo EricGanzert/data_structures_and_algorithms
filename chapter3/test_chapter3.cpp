@@ -307,3 +307,20 @@ TEST(DLinkedList, ThrowsIfCallRemoveBackWhenEmpty)
     DLinkedList<string> myList;
     EXPECT_THROW(myList.removeBack(), runtime_error);
 }
+
+// R-3.10
+TEST(DLinkedList, MiddleNodeThrowsIfEmpty)
+{
+    DLinkedList<int> myList;
+    EXPECT_THROW(myList.middleElement(), runtime_error);
+}
+
+TEST(DLinkedList, MiddleNodeSelected)
+{
+    DLinkedList<int> myList;
+    for (int element = 1; element<100; element++)
+    {
+        myList.addBack(element);
+        EXPECT_THAT(myList.middleElement(), Eq((element/2) + 1));
+    }
+}

@@ -88,6 +88,9 @@ public:
     void addBack(const T& e);
     void removeFront();
     void removeBack();
+
+    // the runtime for this function is list size / 2
+    T middleElement();
 private:
     DNode<T>* header = nullptr;
     DNode<T>* trailer = nullptr;
@@ -193,4 +196,28 @@ void DLinkedList<T>::removeBack()
         throw runtime_error("tried to remove back from an empty list");
     }
     remove(trailer->prev);
+}
+
+template<typename T>
+T DLinkedList<T>::middleElement()
+{
+    if (empty())
+    {
+        throw runtime_error("there is no middle element for an empty list");
+    }
+
+    DNode<T>* back = trailer->prev;
+    DNode<T>* front = header->next;
+
+    while (back != front)
+    {
+        front = front->next;
+        if (back == front)
+        {
+            // case for list of even number size
+            return front->elem;
+        }
+        back = back->prev;
+    }
+    return front->elem;
 }
