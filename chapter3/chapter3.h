@@ -225,3 +225,75 @@ T DLinkedList<T>::middleElement()
 int findArrayMaximum(const std::vector<int>& array);
 
 void removeRandomUntilEmpty(std::vector<int>& array);
+
+template<typename T>
+class CNode {
+private:
+    T elem{};
+    CNode<T>* next = nullptr;
+
+    template<typename U>
+    friend class CircleList;
+};
+
+template<typename T>
+class CircleList {
+public:
+    CircleList() = default;
+    ~CircleList()
+    {
+        while(!empty())
+        {
+            remove();
+        }
+    }
+
+    bool empty()
+    {
+        return cursor == nullptr;
+    }
+
+    const T& front()
+    {
+        return cursor->next->elem;
+    }
+
+    const T& back()
+    {
+        return cursor->elem;
+    }
+
+    void advance()
+    {
+        cursor = cursor->next;
+    }
+
+    void add(const T& e)
+    {
+        auto newNode = new CNode<T>;
+        newNode->elem = e;
+        if (empty())
+        {
+            newNode->next = newNode;
+            cursor = newNode;
+        }
+        newNode->next = cursor->next;
+        cursor->next = newNode;
+    }
+
+    void remove()
+    {
+        CNode<T>* toRemove = cursor->next;
+        if (toRemove == cursor)
+        {
+            cursor = nullptr;
+        }
+        else
+        {
+            cursor->next = toRemove->next;
+        }
+        delete toRemove;
+    }
+private:
+    CNode<T>* cursor = nullptr;
+};

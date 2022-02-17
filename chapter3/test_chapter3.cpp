@@ -345,3 +345,45 @@ TEST(RemoveElements, RemoveElements)
     removeRandomUntilEmpty(myArray);
     EXPECT_THAT(myArray.empty(), true);
 }
+
+// R-3.15
+TEST(CircleLinkedList, Empty)
+{
+    CircleList<int> myList;
+    EXPECT_THAT(myList.empty(), true);
+    myList.add(1);
+    EXPECT_THAT(myList.empty(), false);
+}
+
+TEST(CircleLinkedList, AddToList)
+{
+    CircleList<int> myList;
+    myList.add(1);
+    EXPECT_THAT(myList.front(), 1);
+    EXPECT_THAT(myList.back(), 1);
+    myList.add(2);
+    EXPECT_THAT(myList.front(), 2);
+    EXPECT_THAT(myList.back(), 1);
+    myList.add(3);
+    EXPECT_THAT(myList.front(), 3);
+    EXPECT_THAT(myList.back(), 1);
+}
+
+TEST(CircleLinkedList, RemoveFromList)
+{
+    CircleList<int> myList;
+    myList.add(1);
+    myList.add(2);
+    myList.add(3);
+    EXPECT_THAT(myList.front(), 3);
+    EXPECT_THAT(myList.back(), 1);
+
+    myList.remove();
+    EXPECT_THAT(myList.front(), 2);
+    EXPECT_THAT(myList.back(), 1);
+    myList.remove();
+    EXPECT_THAT(myList.front(), 1);
+    EXPECT_THAT(myList.back(), 1);
+    myList.remove();
+    EXPECT_THAT(myList.empty(), true);
+}
