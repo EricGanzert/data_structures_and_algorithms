@@ -337,3 +337,11 @@ TEST(ArrayMaxRecursive, FindsMaxElement)
     vector<int> myArray = {3, 5, -2, 7, -9};
     EXPECT_THAT(findArrayMaximum(myArray), Eq(7));
 }
+
+// R-3.14
+TEST(RemoveElements, RemoveElements)
+{
+    vector<int> myArray = {1, 2, 3, 4, 5};
+    removeRandomUntilEmpty(myArray);
+    EXPECT_THAT(myArray.empty(), true);
+}

@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <numeric>
+#include <random>
 #include <stdexcept>
 
 using namespace std;
@@ -52,6 +53,20 @@ void arrayMaxInternal(const vector<int>& array, int currentIndex, int& currentMa
     currentIndex++;
     arrayMaxInternal(array, currentIndex, currentMax);
 }
+
+class RandomNumberGenerator {
+public:
+    RandomNumberGenerator()
+        : m_rng(m_dev())
+    {}
+    int getNumber(int min, int max) {
+        uniform_int_distribution<mt19937::result_type> dist(min, max);
+        return dist(m_rng);
+    }
+private:
+    random_device m_dev;
+    mt19937 m_rng;
+};
 }
 
 GameEntry::GameEntry(const string& n, int s)
@@ -265,4 +280,14 @@ int findArrayMaximum(const vector<int>& array)
     int currentMax = numeric_limits<int>::min();
     arrayMaxInternal(array, currentIndex, currentMax);
     return currentMax;
+}
+
+void removeRandomUntilEmpty(vector<int>& array)
+{
+    RandomNumberGenerator rng;
+    while(!array.empty())
+    {
+        auto iter = array.begin() + rng.getNumber(0, static_cast<int>(array.size())-1);
+        array.erase(iter);
+    }
 }

@@ -223,3 +223,5 @@ T DLinkedList<T>::middleElement()
 }
 
 int findArrayMaximum(const std::vector<int>& array);
+
+void removeRandomUntilEmpty(std::vector<int>& array);
