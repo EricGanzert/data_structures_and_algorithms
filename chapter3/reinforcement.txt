@@ -2,3 +2,58 @@ R-3.2
 If 2 entries of an array A are equal to each other their order will not be changed by the insertion sort algorithm in code fragment 3.7
 This is because it will only switch the places of 2 elements if the lower indexed element is larger. It would be unnecessary to cary out that switch.
 
+R-3.12
+
+--> ReverseArray(A, 0, 4) --> ReverseArray(A, 1, 3) --> ReverseArray(A, 2, 2) --> ReverseArray(A, 3, 1)
+        |         ^               |         ^               |         ^               |
+       /           \             /           \             /           \             /
+ <-----             -------------             -------------             -------------
+
+R-3.13
+                                                                                          ---- abc
+                                                           ---- PuzzleSolve(1, {ab}, {cd})
+                                                          |                               ---- abd
+                                                          |
+                                                          |                               ---- acb
+                            ---- PuzzleSolve(2, {a}, {bcd})---- PuzzleSolve(1, {ac}, {bd})
+                          /                               |                               ---- acd
+                         |                                |
+                         |                                |                               ---- adb
+                         |                                 ---- PuzzleSolve(1, {ad}, {bc})
+                         |                                                                ---- adc
+                         |
+                         |                                                              ---- bac
+                         |                               ---- PuzzleSolve(1, {ba}, {cd})
+                         |                              |                               ---- bad
+                         |                              |
+                         |                              |                               ---- bca
+                         |---- PuzzleSolve(2, {b}, {acd})---- PuzzleSolve(1, {bc}, {ad})
+                         |                              |                               ---- bcd
+                         |                              |
+                         |                              |                               ---- bda
+                         |                               ---- PuzzleSolve(1, {bd}, {ac})
+                         |                                                              ---- bdc
+PuzzleSolve(3, {}, {abcd})
+                         |                                                              ---- cab
+                         |                               ---- PuzzleSolve(1, {ca}, {bd})
+                         |                              |                               ---- cad
+                         |                              |
+                         |                              |                               ---- cba
+                         |---- PuzzleSolve(2, {c}, {abd})---- PuzzleSolve(1, {cb}, {ad})
+                         |                              |                               ---- cbd
+                         |                              |
+                         |                              |                               ---- cda
+                         |                               ---- PuzzleSolve(1, {cd}, {ab})
+                         |                                                              ---- cdb
+                         |
+                         |                                                                ---- dab
+                         |                                 ---- PuzzleSolve(1, {da}, {bc})
+                         |                                |                               ---- dac
+                         |                                |
+                          \                               |                               ---- dba
+                            ---- PuzzleSolve(2, {d}, {abc})---- PuzzleSolve(1, {db}, {ac})
+                                                          |                               ---- dbc
+                                                          |
+                                                          |                               ---- dca
+                                                           ---- PuzzleSolve(1, {dc}, {ab})
+                                                                                          ---- dcb

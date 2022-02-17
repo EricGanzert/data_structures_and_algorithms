@@ -37,6 +37,21 @@ void addNodes(StringLinkedList& list, vector<string>& items)
     list.addFront(item);
     addNodes(list, items);
 }
+
+void arrayMaxInternal(const vector<int>& array, int currentIndex, int& currentMax)
+{
+    if (currentIndex >= array.size())
+    {
+        return;
+    }
+
+    if (array[currentIndex] > currentMax)
+    {
+        currentMax = array[currentIndex];
+    }
+    currentIndex++;
+    arrayMaxInternal(array, currentIndex, currentMax);
+}
 }
 
 GameEntry::GameEntry(const string& n, int s)
@@ -237,4 +252,17 @@ StringNode* StringLinkedList::penultimate()
     }
     
     return follower;
+}
+
+int findArrayMaximum(const vector<int>& array)
+{
+    if (array.empty())
+    {
+        throw runtime_error("cannot find the maximum of empty array");
+    }
+
+    int currentIndex = 0;
+    int currentMax = numeric_limits<int>::min();
+    arrayMaxInternal(array, currentIndex, currentMax);
+    return currentMax;
 }

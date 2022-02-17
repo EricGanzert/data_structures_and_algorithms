@@ -324,3 +324,16 @@ TEST(DLinkedList, MiddleNodeSelected)
         EXPECT_THAT(myList.middleElement(), Eq((element/2) + 1));
     }
 }
+
+// R-3.11
+TEST(ArrayMaxRecursive, ThrowsIfArrayEmpty)
+{
+    vector<int> myArray;
+    EXPECT_THROW(findArrayMaximum(myArray), runtime_error);
+}
+
+TEST(ArrayMaxRecursive, FindsMaxElement)
+{
+    vector<int> myArray = {3, 5, -2, 7, -9};
+    EXPECT_THAT(findArrayMaximum(myArray), Eq(7));
+}

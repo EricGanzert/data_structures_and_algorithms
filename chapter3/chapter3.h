@@ -221,3 +221,5 @@ T DLinkedList<T>::middleElement()
     }
     return front->elem;
 }
+
+int findArrayMaximum(const std::vector<int>& array);
