@@ -265,6 +265,11 @@ public:
 
     void advance()
     {
+        if (empty())
+        {
+            throw runtime_error("cannot advance an empty list");
+        }
+
         cursor = cursor->next;
     }
 
@@ -283,6 +288,11 @@ public:
 
     void remove()
     {
+        if (empty())
+        {
+            throw runtime_error("cannot remove from an empty list");
+        }
+
         CNode<T>* toRemove = cursor->next;
         if (toRemove == cursor)
         {
@@ -293,6 +303,22 @@ public:
             cursor->next = toRemove->next;
         }
         delete toRemove;
+    }
+
+    size_t count()
+    {
+        if (empty())
+        {
+            return 0;
+        }
+
+        auto index = cursor;
+        size_t count = 1;
+        while((index = index->next) != cursor)
+        {
+            count++;
+        }
+        return count;
     }
 private:
     CNode<T>* cursor = nullptr;

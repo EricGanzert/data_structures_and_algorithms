@@ -387,3 +387,31 @@ TEST(CircleLinkedList, RemoveFromList)
     myList.remove();
     EXPECT_THAT(myList.empty(), true);
 }
+
+// R-3.16
+TEST(CirlceLinkedList, ThrowsIfAdvanceEmptyList)
+{
+    CircleList<int> myList;
+    EXPECT_THROW(myList.advance(), runtime_error);
+}
+
+TEST(CirlceLinkedList, ThrowsIfRemoveFromEmptyList)
+{
+    CircleList<int> myList;
+    EXPECT_THROW(myList.remove(), runtime_error);
+}
+
+// R-3.16
+TEST(CircleLinkedList, CountNodes)
+{
+    CircleList<int> myList;
+    EXPECT_THAT(myList.count(), 0ul);
+    myList.add(1);
+    EXPECT_THAT(myList.count(), 1ul);
+    myList.add(1);
+    EXPECT_THAT(myList.count(), 2ul);
+    myList.remove();
+    EXPECT_THAT(myList.count(), 1ul);
+    myList.remove();
+    EXPECT_THAT(myList.count(), 0ul);
+}
