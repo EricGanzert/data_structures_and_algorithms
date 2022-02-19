@@ -1,6 +1,7 @@
 #include "chapter3.h"
 
 #include <algorithm>
+#include <iostream>
 #include <numeric>
 #include <random>
 #include <stdexcept>
@@ -289,5 +290,92 @@ void removeRandomUntilEmpty(vector<int>& array)
     {
         auto iter = array.begin() + rng.getNumber(0, static_cast<int>(array.size())-1);
         array.erase(iter);
+    }
+}
+
+void TicTacToe::clearBoard()
+{
+    for_each(m_board.begin(), m_board.end(), [this](auto& row){
+        fill(row.begin(), row.end(), Empty);
+    });
+    m_currentPlayer = X;
+}
+
+void TicTacToe::putMark(int i, int j)
+{
+    if (i < 0 || i >= m_board.size()
+        || j < 0 || j >= m_board.front().size())
+    {
+        throw runtime_error("index out of range");
+    }
+
+    m_board[i][j] = m_currentPlayer;
+    if (m_currentPlayer == X)
+    {
+        m_currentPlayer = O;
+    }
+    else
+    {
+        m_currentPlayer = X;
+    }
+}
+
+bool TicTacToe::isWin(int mark)
+{
+    int win = 3 * mark;
+    return ((m_board[0][0] + m_board[0][1] + m_board[0][2] == win)
+        || (m_board[1][0] + m_board[1][1] + m_board[1][2] == win)
+        || (m_board[2][0] + m_board[2][1] + m_board[2][2] == win)
+        || (m_board[0][0] + m_board[1][0] + m_board[2][0] == win)
+        || (m_board[0][1] + m_board[1][1] + m_board[2][1] == win)
+        || (m_board[0][2] + m_board[1][2] + m_board[2][2] == win)
+        || (m_board[0][0] + m_board[1][1] + m_board[2][2] == win)
+        || (m_board[0][2] + m_board[1][1] + m_board[2][0] == win));
+}
+
+int TicTacToe::getWinner()
+{
+    if (isWin(X))
+    {
+        return X;
+    }
+    else if (isWin(O))
+    {
+        return O;
+    }
+
+    return Empty;
+
+}
+
+void TicTacToe::printBoard()
+{
+    for (int i=0; i < 3; i++)
+    {
+        for (int j=0; j < 3; j++)
+        {
+            auto mark = m_board[i][j];
+            if (mark == X)
+            {
+                cout << "X";
+            }
+            if (mark == O)
+            {
+                cout << "O";
+            }
+            if (mark == Empty)
+            {
+                cout << " ";
+            }
+
+            if (j < 2)
+            {
+                cout << "|";
+            }
+        }
+        if (i < 2)
+        {
+            cout << endl << "-+-+-" << endl;
+        }
     }
 }

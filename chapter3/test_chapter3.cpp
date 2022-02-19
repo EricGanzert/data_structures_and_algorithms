@@ -415,3 +415,34 @@ TEST(CircleLinkedList, CountNodes)
     myList.remove();
     EXPECT_THAT(myList.count(), 0ul);
 }
+
+// C-3.1
+// when changing the values of X and O the counting trick in isWin
+// will still work. As long as X != O. And the magnitude of X and Y cannot 
+// be so large that multiplying it by 3 causes integer overflow / underflow. 
+// Although the method of switching current player in putMark will have to change.
+TEST(TicTacToeGame, PlayGame)
+{
+    TicTacToe game;
+    game.clearBoard();
+    game.putMark(0,0);
+    game.putMark(1,1);
+    game.putMark(0,1);
+    game.putMark(0,2);
+    game.putMark(2,0);
+    game.putMark(1,2);
+    game.putMark(2,2);
+    game.putMark(2,1);
+    game.putMark(1,0);
+    game.printBoard();
+
+    auto winner = game.getWinner();
+    if (winner != game.Empty)
+    {
+        cout << " " << (winner == game.X ? "X" : "O") << " wins" << endl;
+    }
+    else
+    {
+        cout << " Tie" << endl;
+    }
+}

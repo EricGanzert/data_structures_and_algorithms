@@ -1,3 +1,4 @@
+#include <array>
 #include <string>
 #include <vector>
 
@@ -322,4 +323,28 @@ public:
     }
 private:
     CNode<T>* cursor = nullptr;
+};
+
+class TicTacToe {
+public:
+    TicTacToe() = default;
+    ~TicTacToe() = default;
+
+    void clearBoard();
+
+    void putMark(int i, int j);
+
+    int getWinner();
+
+    void printBoard();
+
+    const int X = 1;
+    const int O = 4;
+    const int Empty = 0;
+
+private:
+    bool isWin(int mark);
+
+    std::array<std::array<int, 3>, 3> m_board{};
+    int m_currentPlayer{};
 };
