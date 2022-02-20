@@ -446,3 +446,20 @@ TEST(TicTacToeGame, PlayGame)
         cout << " Tie" << endl;
     }
 }
+
+// C-3.3
+TEST(FindRepeat, FindRepeat)
+{
+    vector<int> myArray = {1, 2, 5, 4, 5, 6};
+    int repeat{};
+    EXPECT_THAT(findRepeat(myArray, repeat), true);
+    EXPECT_THAT(repeat, 5);
+}
+
+TEST(FindRepeat, DoesNotUpdateIfNoRepeat)
+{
+    vector<int> myArray = {1, 2, 3, 4, 5, 6};
+    int repeat = 0;
+    EXPECT_THAT(findRepeat(myArray, repeat), false);
+    EXPECT_THAT(repeat, 0); 
+}

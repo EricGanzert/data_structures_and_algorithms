@@ -355,3 +355,5 @@ private:
     std::array<std::array<int, 3>, 3> m_board{};
     int m_currentPlayer{};
 };
+
+bool findRepeat(const std::vector<int>& input, int& repeat);

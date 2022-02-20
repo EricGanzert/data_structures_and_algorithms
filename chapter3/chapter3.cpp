@@ -5,6 +5,7 @@
 #include <numeric>
 #include <random>
 #include <stdexcept>
+#include <unordered_set>
 
 using namespace std;
 
@@ -364,4 +365,19 @@ void TicTacToe::printBoard()
             cout << endl << "-+-+-" << endl;
         }
     }
+}
+
+bool findRepeat(const vector<int>& input, int& repeat)
+{
+    unordered_set<int> seen;
+    for (const auto& item : input)
+    {
+        if (seen.count(item))
+        {
+            repeat = item;
+            return true;
+        }
+        seen.insert(item);
+    }
+    return false;
 }
