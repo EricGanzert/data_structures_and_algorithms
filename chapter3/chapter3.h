@@ -1,4 +1,6 @@
 #include <array>
+#include <functional>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -7,6 +9,12 @@ public:
     GameEntry(const std::string& n="", int s=0);
     std::string getName() const;
     int getScore() const;
+
+	using ScoreCompare = std::function<bool(const GameEntry& a, const GameEntry& b)>;
+	static bool chooseLarger(const GameEntry& a, const GameEntry& b)
+	{
+		return a.score > b.score;
+	}
 private:
     std::string name;
     int score{};
@@ -23,9 +31,8 @@ public:
     int maxEntriesPerPlayer() const;
 private:
     bool hasMaxEntries(const GameEntry& e) const;
-    int maxEntries;
-    int numEntries;
-    std::vector<GameEntry> entries;
+    int maxEntries{};
+    std::set<GameEntry, GameEntry::ScoreCompare> entries;
 };
 
 using Matrix = std::vector<std::vector<float>>;

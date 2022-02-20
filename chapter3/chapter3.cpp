@@ -85,62 +85,48 @@ int GameEntry::getScore() const
 
 Scores::Scores(int maxEnt) 
     : maxEntries(maxEnt)
-    , numEntries(0)
-    , entries(maxEntries)
+    , entries(GameEntry::chooseLarger)
 {}
 
 void Scores::add(const GameEntry& e)
 {
-    int newScore = e.getScore();
-    if (numEntries == maxEntries)
-    {
-        if (newScore <= entries[maxEntries-1].getScore())
-        {
-            return;
-        }
-    }
-    else if (hasMaxEntries(e))
+    if (hasMaxEntries(e))
     {
         return;
     }
-    else {
-        numEntries++;
-    }
 
-    int i = numEntries - 2;
-    while (i >= 0 && entries[i].getScore() < newScore)
+    entries.insert(e);
+    while (entries.size() > maxEntries)
     {
-        entries[i+1] = entries[i];
-        i--;
+        entries.erase(--entries.end());
     }
-    entries[i+1] = e;
 }
 
 GameEntry Scores::remove(int i)
 {
-    if (i < 0 || i >= numEntries)
+    if (i < 0 || i >= entries.size())
     {
         throw runtime_error("Invalid index");
     }
 
-    GameEntry e = entries[i];
-    for (int j = i+1; j < numEntries; j++)
-    {
-        entries[j-1] = entries[j];
-    }
+    auto iter = entries.begin();
+    advance(iter, i);
 
-    numEntries--;
-    return e;
+    auto result = *iter;
+    entries.erase(iter);
+    return result;
 }
 
 GameEntry Scores::at(int i) const
 {
-    if (i < 0 || i >= numEntries)
+    if (i < 0 || i >= entries.size())
     {
         throw runtime_error("Invalid index");
     }
 
-    return entries[i]; 
+    auto iter = entries.begin();
+    advance(iter, i);
+    return *iter;
 }
 
 bool Scores::hasMaxEntries(const GameEntry& e) const
@@ -160,7 +146,7 @@ int Scores::maxEntriesPerPlayer() const
 
 int Scores::numScores() const
 {
-    return numEntries;
+    return static_cast<int>(entries.size());
 }
 
 void transpose(Matrix& matrix)
