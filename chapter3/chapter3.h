@@ -356,4 +356,4 @@ private:
     int m_currentPlayer{};
 };
 
-bool findRepeat(const std::vector<int>& input, int& repeat);
+bool findRepeat(const std::vector<int>& input, int& repeatedItem, int numOccurances);

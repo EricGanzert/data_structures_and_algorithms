@@ -367,17 +367,17 @@ void TicTacToe::printBoard()
     }
 }
 
-bool findRepeat(const vector<int>& input, int& repeat)
+bool findRepeat(const vector<int>& input, int& repeatedItem, int numOccurances)
 {
-    unordered_set<int> seen;
+    unordered_multiset<int> seen;
     for (const auto& item : input)
     {
-        if (seen.count(item))
+        seen.insert(item);
+        if (seen.count(item) == numOccurances)
         {
-            repeat = item;
+            repeatedItem = item;
             return true;
         }
-        seen.insert(item);
     }
     return false;
 }

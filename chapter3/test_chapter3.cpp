@@ -452,7 +452,7 @@ TEST(FindRepeat, FindRepeat)
 {
     vector<int> myArray = {1, 2, 5, 4, 5, 6};
     int repeat{};
-    EXPECT_THAT(findRepeat(myArray, repeat), true);
+    EXPECT_THAT(findRepeat(myArray, repeat, 2), true);
     EXPECT_THAT(repeat, 5);
 }
 
@@ -460,6 +460,15 @@ TEST(FindRepeat, DoesNotUpdateIfNoRepeat)
 {
     vector<int> myArray = {1, 2, 3, 4, 5, 6};
     int repeat = 0;
-    EXPECT_THAT(findRepeat(myArray, repeat), false);
+    EXPECT_THAT(findRepeat(myArray, repeat, 2), false);
     EXPECT_THAT(repeat, 0); 
+}
+
+// C-3.4
+TEST(Find5Repeated, Find5Repeat)
+{
+    vector<int> myArray = {1, 2, 3, 3, 3, 3, 3, 4, 5};
+    int repeat{};
+    EXPECT_THAT(findRepeat(myArray, repeat, 5), true);
+    EXPECT_THAT(repeat, 3);
 }
