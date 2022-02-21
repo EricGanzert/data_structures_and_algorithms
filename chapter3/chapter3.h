@@ -66,8 +66,11 @@ public:
     void removeFront();
     // returns a pointer to the second to last node
     StringNode* penultimate();
+    void reverse();
+    void print();
     size_t size();
 private:
+    void reverseNodesInternal(StringNode* prev, StringNode* node);
     StringNode* head;
     size_t numElements = 0;
 };
@@ -363,9 +366,7 @@ class EnchantedForest {
 public:
     EnchantedForest() = default;
     ~EnchantedForest() = default;
-
-    // returns true if winner along with the id of winner
-    // if no winner returns false and int is meaningless
+    
     void meet(int i, int j);
     bool gameOver();
 
@@ -377,3 +378,5 @@ private:
 };
 
 uint32_t recursiveProduct(uint32_t m, uint32_t n);
+
+void reverseSLinkedList(StringLinkedList& list);

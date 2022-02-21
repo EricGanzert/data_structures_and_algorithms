@@ -527,3 +527,23 @@ TEST(RecursiveProduct, RecursiveProduct)
     EXPECT_THAT(recursiveProduct(2, 3), 6);
     EXPECT_THAT(recursiveProduct(6, 6), 36);
 }
+
+// C-3.7
+TEST(ReverseSLinkedList, ReverseSLinkedList)
+{
+    StringLinkedList myList;
+    myList.addFront("D");
+    myList.addFront("C");
+    myList.addFront("B");
+    myList.addFront("A");
+
+    myList.reverse();
+    EXPECT_THAT(myList.front(), string("D"));
+    myList.removeFront();
+    EXPECT_THAT(myList.front(), string("C"));
+    myList.removeFront();
+    EXPECT_THAT(myList.front(), string("B"));
+    myList.removeFront();
+    EXPECT_THAT(myList.front(), string("A"));
+    myList.removeFront();
+}

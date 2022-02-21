@@ -432,3 +432,37 @@ uint32_t recursiveProduct(uint32_t m, uint32_t n)
 
     return addNTimes(toAdd, totalTimes, count);
 }
+
+void StringLinkedList::print()
+{
+    auto temp = head;
+    while(temp != nullptr)
+    {
+        cout << temp->elem << " ";
+        temp = temp->next;
+    }
+    cout << endl;
+}
+
+void StringLinkedList::reverse()
+{
+    if (empty())
+    {
+        return;
+    }
+    reverseNodesInternal(nullptr, head);
+}
+
+void StringLinkedList::reverseNodesInternal(StringNode* prev, StringNode* node)
+{
+    if (node->next == nullptr)
+    {
+        head = node;
+        head->next = prev;
+        return;
+    }
+
+    auto next = node->next;
+    node->next = prev;
+    reverseNodesInternal(node, next);
+}
