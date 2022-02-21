@@ -521,3 +521,9 @@ TEST(EnchantedForestGame, Tie)
     EXPECT_THAT(find(winners.begin(), winners.end(), 1), Ne(winners.end()));
     EXPECT_THAT(find(winners.begin(), winners.end(), 2), Ne(winners.end()));
 }
+
+TEST(RecursiveProduct, RecursiveProduct)
+{
+    EXPECT_THAT(recursiveProduct(2, 3), 6);
+    EXPECT_THAT(recursiveProduct(6, 6), 36);
+}

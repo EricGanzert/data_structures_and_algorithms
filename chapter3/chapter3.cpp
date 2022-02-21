@@ -69,6 +69,15 @@ private:
     random_device m_dev;
     mt19937 m_rng;
 };
+
+uint32_t addNTimes(uint32_t toAdd, uint32_t totalTimes, uint32_t& count)
+{
+    if (++count >= totalTimes)
+    {
+        return toAdd;
+    }
+    return toAdd + addNTimes(toAdd, totalTimes, count);
+}
 }
 
 GameEntry::GameEntry(const string& n, int s)
@@ -413,4 +422,13 @@ const vector<int>& EnchantedForest::winners()
 bool EnchantedForest::gameOver()
 {
     return m_gameFinished;
+}
+
+uint32_t recursiveProduct(uint32_t m, uint32_t n)
+{
+    auto toAdd = n;
+    auto totalTimes = m;
+    uint32_t count = 0;
+
+    return addNTimes(toAdd, totalTimes, count);
 }

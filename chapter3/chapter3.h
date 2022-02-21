@@ -375,3 +375,5 @@ private:
     std::vector<int> m_winners;
     bool m_gameFinished = false;
 };
+
+uint32_t recursiveProduct(uint32_t m, uint32_t n);
