@@ -472,3 +472,52 @@ TEST(Find5Repeated, Find5Repeat)
     EXPECT_THAT(findRepeat(myArray, repeat, 5), true);
     EXPECT_THAT(repeat, 3);
 }
+
+// C-3.5
+TEST(EnchantedForestGame, Winner1000Meetings)
+{
+    EnchantedForest game;
+    EXPECT_THAT(game.gameOver(), false);
+    EXPECT_THAT(game.winners().empty(), true);
+
+    for (auto encounter=0u; encounter<=1000; encounter++)
+    {
+        game.meet(123, encounter);
+    }
+
+    EXPECT_THAT(game.gameOver(), true);
+
+    const auto& winners = game.winners();
+    ASSERT_THAT(winners.size(), 1);
+    EXPECT_THAT(winners.front(), 123);
+}
+
+TEST(EnchantedForestGame, CantMeetYourself)
+{
+    EnchantedForest game;
+    for (auto encounter=0u; encounter<1000; encounter++)
+    {
+        game.meet(1, 1);
+    }
+
+    EXPECT_THAT(game.gameOver(), false);
+    EXPECT_THAT(game.winners().empty(), true);
+}
+
+TEST(EnchantedForestGame, Tie)
+{
+    EnchantedForest game;
+    auto start = 3;
+    for (auto encounter=start; encounter < start + 999; encounter++)
+    {
+        game.meet(1, encounter);
+        game.meet(2, encounter);
+    }
+    game.meet(1,2);
+    EXPECT_THAT(game.gameOver(), true);
+
+    const auto& winners = game.winners();
+
+    EXPECT_THAT(find(winners.begin(), winners.end(), 1), Ne(winners.end()));
+    EXPECT_THAT(find(winners.begin(), winners.end(), 2), Ne(winners.end()));
+}

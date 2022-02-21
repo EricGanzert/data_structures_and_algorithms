@@ -381,3 +381,36 @@ bool findRepeat(const vector<int>& input, int& repeatedItem, int numOccurances)
     }
     return false;
 }
+
+void EnchantedForest::meet(int i, int j)
+{
+    if (m_gameFinished || i == j)
+    {
+        return;
+    }
+
+    m_trackMeetings[i].insert(j);
+    m_trackMeetings[j].insert(i);
+
+    if (m_trackMeetings[i].size() >= 1000)
+    {
+        m_winners.emplace_back(i);
+        m_gameFinished = true;
+    }
+
+    if (m_trackMeetings[j].size() >= 1000)
+    {
+        m_winners.emplace_back(j);
+        m_gameFinished = true;
+    }
+}
+
+const vector<int>& EnchantedForest::winners()
+{
+    return m_winners;
+}
+
+bool EnchantedForest::gameOver()
+{
+    return m_gameFinished;
+}

@@ -1,6 +1,7 @@
 #include <array>
 #include <functional>
 #include <set>
+#include <unordered_set>
 #include <string>
 #include <vector>
 
@@ -357,3 +358,20 @@ private:
 };
 
 bool findRepeat(const std::vector<int>& input, int& repeatedItem, int numOccurances);
+
+class EnchantedForest {
+public:
+    EnchantedForest() = default;
+    ~EnchantedForest() = default;
+
+    // returns true if winner along with the id of winner
+    // if no winner returns false and int is meaningless
+    void meet(int i, int j);
+    bool gameOver();
+
+    const std::vector<int>& winners();
+private:
+    std::unordered_map<int, std::unordered_set<int>> m_trackMeetings;
+    std::vector<int> m_winners;
+    bool m_gameFinished = false;
+};
