@@ -69,6 +69,8 @@ public:
     void reverse();
     void print();
     size_t size();
+
+    void concatenate(StringLinkedList& toConsume);
 private:
     void reverseNodesInternal(StringNode* prev, StringNode* node);
     StringNode* head;

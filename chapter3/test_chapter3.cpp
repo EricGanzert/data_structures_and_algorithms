@@ -547,3 +547,33 @@ TEST(ReverseSLinkedList, ReverseSLinkedList)
     EXPECT_THAT(myList.front(), string("A"));
     myList.removeFront();
 }
+
+// C-3.8
+TEST(ConcatenateSLinkedList, ConcatenateSLinkedList)
+{
+    StringLinkedList oneList;
+    oneList.addFront("C");
+    oneList.addFront("B");
+    oneList.addFront("A");
+
+    StringLinkedList anotherList;
+    anotherList.addFront("F");
+    anotherList.addFront("E");
+    anotherList.addFront("D");
+
+    oneList.concatenate(anotherList);
+    EXPECT_THAT(anotherList.empty(), true);
+
+    EXPECT_THAT(oneList.front(), string("A"));
+    oneList.removeFront();
+    EXPECT_THAT(oneList.front(), string("B"));
+    oneList.removeFront();
+    EXPECT_THAT(oneList.front(), string("C"));
+    oneList.removeFront();
+    EXPECT_THAT(oneList.front(), string("D"));
+    oneList.removeFront();
+    EXPECT_THAT(oneList.front(), string("E"));
+    oneList.removeFront();
+    EXPECT_THAT(oneList.front(), string("F"));
+    oneList.removeFront();
+}

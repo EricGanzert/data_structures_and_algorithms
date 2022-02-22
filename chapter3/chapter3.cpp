@@ -466,3 +466,21 @@ void StringLinkedList::reverseNodesInternal(StringNode* prev, StringNode* node)
     node->next = prev;
     reverseNodesInternal(node, next);
 }
+
+void StringLinkedList::concatenate(StringLinkedList& toConsume)
+{
+    if (toConsume.empty())
+    {
+        return;
+    }
+
+    auto tail = head;
+    while(tail->next != nullptr)
+    {
+        tail = tail->next;
+    }
+
+    auto temp = toConsume.head;
+    tail->next = temp;
+    toConsume.head = nullptr;
+}
