@@ -105,6 +105,7 @@ public:
 
     // the runtime for this function is list size / 2
     T middleElement();
+    void concatenate(DLinkedList<T>& toConsume);
 private:
     DNode<T>* header = nullptr;
     DNode<T>* trailer = nullptr;
@@ -234,6 +235,23 @@ T DLinkedList<T>::middleElement()
         back = back->prev;
     }
     return front->elem;
+}
+
+template<typename T>
+void DLinkedList<T>::concatenate(DLinkedList<T>& toConsume)
+{
+    auto firstNewNode = toConsume.header->next;
+    auto lastNewNode = toConsume.trailer->prev;
+    auto lastOriginalNode = trailer->prev;
+
+    lastOriginalNode->next = firstNewNode;
+    firstNewNode->prev = lastOriginalNode;
+
+    trailer->prev = lastNewNode;
+    lastNewNode->next = trailer;
+
+    toConsume.header->next = toConsume.trailer;
+    toConsume.trailer->prev = toConsume.header;
 }
 
 int findArrayMaximum(const std::vector<int>& array);

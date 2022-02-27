@@ -577,3 +577,20 @@ TEST(ConcatenateSLinkedList, ConcatenateSLinkedList)
     EXPECT_THAT(oneList.front(), string("F"));
     oneList.removeFront();
 }
+
+// C-3.9
+TEST(ConcatenateDLinkedList, ConcatenateDLinkedList)
+{
+    DLinkedList<int> oneList;
+    oneList.addBack(1);
+    oneList.addBack(2);
+    oneList.addBack(3);
+
+    DLinkedList<int> anotherList;
+    anotherList.addBack(4);
+    anotherList.addBack(5);
+    anotherList.addBack(6);
+
+    oneList.concatenate(anotherList);
+    EXPECT_THAT(anotherList.empty(), true);
+}
