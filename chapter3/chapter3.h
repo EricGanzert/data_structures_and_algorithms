@@ -98,7 +98,10 @@ public:
     DLinkedList();
     ~DLinkedList();
     bool empty() const;
+    size_t size() const;
     const T& front() const;
+    DNode<T>* frontNode();
+    DNode<T>* backNode();
     const T& back() const;
     void addFront(const T& e);
     void addBack(const T& e);
@@ -107,12 +110,15 @@ public:
 
     // the runtime for this function is list size / 2
     T middleElement();
+    // assumes that a and b belong to this list and they are in front-to-back order
+    void swapNodes(DNode<T>* a, DNode<T>* b);
     void concatenate(DLinkedList<T>& toConsume);
 private:
     DNode<T>* header = nullptr;
     DNode<T>* trailer = nullptr;
     void add(DNode<T>* v, const T& e);
     void remove(DNode<T>* v);
+    size_t m_size = 0;
 };
 
 template<typename T>
@@ -142,6 +148,12 @@ bool DLinkedList<T>::empty() const
 }
 
 template<typename T>
+size_t DLinkedList<T>::size() const
+{
+    return m_size;
+}
+
+template<typename T>
 const T& DLinkedList<T>::front() const
 {
     if (empty())
@@ -149,6 +161,16 @@ const T& DLinkedList<T>::front() const
         throw runtime_error("tried to get front element of an empty list");
     }
     return header->next->elem;
+}
+
+template<typename T>
+DNode<T>* DLinkedList<T>::frontNode()
+{
+    if (empty())
+    {
+        throw runtime_error("tried to get front element of an empty list");
+    }
+    return header->next;
 }
 
 template<typename T>
@@ -162,6 +184,16 @@ const T& DLinkedList<T>::back() const
 }
 
 template<typename T>
+DNode<T>* DLinkedList<T>::backNode()
+{
+    if (empty())
+    {
+        throw runtime_error("tried to get front element of an empty list");
+    }
+    return trailer->prev;
+}
+
+template<typename T>
 void DLinkedList<T>::add(DNode<T>* nextNode, const T& e)
 {
     DNode<T>* insert = new DNode<T>;
@@ -171,6 +203,7 @@ void DLinkedList<T>::add(DNode<T>* nextNode, const T& e)
 
     nextNode->prev->next = insert;
     nextNode->prev = insert;
+    m_size++;
 }
 
 template<typename T>
@@ -193,6 +226,7 @@ void DLinkedList<T>::remove(DNode<T>* toRemove)
     beforeRemove->next = afterRemove;
     afterRemove->prev = beforeRemove;
     delete toRemove;
+    m_size--;
 }
 
 template<typename T>
@@ -237,6 +271,43 @@ T DLinkedList<T>::middleElement()
         back = back->prev;
     }
     return front->elem;
+}
+
+template<typename T>
+void DLinkedList<T>::swapNodes(DNode<T>* a, DNode<T>* b)
+{
+    if (a == b)
+    {
+       return; 
+    }
+
+    auto aPrev = a->prev;
+    auto aNext = a->next;
+    auto bPrev = b->prev;
+    auto bNext = b->next;
+
+    if (a->next == b)
+    {
+        aPrev->next = b;
+        b->prev = aPrev;
+        bNext->prev = a;
+        a->next = bNext;
+
+        b->next = a;
+        a->prev = b;
+    }
+    else
+    {
+        aPrev->next = b;
+        b->prev = aPrev;
+        b->next = aNext;
+        aNext->prev = b;
+
+        bPrev->next = a;
+        a->prev = bPrev;
+        a->next = bNext;
+        bNext->prev = a;
+    }
 }
 
 template<typename T>

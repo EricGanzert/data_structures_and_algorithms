@@ -57,3 +57,7 @@ PuzzleSolve(3, {}, {abcd})
                                                           |                               ---- dca
                                                            ---- PuzzleSolve(1, {dc}, {ab})
                                                                                           ---- dcb
+
+C-3.10
+It is faster to swap nodes in a doubly linked list because you already have a pointer to the previous element unlike in singly linked lists.
+For singly linked list you have to iterate throught the list to obtain pointers to prev nodes before beginning the swap.

@@ -36,6 +36,19 @@ void assertListResult(StringLinkedList& theList, deque<string>& expectedResult)
         expectedResult.pop_front();
     }
 }
+
+template<typename T>
+void assertDLinkedListResult(DLinkedList<T>& theList, deque<T>& expectedResult)
+{
+    ASSERT_THAT(theList.size(), expectedResult.size());
+
+    while(!theList.empty())
+    {
+        EXPECT_THAT(theList.front(), expectedResult.front());
+        theList.removeFront();
+        expectedResult.pop_front();
+    }
+}
 }
 
 int main(int argc, char **argv) {
@@ -686,4 +699,48 @@ TEST(SinglyLinkedList, SwapNodesReversedOrder)
 
     deque<string> expectedResult = {"A", "E", "C", "D", "B", "F"};
     assertListResult(myList, expectedResult);
+}
+
+TEST(DoublyLinkedList, SwapNodes)
+{
+    DLinkedList<int> myList;
+    myList.addBack(1);
+    auto swapA = myList.backNode();
+    myList.addBack(2);
+    myList.addBack(3);
+    auto swapB = myList.backNode();
+
+    myList.swapNodes(swapA, swapB);
+
+    deque<int> expectedResult = {3, 2, 1};
+    assertDLinkedListResult(myList, expectedResult);
+}
+
+TEST(DoublyLinkedList, SwapNodesNeighbors)
+{
+    DLinkedList<int> myList;
+    myList.addBack(1);
+    auto swapA = myList.backNode();
+    myList.addBack(2);
+    auto swapB = myList.backNode();
+
+    myList.swapNodes(swapA, swapB);
+
+    deque<int> expectedResult = {2, 1};
+    assertDLinkedListResult(myList, expectedResult);
+}
+
+TEST(DoublyLinkedList, SwapNodesSameNode)
+{
+    DLinkedList<int> myList;
+    myList.addBack(1);
+    myList.addBack(2);
+    auto swapA = myList.backNode();
+    myList.addBack(3);
+    auto swapB = swapA;
+
+    myList.swapNodes(swapA, swapB);
+
+    deque<int> expectedResult = {1, 2, 3};
+    assertDLinkedListResult(myList, expectedResult);
 }
