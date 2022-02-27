@@ -1,4 +1,5 @@
 #include "chapter3.h"
+#include <deque>
 
 #include <gmock/gmock.h>
 
@@ -22,6 +23,18 @@ void printMatrix(const Matrix& m)
         cout << endl;
     }
     cout << endl;
+}
+
+void assertListResult(StringLinkedList& theList, deque<string>& expectedResult)
+{
+    ASSERT_THAT(theList.size(), expectedResult.size());
+
+    while(!theList.empty())
+    {
+        EXPECT_THAT(theList.front(), expectedResult.front());
+        theList.removeFront();
+        expectedResult.pop_front();
+    }
 }
 }
 
@@ -225,7 +238,7 @@ TEST(SinglyLinkedList, Penultimate)
 }
 
 // R-3.8
-TEST(DLinkedList, EmptyAndNotEmpty)
+TEST(DoublyLinkedList, EmptyAndNotEmpty)
 {
     DLinkedList<int> myList;
     EXPECT_TRUE(myList.empty());
@@ -233,7 +246,7 @@ TEST(DLinkedList, EmptyAndNotEmpty)
     EXPECT_FALSE(myList.empty());
 }
 
-TEST(DLinkedList, AddBack)
+TEST(DoublyLinkedList, AddBack)
 {
     DLinkedList<int> myList;
     myList.addBack(4);
@@ -244,7 +257,7 @@ TEST(DLinkedList, AddBack)
     EXPECT_THAT(myList.back(), Eq(6));
 }
 
-TEST(DLinkedList, AddFront)
+TEST(DoublyLinkedList, AddFront)
 {
     DLinkedList<int> myList;
     myList.addFront(4);
@@ -255,7 +268,7 @@ TEST(DLinkedList, AddFront)
     EXPECT_THAT(myList.front(), Eq(6));
 }
 
-TEST(DLinkedList, RemoveBack)
+TEST(DoublyLinkedList, RemoveBack)
 {
     DLinkedList<int> myList;
     myList.addBack(1);
@@ -269,7 +282,7 @@ TEST(DLinkedList, RemoveBack)
     EXPECT_TRUE(myList.empty());
 }
 
-TEST(DLinkedList, RemoveFront)
+TEST(DoublyLinkedList, RemoveFront)
 {
     DLinkedList<int> myList;
     myList.addBack(1);
@@ -284,38 +297,38 @@ TEST(DLinkedList, RemoveFront)
 }
 
 // R-3.9
-TEST(DLinkedList, ThrowsIfCallFrontWhenEmpty)
+TEST(DoublyLinkedList, ThrowsIfCallFrontWhenEmpty)
 {
     DLinkedList<string> myList;
     EXPECT_THROW(myList.front(), runtime_error);
 }
 
-TEST(DLinkedList, ThrowsIfCallBackWhenEmpty)
+TEST(DoublyLinkedList, ThrowsIfCallBackWhenEmpty)
 {
     DLinkedList<string> myList;
     EXPECT_THROW(myList.back(), runtime_error);
 }
 
-TEST(DLinkedList, ThrowsIfCallRemoveFrontWhenEmpty)
+TEST(DoublyLinkedList, ThrowsIfCallRemoveFrontWhenEmpty)
 {
     DLinkedList<string> myList;
     EXPECT_THROW(myList.removeFront(), runtime_error);
 }
 
-TEST(DLinkedList, ThrowsIfCallRemoveBackWhenEmpty)
+TEST(DoublyLinkedList, ThrowsIfCallRemoveBackWhenEmpty)
 {
     DLinkedList<string> myList;
     EXPECT_THROW(myList.removeBack(), runtime_error);
 }
 
 // R-3.10
-TEST(DLinkedList, MiddleNodeThrowsIfEmpty)
+TEST(DoublyLinkedList, MiddleNodeThrowsIfEmpty)
 {
     DLinkedList<int> myList;
     EXPECT_THROW(myList.middleElement(), runtime_error);
 }
 
-TEST(DLinkedList, MiddleNodeSelected)
+TEST(DoublyLinkedList, MiddleNodeSelected)
 {
     DLinkedList<int> myList;
     for (int element = 1; element<100; element++)
@@ -549,7 +562,7 @@ TEST(ReverseSLinkedList, ReverseSLinkedList)
 }
 
 // C-3.8
-TEST(ConcatenateSLinkedList, ConcatenateSLinkedList)
+TEST(SinglyLinkedList, ConcatenateSLinkedList)
 {
     StringLinkedList oneList;
     oneList.addFront("C");
@@ -579,7 +592,7 @@ TEST(ConcatenateSLinkedList, ConcatenateSLinkedList)
 }
 
 // C-3.9
-TEST(ConcatenateDLinkedList, ConcatenateDLinkedList)
+TEST(DoublyLinkedList, ConcatenateDLinkedList)
 {
     DLinkedList<int> oneList;
     oneList.addBack(1);
@@ -593,4 +606,84 @@ TEST(ConcatenateDLinkedList, ConcatenateDLinkedList)
 
     oneList.concatenate(anotherList);
     EXPECT_THAT(anotherList.empty(), true);
+}
+
+// C-3.10
+TEST(SinglyLinkedList, SwapNodesSpacedApartAndNeitherIsHead)
+{
+    StringLinkedList myList;
+
+    myList.addFront("F");
+    myList.addFront("E");
+    myList.addFront("D");
+    myList.addFront("C");
+    myList.addFront("B");
+    myList.addFront("A");
+
+    myList.swapNodes(string("B"), string("E"));
+
+    deque<string> expectedResult = {"A", "E", "C", "D", "B", "F"};
+    assertListResult(myList, expectedResult);
+}
+
+TEST(SinglyLinkedList, SwapNodesNeighborsAndNeitherIsHead)
+{
+    StringLinkedList myList;
+
+    myList.addFront("D");
+    myList.addFront("C");
+    myList.addFront("B");
+    myList.addFront("A");
+
+    myList.swapNodes(string("B"), string("C"));
+
+    deque<string> expectedResult = {"A", "C", "B", "D"};
+    assertListResult(myList, expectedResult);
+}
+
+TEST(SinglyLinkedList, SwapNodesOneIsHead)
+{
+    StringLinkedList myList;
+
+    myList.addFront("D");
+    myList.addFront("C");
+    myList.addFront("B");
+    myList.addFront("A");
+
+    myList.swapNodes(string("A"), string("C"));
+
+    deque<string> expectedResult = {"C", "B", "A", "D"};
+    assertListResult(myList, expectedResult);
+}
+
+TEST(SinglyLinkedList, SwapNodesSameNode)
+{
+    StringLinkedList myList;
+
+    myList.addFront("D");
+    myList.addFront("C");
+    myList.addFront("B");
+    myList.addFront("A");
+
+    myList.swapNodes(string("B"), string("B"));
+
+    deque<string> expectedResult = {"A", "B", "C", "D"};
+    assertListResult(myList, expectedResult);
+}
+
+TEST(SinglyLinkedList, SwapNodesReversedOrder)
+{
+    StringLinkedList myList;
+
+    myList.addFront("F");
+    myList.addFront("E");
+    myList.addFront("D");
+    myList.addFront("C");
+    myList.addFront("B");
+    myList.addFront("A");
+
+    myList.swapNodes(string("E"), string("B"));
+
+    deque<string> expectedResult = {"A", "E", "C", "D", "B", "F"};
+    assertListResult(myList, expectedResult);
 }

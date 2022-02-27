@@ -71,8 +71,10 @@ public:
     size_t size();
 
     void concatenate(StringLinkedList& toConsume);
+    void swapNodes(const std::string& a, const std::string& b);
 private:
     void reverseNodesInternal(StringNode* prev, StringNode* node);
+    void swapNodesInternal(StringNode* a, StringNode* b);
     StringNode* head;
     size_t numElements = 0;
 };

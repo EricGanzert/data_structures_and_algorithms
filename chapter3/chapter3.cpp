@@ -484,3 +484,83 @@ void StringLinkedList::concatenate(StringLinkedList& toConsume)
     tail->next = temp;
     toConsume.head = nullptr;
 }
+
+void StringLinkedList::swapNodes(const string& a, const string& b)
+{
+    auto aRef = head;
+    auto aJumpCount = 0u;
+    while(!(aRef->elem == a || aRef->next == nullptr))
+    {
+        aRef = aRef->next;
+        aJumpCount++;
+    }
+    if (aRef->elem != a)
+    {
+        throw runtime_error("could not find element to swap");
+    }
+
+    auto bRef = head;
+    auto bJumpCount = 0u;
+    while(!(bRef->elem == b || bRef->next == nullptr))
+    {
+        bRef = bRef->next;
+        bJumpCount++;
+    }
+    if (bRef->elem != b)
+    {
+        throw runtime_error("could not find element to swap");
+    }
+
+    auto firstArg = (aJumpCount < bJumpCount) ? aRef : bRef;
+    auto secondArg = (aJumpCount < bJumpCount) ? bRef : aRef;
+    swapNodesInternal(firstArg, secondArg);
+}
+
+void StringLinkedList::swapNodesInternal(StringNode* a, StringNode* b)
+{
+    if (!(a && b))
+    {
+        throw runtime_error("cannot swap null nodes");
+    }
+
+    if (a == b)
+    {
+        return;
+    }
+
+    auto findPrev = [&](StringNode* target)
+    {
+        StringNode* result = nullptr;
+        if (target == head)
+        {
+            return result;
+        }
+
+        result = head;
+        while (result->next != target)
+        {
+            result = result->next;
+        }
+        return result;
+    };
+
+    auto aPrev = findPrev(a);
+    auto bPrev = findPrev(b);
+    auto aNext = a->next;
+    auto bNext = b->next;
+
+    if (a->next == b)
+    {
+        aPrev->next = b;
+        b->next = a;
+        a->next = bNext;
+    }
+    else
+    {
+        (aPrev ? aPrev->next : head) = b;
+        b->next = aNext;
+
+        (bPrev ? bPrev->next : head) = a;
+        a->next = bNext;
+    }
+}
