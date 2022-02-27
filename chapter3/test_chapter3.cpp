@@ -555,7 +555,7 @@ TEST(RecursiveProduct, RecursiveProduct)
 }
 
 // C-3.7
-TEST(ReverseSLinkedList, ReverseSLinkedList)
+TEST(ReverseSLinkedList, RecursiveReverseSLinkedList)
 {
     StringLinkedList myList;
     myList.addFront("D");
@@ -563,7 +563,7 @@ TEST(ReverseSLinkedList, ReverseSLinkedList)
     myList.addFront("B");
     myList.addFront("A");
 
-    myList.reverse();
+    myList.reverseRecursive();
     EXPECT_THAT(myList.front(), string("D"));
     myList.removeFront();
     EXPECT_THAT(myList.front(), string("C"));
@@ -743,4 +743,24 @@ TEST(DoublyLinkedList, SwapNodesSameNode)
 
     deque<int> expectedResult = {1, 2, 3};
     assertDLinkedListResult(myList, expectedResult);
+}
+
+// C-3.11
+TEST(ReverseSLinkedList, ReverseSLinkedList)
+{
+    StringLinkedList myList;
+    myList.addFront("D");
+    myList.addFront("C");
+    myList.addFront("B");
+    myList.addFront("A");
+
+    myList.reverse();
+    EXPECT_THAT(myList.front(), string("D"));
+    myList.removeFront();
+    EXPECT_THAT(myList.front(), string("C"));
+    myList.removeFront();
+    EXPECT_THAT(myList.front(), string("B"));
+    myList.removeFront();
+    EXPECT_THAT(myList.front(), string("A"));
+    myList.removeFront();
 }

@@ -444,7 +444,7 @@ void StringLinkedList::print()
     cout << endl;
 }
 
-void StringLinkedList::reverse()
+void StringLinkedList::reverseRecursive()
 {
     if (empty())
     {
@@ -465,6 +465,29 @@ void StringLinkedList::reverseNodesInternal(StringNode* prev, StringNode* node)
     auto next = node->next;
     node->next = prev;
     reverseNodesInternal(node, next);
+}
+
+void StringLinkedList::reverse()
+{
+    if (size() < 2)
+    {
+        return;
+    }
+
+    StringNode* prev = nullptr;
+    StringNode* node = head;
+
+    while(node != nullptr)
+    {
+        // perform swap
+        auto next = node->next; 
+        node->next = prev;
+
+        // advance iterators
+        prev = node;
+        node = next;
+    }
+    head = prev;
 }
 
 void StringLinkedList::concatenate(StringLinkedList& toConsume)

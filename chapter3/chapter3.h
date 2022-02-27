@@ -66,6 +66,7 @@ public:
     void removeFront();
     // returns a pointer to the second to last node
     StringNode* penultimate();
+    void reverseRecursive();
     void reverse();
     void print();
     size_t size();
