@@ -1,6 +1,7 @@
 #include "chapter3.h"
 
 #include <algorithm>
+#include <iomanip>
 #include <iostream>
 #include <numeric>
 #include <random>
@@ -586,4 +587,102 @@ void StringLinkedList::swapNodesInternal(StringNode* a, StringNode* b)
         (bPrev ? bPrev->next : head) = a;
         a->next = bNext;
     }
+}
+
+
+TowersOfHanoi::TowersOfHanoi(uint32_t numDisks)
+    : m_numDisks(static_cast<int>(numDisks))
+{
+    for (auto disk=1; disk <= m_numDisks; disk++)
+    {
+        pegs.front().push_back(disk);
+    }
+}
+
+void TowersOfHanoi::print()
+{
+    auto pegSpace = m_numDisks + 1;
+    auto currentHeight = m_numDisks;
+
+    while(currentHeight > 0)
+    {
+        for (const auto& peg : pegs)
+        {
+            string marker;
+            if (peg.size() >= currentHeight)
+            {
+                auto numDashes = m_numDisks - peg[currentHeight-1] + 1;
+                marker = string(numDashes, '-');
+            }
+            cout << setw(pegSpace) << marker;
+        }
+        cout << endl;
+        currentHeight--;
+    }
+}
+
+void TowersOfHanoi::solve()
+{
+    solveInternal(m_numDisks, 0, 2, 1);
+}
+
+void TowersOfHanoi::move(int fromPeg, int destPeg)
+{
+    auto topDisk = pegs[fromPeg].back();
+    pegs[fromPeg].pop_back();
+    pegs[destPeg].push_back(topDisk);
+}
+
+void TowersOfHanoi::solveInternal(int n, int start, int dest, int temp)
+{
+    if (n == 0)
+    {
+        return;
+    }
+    if (n == 1)
+    {
+        move(start, dest);
+        return;
+    }
+    if (n == 2)
+    {
+        move(start, temp);
+        move(start, dest);
+        move(temp, dest);
+        return;
+    }
+
+    solveInternal(n-1, start, temp, dest);
+    move(start, dest);
+    solveInternal(n-1, temp, dest, start);
+}
+
+bool TowersOfHanoi::isSolved()
+{
+    if (!pegs[0].empty())
+    {
+        return false;
+    }
+
+    if (!pegs[1].empty())
+    {
+        return false;
+    }
+
+    if (pegs[2].size() != m_numDisks)
+    {
+        return false;
+    }
+
+    for (auto i = 0; i < m_numDisks; i++)
+    {
+        if (i>0)
+        {
+            if (!(pegs[2][i] > pegs[2][i-1]))
+            {
+                return false;
+            }
+        }
+    }
+    return true;
 }

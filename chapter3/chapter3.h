@@ -474,3 +474,20 @@ private:
 uint32_t recursiveProduct(uint32_t m, uint32_t n);
 
 void reverseSLinkedList(StringLinkedList& list);
+
+class TowersOfHanoi {
+public:
+    TowersOfHanoi(uint32_t numDisks);
+    TowersOfHanoi() = delete;
+    ~TowersOfHanoi() = default;
+
+    void print();
+    void solve();
+    bool isSolved();
+private:
+    void solveInternal(int n, int start, int dest, int temp);
+    void move(int fromPeg, int destPeg);
+
+    int m_numDisks{};
+    std::array<std::vector<int>, 3> pegs;
+};

@@ -61,3 +61,31 @@ PuzzleSolve(3, {}, {abcd})
 C-3.10
 It is faster to swap nodes in a doubly linked list because you already have a pointer to the previous element unlike in singly linked lists.
 For singly linked list you have to iterate throught the list to obtain pointers to prev nodes before beginning the swap.
+
+C-3.12
+Towers of Hanoi
+
+How to move 1 disk to destination peg - solve(n == 1, destination, storage):
+i) move disk(n) to destination peg
+
+How to 2 disks to a destination peg - solve(n == 2, destination, storage):
+i) move disk(n) to storage peg
+ii) move disk(n-1) to destination peg
+iii) move disk(n) to destination peg
+
+How to move 3 disks to a destination peg - solve(n == 3, destination, storage):
+i) execute solve(n == 2, storage, destination)
+ii) move disk(n-2) to destination peg
+iii) execute solve(n == 2, destination, storage)
+
+How to move 4 disks to a destination peg - solve(n == 4, destination, storage):
+i) execute solve(n == 3, storage, destination)
+ii) move disk(n-3) to destination peg
+iii) execute solve(n == 3, destination, storage)
+
+*****
+How to move n disks to a destination peg - solve(n, destination, storage):
+i) execute solve(n-1, storage, destination)
+ii) move lowest largest disk to destination peg
+iii) execute solve(n-1, destination, storage)
+*****

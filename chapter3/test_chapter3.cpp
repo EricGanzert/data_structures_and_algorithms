@@ -764,3 +764,26 @@ TEST(ReverseSLinkedList, ReverseSLinkedList)
     EXPECT_THAT(myList.front(), string("A"));
     myList.removeFront();
 }
+
+// C-3.12
+struct TowersOfHanoiTest : public ::testing::Test, 
+                              public WithParamInterface<int>
+{
+    static string testName(const TestParamInfo<int>& p)
+    {
+        auto diskCount = p.param;
+        return to_string(diskCount) + string("_disks");
+    }
+};
+
+TEST_P(TowersOfHanoiTest, Solve)
+{
+    TowersOfHanoi game(GetParam());
+    game.print();
+    game.solve();
+    game.print();
+    EXPECT_TRUE(game.isSolved());
+}
+
+INSTANTIATE_TEST_SUITE_P(TowersOfHanoiTest, TowersOfHanoiTest,
+                         Values(1, 2, 3, 4, 5, 6), &TowersOfHanoiTest::testName);
