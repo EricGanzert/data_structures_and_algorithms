@@ -787,3 +787,22 @@ TEST_P(TowersOfHanoiTest, Solve)
 
 INSTANTIATE_TEST_SUITE_P(TowersOfHanoiTest, TowersOfHanoiTest,
                          Values(1, 2, 3, 4, 5, 6), &TowersOfHanoiTest::testName);
+
+// C-3.13
+TEST(ConvertStringToDigits, ConvertStringToDigits)
+{
+    auto result = stringToDigits("123");
+    EXPECT_THAT(result, 123);
+}
+
+// C-3.14
+TEST(SinglyLinkedList, CountNodes)
+{
+    StringLinkedList myList;
+    myList.addFront("D");
+    myList.addFront("C");
+    myList.addFront("B");
+    myList.addFront("A");
+
+    EXPECT_THAT(myList.countNodes(), 4);
+}

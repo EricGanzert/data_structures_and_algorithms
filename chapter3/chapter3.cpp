@@ -79,6 +79,8 @@ uint32_t addNTimes(uint32_t toAdd, uint32_t totalTimes, uint32_t& count)
     }
     return toAdd + addNTimes(toAdd, totalTimes, count);
 }
+
+
 }
 
 GameEntry::GameEntry(const string& n, int s)
@@ -685,4 +687,47 @@ bool TowersOfHanoi::isSolved()
         }
     }
     return true;
+}
+
+int stringToDigitsInternal(string& number, int exp)
+{
+    if (number.empty())
+    {
+        return 0;
+    }
+
+    constexpr int CharToIntOffset = 48;
+
+    auto digitChar = number.back();
+    number.pop_back();
+
+    int digit = static_cast<int>(digitChar) - CharToIntOffset;
+    auto thisRoundContribution = (static_cast<int>(pow(10, exp)) * digit);
+    return thisRoundContribution + stringToDigitsInternal(number, ++exp);
+}
+
+int stringToDigits(const string& number)
+{
+    auto numberCopy(number);
+    return stringToDigitsInternal(numberCopy, 0);
+}
+
+size_t StringLinkedList::countNodes()
+{
+    if (empty())
+    {
+        return 0;
+    }
+
+    return countNodesInternal(head);
+}
+
+size_t StringLinkedList::countNodesInternal(StringNode* node)
+{
+    if (node->next == nullptr)
+    {
+        return 1;
+    }
+
+    return 1 + countNodesInternal(node->next);
 }

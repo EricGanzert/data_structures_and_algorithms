@@ -70,12 +70,16 @@ public:
     void reverse();
     void print();
     size_t size();
+    // C-3.14
+    size_t countNodes();
 
     void concatenate(StringLinkedList& toConsume);
     void swapNodes(const std::string& a, const std::string& b);
 private:
     void reverseNodesInternal(StringNode* prev, StringNode* node);
     void swapNodesInternal(StringNode* a, StringNode* b);
+    // C-3.14
+    size_t countNodesInternal(StringNode* node);
     StringNode* head;
     size_t numElements = 0;
 };
@@ -491,3 +495,5 @@ private:
     int m_numDisks{};
     std::array<std::vector<int>, 3> pegs;
 };
+
+int stringToDigits(const std::string& number);
