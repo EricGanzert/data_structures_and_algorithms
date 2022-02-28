@@ -731,3 +731,33 @@ size_t StringLinkedList::countNodesInternal(StringNode* node)
 
     return 1 + countNodesInternal(node->next);
 }
+
+void outputAllSubsetsInternal(vector<int>& used, set<int>& unused)
+{
+    for (auto i=0u; i<unused.size(); i++)
+    {
+        auto iter = unused.begin();
+        advance(iter, i);
+        auto item = *iter;
+        unused.erase(iter);
+        used.push_back(item);
+
+        for (const auto& i : used)
+        {
+            cout << i << " ";
+        }
+        cout << endl;
+            
+        outputAllSubsetsInternal(used, unused);
+        unused.insert(item);
+        used.pop_back();
+    }
+
+}
+
+void outputAllSubsets(const set<int>& items)
+{
+    auto inputCopy(items);
+    vector<int> used;
+    outputAllSubsetsInternal(used, inputCopy);
+}

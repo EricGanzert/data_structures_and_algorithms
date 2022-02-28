@@ -497,3 +497,5 @@ private:
 };
 
 int stringToDigits(const std::string& number);
+
+void outputAllSubsets(const std::set<int>& items);

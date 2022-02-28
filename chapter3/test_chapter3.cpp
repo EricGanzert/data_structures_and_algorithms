@@ -806,3 +806,10 @@ TEST(SinglyLinkedList, CountNodes)
 
     EXPECT_THAT(myList.countNodes(), 4);
 }
+
+// C-3.15
+TEST(OutputAllSubsets, OutputAllSubsets)
+{
+    set<int> mySet = {1, 2, 3};
+    outputAllSubsets(mySet);
+}
