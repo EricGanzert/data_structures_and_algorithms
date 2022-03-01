@@ -944,15 +944,24 @@ bool isPalendrome(const string& input)
     return charsMatch(input, 0, static_cast<int>(input.size()) - 1);
 }
 
-void countVC(const string& input, int index, int& vowelCount, int& consonantCount)
+void countVC(const string& input, int index, int& vowelCount, int& consonantCount, bool yIsVowel=false)
 {
-    if (index >= static_cast<int>(input.size()) - 1)
+    string vowels = "aeiou";
+    string consonants = "bcdfghjklmnpqrstvwxz";
+
+    if (yIsVowel)
+    {
+        vowels.push_back('y');
+    }
+    else
+    {
+        consonants.push_back('y');
+    }
+
+    if (index > static_cast<int>(input.size()) - 1)
     {
         return;
     }
-
-    const string vowels = "aeiouy";
-    const string consonants = "bcdfghjklmnpqrstvwxz";
 
     if (vowels.find(input[index]) != string::npos)
     {
@@ -963,16 +972,43 @@ void countVC(const string& input, int index, int& vowelCount, int& consonantCoun
         consonantCount++;
     }
 
-    countVC(input, index + 1, vowelCount, consonantCount);
+    countVC(input, index + 1, vowelCount, consonantCount, yIsVowel);
 }
 
 bool hasMoreVowelsThanConsonants(const string& input)
 {
-    int vowelCount = 0;
-    int consonantCount = 0;
-    int index = 0;
+    const string vowels = "aeiou";
+    int totalVCount = 0;
+    int totalCCount = 0;
 
-    countVC(input, index, vowelCount, consonantCount);
+    vector<string> words;
+    size_t pos = 0;
+    size_t prev = 0;
+    while((pos = input.find(" ", prev)) != string::npos)
+    {
+        words.emplace_back(input.substr(prev, pos-prev));
+        prev = pos+1;
+    }
+    words.emplace_back(input.substr(prev, input.size() - prev));
 
-    return vowelCount > consonantCount;
+    for (const auto& word : words)
+    {
+        int vowelCount = 0;
+        int consonantCount = 0;
+        
+        bool hasAVowel = false;
+        for (auto v : vowels)
+        {
+            if (word.find(v) != string::npos)
+            {
+                hasAVowel = true;
+                break;
+            }
+        }
+
+        countVC(word, 0, vowelCount, consonantCount, !hasAVowel);
+        totalVCount += vowelCount;
+        totalCCount += consonantCount;
+    }
+    return totalVCount > totalCCount;
 }

@@ -900,3 +900,17 @@ TEST(MoreVowelsThanConsonants, MoreVowelsThanConsonants)
     EXPECT_TRUE(hasMoreVowelsThanConsonants(yes));
     EXPECT_FALSE(hasMoreVowelsThanConsonants(no));
 }
+
+TEST(MoreVowelsThanConsonants, MultipleWords)
+{
+    string line = "one two three";
+    EXPECT_FALSE(hasMoreVowelsThanConsonants(line));
+}
+
+TEST(MoreVowelsThanConsonants, YIsSometimesAVowel)
+{
+    string word = "yikes";
+    EXPECT_FALSE(hasMoreVowelsThanConsonants(word));
+    word = "byy";
+    EXPECT_TRUE(hasMoreVowelsThanConsonants(word));
+}
