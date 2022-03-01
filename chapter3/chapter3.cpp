@@ -184,6 +184,20 @@ void sortEvensFirstThenOddsRecursiveInternal(vector<int>&input, vector<int>& eve
 
     sortEvensFirstThenOddsRecursiveInternal(input, evens, odds);
 }
+
+void reverseStringRecursive(string& input, int i, int j)
+{
+    if (i >= j)
+    {
+        return;
+    }
+
+    auto temp = input[i];
+    input[i] = input[j];
+    input[j] = temp;
+
+    reverseStringRecursive(input, i + 1, j - 1);
+}
 }
 
 GameEntry::GameEntry(const string& n, int s)
@@ -899,4 +913,13 @@ void sortEvensFirstThenOddsRecursive(vector<int>& input)
 
     sortEvensFirstThenOddsRecursiveInternal(input, evens, odds);
     swap(input, evens);
+}
+
+void reverseString(string& input)
+{
+    if (input.size() < 2)
+    {
+        return;
+    } 
+    reverseStringRecursive(input, 0, static_cast<int>(input.size()) - 1);
 }

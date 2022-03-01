@@ -507,3 +507,5 @@ bool containsSumOf2Earlier(const std::vector<int>& input);
 void sortEvensFirstThenOdds(std::vector<int>& input);
 
 void sortEvensFirstThenOddsRecursive(std::vector<int>& input);
+
+void reverseString(std::string& input);

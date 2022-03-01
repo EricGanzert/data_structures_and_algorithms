@@ -866,3 +866,15 @@ TEST(SortEvensFirstThenOddsTest, SortEvensFirstThenOddsRecursiveTest)
         EXPECT_THAT(myVec[i] % 2, expectedResult[i]);
     }
 }
+
+// C-3.19
+TEST(ReverseStringRecursive, ReverseStringRecursive)
+{
+    string evenNumChars = "eric";
+    reverseString(evenNumChars);
+    EXPECT_THAT(evenNumChars, string("cire"));
+
+    string oddNumChars = "bananas";
+    reverseString(oddNumChars);
+    EXPECT_THAT(oddNumChars, string("sananab"));
+}
