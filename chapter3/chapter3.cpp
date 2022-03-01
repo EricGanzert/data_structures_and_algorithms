@@ -943,3 +943,36 @@ bool isPalendrome(const string& input)
 {
     return charsMatch(input, 0, static_cast<int>(input.size()) - 1);
 }
+
+void countVC(const string& input, int index, int& vowelCount, int& consonantCount)
+{
+    if (index >= static_cast<int>(input.size()) - 1)
+    {
+        return;
+    }
+
+    const string vowels = "aeiouy";
+    const string consonants = "bcdfghjklmnpqrstvwxz";
+
+    if (vowels.find(input[index]) != string::npos)
+    {
+        vowelCount++;
+    }
+    else if (consonants.find(input[index]))
+    {
+        consonantCount++;
+    }
+
+    countVC(input, index + 1, vowelCount, consonantCount);
+}
+
+bool hasMoreVowelsThanConsonants(const string& input)
+{
+    int vowelCount = 0;
+    int consonantCount = 0;
+    int index = 0;
+
+    countVC(input, index, vowelCount, consonantCount);
+
+    return vowelCount > consonantCount;
+}

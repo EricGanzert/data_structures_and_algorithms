@@ -511,3 +511,5 @@ void sortEvensFirstThenOddsRecursive(std::vector<int>& input);
 void reverseString(std::string& input);
 
 bool isPalendrome(const std::string& input);
+
+bool hasMoreVowelsThanConsonants(const std::string& input);

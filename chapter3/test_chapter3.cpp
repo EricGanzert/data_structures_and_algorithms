@@ -890,3 +890,13 @@ TEST(PalendromeTest, PalendromeTest)
     EXPECT_TRUE(isPalendrome(palendrome1));
     EXPECT_TRUE(isPalendrome(palendrome2));
 }
+
+// C-3.21
+TEST(MoreVowelsThanConsonants, MoreVowelsThanConsonants)
+{
+    string yes = "eerie";
+    string no = "west";
+
+    EXPECT_TRUE(hasMoreVowelsThanConsonants(yes));
+    EXPECT_FALSE(hasMoreVowelsThanConsonants(no));
+}
