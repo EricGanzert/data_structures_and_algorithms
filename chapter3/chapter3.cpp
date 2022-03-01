@@ -923,3 +923,23 @@ void reverseString(string& input)
     } 
     reverseStringRecursive(input, 0, static_cast<int>(input.size()) - 1);
 }
+
+bool charsMatch(const string& input, int i, int j)
+{
+    if (i >= j)
+    {
+        return true;
+    }
+
+    if (input[i] != input[j])
+    {
+        return false;
+    }
+
+    return true && charsMatch(input, i + 1, j - 1);
+}
+
+bool isPalendrome(const string& input)
+{
+    return charsMatch(input, 0, static_cast<int>(input.size()) - 1);
+}

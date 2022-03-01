@@ -509,3 +509,5 @@ void sortEvensFirstThenOdds(std::vector<int>& input);
 void sortEvensFirstThenOddsRecursive(std::vector<int>& input);
 
 void reverseString(std::string& input);
+
+bool isPalendrome(const std::string& input);

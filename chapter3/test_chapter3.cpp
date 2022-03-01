@@ -878,3 +878,15 @@ TEST(ReverseStringRecursive, ReverseStringRecursive)
     reverseString(oddNumChars);
     EXPECT_THAT(oddNumChars, string("sananab"));
 }
+
+// C-3.20
+TEST(PalendromeTest, PalendromeTest)
+{
+    string notPalendrome = "eric";
+    string palendrome1 = "racecar";
+    string palendrome2 = "gohangasalamiimalasagnahog";
+
+    EXPECT_FALSE(isPalendrome(notPalendrome));
+    EXPECT_TRUE(isPalendrome(palendrome1));
+    EXPECT_TRUE(isPalendrome(palendrome2));
+}
