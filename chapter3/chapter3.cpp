@@ -794,3 +794,25 @@ void findMinMax(const vector<int>& input, int& min, int& max)
     max = numeric_limits<int>::min();
     findMinMaxInternal(input, min, max, 0);
 }
+
+bool containsSumOf2Earlier(const std::vector<int>& input)
+{
+    unordered_set<int> sums;
+    for (auto i=0u; i<input.size(); i++)
+    {
+        if (sums.count(input[i]))
+        {
+            cout << input[i] << " is a sum of previously elements in this vector" << endl;
+            return true;
+        }
+
+        if (i > 0)
+        {
+            for (auto j=0u; j<i; j++)
+            {
+                sums.insert(input[i] + input[j]);
+            }
+        } 
+    }
+    return false;
+}

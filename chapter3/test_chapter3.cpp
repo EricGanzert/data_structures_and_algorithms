@@ -825,3 +825,19 @@ TEST(FindMinMaxRecursive, FindMinMaxRecursive)
     EXPECT_THAT(min, 1);
     EXPECT_THAT(max, 5);
 }
+
+// C-3.17
+TEST(SumOfEarlier2, SumOfEarlier2)
+{
+    vector<int> myVec = {1, 2};
+    EXPECT_FALSE(containsSumOf2Earlier(myVec));
+
+    myVec = {1, 2, 3};
+    EXPECT_TRUE(containsSumOf2Earlier(myVec));
+
+    myVec = {1, 13, 4, 14, 27};
+    EXPECT_TRUE(containsSumOf2Earlier(myVec));
+
+    myVec = {1, 2, 4, 7, 10, 13};
+    EXPECT_FALSE(containsSumOf2Earlier(myVec));
+}
