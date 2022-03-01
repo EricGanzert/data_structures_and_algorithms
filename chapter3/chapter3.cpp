@@ -812,11 +812,51 @@ bool containsSumOf2Earlier(const vector<int>& input)
     {
         if (sums.count(input[i]))
         {
-            cout << input[i] << " is a sum of previously elements in this vector" << endl;
+            cout << input[i] << " is a sum of previous elements in this vector" << endl;
             return true;
         }
 
         accumulateSums(input, i, 0, sums);
     }
     return false;
+}
+
+void swapIdx(vector<int>& input, int i, int evenIdx)
+{
+    auto temp = input[i];
+    input[i] = input[evenIdx];
+    input[evenIdx] = temp;
+}
+
+void sortEvensFirstThenOdds(vector<int>& input)
+{
+    if (input.size() < 2)
+    {
+        return;
+    }
+
+    auto isEven = [](auto num)
+    {
+        return num % 2 == 0;
+    };
+
+    vector<int> evens;
+    vector<int> odds;
+
+    while(!input.empty())
+    {
+        auto item = input.back();
+        input.pop_back();
+        if (isEven(item))
+        {
+            evens.push_back(item);
+        }
+        else
+        {
+            odds.push_back(item);
+        }
+    }
+
+    evens.insert(evens.end(), odds.begin(), odds.end());
+    swap(input, evens);
 }

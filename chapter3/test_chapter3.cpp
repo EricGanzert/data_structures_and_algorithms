@@ -841,3 +841,16 @@ TEST(SumOfEarlier2, SumOfEarlier2)
     myVec = {1, 2, 4, 7, 10, 13};
     EXPECT_FALSE(containsSumOf2Earlier(myVec));
 }
+
+// C-3.18
+TEST(SortEvensFirstThenOddsTest, SortEvensFirstThenOddsTest)
+{
+    vector<int> myVec = {1, 2, 3, 4, 5, 6, 7};
+    sortEvensFirstThenOdds(myVec);
+    vector<int> expectedResult = {0, 0, 0, 1, 1, 1, 1};
+
+    for (auto i=0u; i<myVec.size(); i++)
+    {
+        EXPECT_THAT(myVec[i] % 2, expectedResult[i]);
+    }
+}
