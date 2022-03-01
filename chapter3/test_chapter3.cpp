@@ -854,3 +854,15 @@ TEST(SortEvensFirstThenOddsTest, SortEvensFirstThenOddsTest)
         EXPECT_THAT(myVec[i] % 2, expectedResult[i]);
     }
 }
+
+TEST(SortEvensFirstThenOddsTest, SortEvensFirstThenOddsRecursiveTest)
+{
+    vector<int> myVec = {1, 2, 3, 4, 5, 6, 7};
+    sortEvensFirstThenOddsRecursive(myVec);
+    vector<int> expectedResult = {0, 0, 0, 1, 1, 1, 1};
+
+    for (auto i=0u; i<myVec.size(); i++)
+    {
+        EXPECT_THAT(myVec[i] % 2, expectedResult[i]);
+    }
+}

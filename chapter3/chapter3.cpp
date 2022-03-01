@@ -151,6 +151,39 @@ void accumulateSums(const vector<int>& input, int i, int j, unordered_set<int>& 
     sums.insert(input[i] + input[j]);
     accumulateSums(input, i, ++j, sums);
 }
+
+void swapIdx(vector<int>& input, int i, int evenIdx)
+{
+    auto temp = input[i];
+    input[i] = input[evenIdx];
+    input[evenIdx] = temp;
+}
+
+void sortEvensFirstThenOddsRecursiveInternal(vector<int>&input, vector<int>& evens, vector<int>& odds)
+{
+    if (input.empty())
+    {
+        return;
+    }
+
+    auto isEven = [](const auto& num)
+    {
+        return num % 2 == 0;
+    };
+
+    auto item = input.back();
+    input.pop_back();
+    if (isEven(item))
+    {
+        evens.push_back(item);
+    }
+    else
+    {
+        odds.push_back(item);
+    }
+
+    sortEvensFirstThenOddsRecursiveInternal(input, evens, odds);
+}
 }
 
 GameEntry::GameEntry(const string& n, int s)
@@ -821,13 +854,6 @@ bool containsSumOf2Earlier(const vector<int>& input)
     return false;
 }
 
-void swapIdx(vector<int>& input, int i, int evenIdx)
-{
-    auto temp = input[i];
-    input[i] = input[evenIdx];
-    input[evenIdx] = temp;
-}
-
 void sortEvensFirstThenOdds(vector<int>& input)
 {
     if (input.size() < 2)
@@ -835,7 +861,7 @@ void sortEvensFirstThenOdds(vector<int>& input)
         return;
     }
 
-    auto isEven = [](auto num)
+    auto isEven = [](const auto& num)
     {
         return num % 2 == 0;
     };
@@ -858,5 +884,19 @@ void sortEvensFirstThenOdds(vector<int>& input)
     }
 
     evens.insert(evens.end(), odds.begin(), odds.end());
+    swap(input, evens);
+}
+
+void sortEvensFirstThenOddsRecursive(vector<int>& input)
+{
+    if (input.size() < 2)
+    {
+        return;
+    }
+
+    vector<int> evens;
+    vector<int> odds;
+
+    sortEvensFirstThenOddsRecursiveInternal(input, evens, odds);
     swap(input, evens);
 }

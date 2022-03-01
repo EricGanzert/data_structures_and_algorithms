@@ -505,3 +505,5 @@ void findMinMax(const std::vector<int>& input, int& min, int& max);
 bool containsSumOf2Earlier(const std::vector<int>& input);
 
 void sortEvensFirstThenOdds(std::vector<int>& input);
+
+void sortEvensFirstThenOddsRecursive(std::vector<int>& input);
