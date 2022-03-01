@@ -761,3 +761,36 @@ void outputAllSubsets(const set<int>& items)
     vector<int> used;
     outputAllSubsetsInternal(used, inputCopy);
 }
+
+void findMinMaxInternal(const vector<int>& input, int& min, int& max, int index)
+{
+    if (index >= input.size())
+    {
+        return;
+    }
+
+    auto item = input[index];
+    if (item < min)
+    {
+        min = item;
+    }
+
+    if (item > max)
+    {
+        max = item;
+    }
+
+    findMinMaxInternal(input, min, max, index+1);
+}
+
+void findMinMax(const vector<int>& input, int& min, int& max)
+{
+    if (input.empty())
+    {
+        return;
+    }
+
+    min = numeric_limits<int>::max();
+    max = numeric_limits<int>::min();
+    findMinMaxInternal(input, min, max, 0);
+}

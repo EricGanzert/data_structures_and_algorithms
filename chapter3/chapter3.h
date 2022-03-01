@@ -499,3 +499,5 @@ private:
 int stringToDigits(const std::string& number);
 
 void outputAllSubsets(const std::set<int>& items);
+
+void findMinMax(const std::vector<int>& input, int& min, int& max);

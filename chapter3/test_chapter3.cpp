@@ -813,3 +813,15 @@ TEST(OutputAllSubsets, OutputAllSubsets)
     set<int> mySet = {1, 2, 3};
     outputAllSubsets(mySet);
 }
+
+// C-3.16
+TEST(FindMinMaxRecursive, FindMinMaxRecursive)
+{
+    vector<int> myVec = {1, 5, 3, 4, 2};
+    int min{};
+    int max{};
+    findMinMax(myVec, min, max);
+
+    EXPECT_THAT(min, 1);
+    EXPECT_THAT(max, 5);
+}
