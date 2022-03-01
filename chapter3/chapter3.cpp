@@ -80,7 +80,77 @@ uint32_t addNTimes(uint32_t toAdd, uint32_t totalTimes, uint32_t& count)
     return toAdd + addNTimes(toAdd, totalTimes, count);
 }
 
+int stringToDigitsInternal(string& number, int exp)
+{
+    if (number.empty())
+    {
+        return 0;
+    }
 
+    constexpr int CharToIntOffset = 48;
+
+    auto digitChar = number.back();
+    number.pop_back();
+
+    int digit = static_cast<int>(digitChar) - CharToIntOffset;
+    auto thisRoundContribution = (static_cast<int>(pow(10, exp)) * digit);
+    return thisRoundContribution + stringToDigitsInternal(number, ++exp);
+}
+
+void outputAllSubsetsInternal(vector<int>& used, set<int>& unused)
+{
+    for (auto i=0u; i<unused.size(); i++)
+    {
+        auto iter = unused.begin();
+        advance(iter, i);
+        auto item = *iter;
+        unused.erase(iter);
+        used.push_back(item);
+
+        for (const auto& i : used)
+        {
+            cout << i << " ";
+        }
+        cout << endl;
+            
+        outputAllSubsetsInternal(used, unused);
+        unused.insert(item);
+        used.pop_back();
+    }
+
+}
+
+void findMinMaxInternal(const vector<int>& input, int& min, int& max, int index)
+{
+    if (index >= input.size())
+    {
+        return;
+    }
+
+    auto item = input[index];
+    if (item < min)
+    {
+        min = item;
+    }
+
+    if (item > max)
+    {
+        max = item;
+    }
+
+    findMinMaxInternal(input, min, max, index+1);
+}
+
+void accumulateSums(const vector<int>& input, int i, int j, unordered_set<int>& sums)
+{
+    if (j >= i)
+    {
+        return;
+    }
+
+    sums.insert(input[i] + input[j]);
+    accumulateSums(input, i, ++j, sums);
+}
 }
 
 GameEntry::GameEntry(const string& n, int s)
@@ -689,23 +759,6 @@ bool TowersOfHanoi::isSolved()
     return true;
 }
 
-int stringToDigitsInternal(string& number, int exp)
-{
-    if (number.empty())
-    {
-        return 0;
-    }
-
-    constexpr int CharToIntOffset = 48;
-
-    auto digitChar = number.back();
-    number.pop_back();
-
-    int digit = static_cast<int>(digitChar) - CharToIntOffset;
-    auto thisRoundContribution = (static_cast<int>(pow(10, exp)) * digit);
-    return thisRoundContribution + stringToDigitsInternal(number, ++exp);
-}
-
 int stringToDigits(const string& number)
 {
     auto numberCopy(number);
@@ -732,29 +785,6 @@ size_t StringLinkedList::countNodesInternal(StringNode* node)
     return 1 + countNodesInternal(node->next);
 }
 
-void outputAllSubsetsInternal(vector<int>& used, set<int>& unused)
-{
-    for (auto i=0u; i<unused.size(); i++)
-    {
-        auto iter = unused.begin();
-        advance(iter, i);
-        auto item = *iter;
-        unused.erase(iter);
-        used.push_back(item);
-
-        for (const auto& i : used)
-        {
-            cout << i << " ";
-        }
-        cout << endl;
-            
-        outputAllSubsetsInternal(used, unused);
-        unused.insert(item);
-        used.pop_back();
-    }
-
-}
-
 void outputAllSubsets(const set<int>& items)
 {
     auto inputCopy(items);
@@ -762,26 +792,6 @@ void outputAllSubsets(const set<int>& items)
     outputAllSubsetsInternal(used, inputCopy);
 }
 
-void findMinMaxInternal(const vector<int>& input, int& min, int& max, int index)
-{
-    if (index >= input.size())
-    {
-        return;
-    }
-
-    auto item = input[index];
-    if (item < min)
-    {
-        min = item;
-    }
-
-    if (item > max)
-    {
-        max = item;
-    }
-
-    findMinMaxInternal(input, min, max, index+1);
-}
 
 void findMinMax(const vector<int>& input, int& min, int& max)
 {
@@ -795,7 +805,7 @@ void findMinMax(const vector<int>& input, int& min, int& max)
     findMinMaxInternal(input, min, max, 0);
 }
 
-bool containsSumOf2Earlier(const std::vector<int>& input)
+bool containsSumOf2Earlier(const vector<int>& input)
 {
     unordered_set<int> sums;
     for (auto i=0u; i<input.size(); i++)
@@ -806,13 +816,7 @@ bool containsSumOf2Earlier(const std::vector<int>& input)
             return true;
         }
 
-        if (i > 0)
-        {
-            for (auto j=0u; j<i; j++)
-            {
-                sums.insert(input[i] + input[j]);
-            }
-        } 
+        accumulateSums(input, i, 0, sums);
     }
     return false;
 }
