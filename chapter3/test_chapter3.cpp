@@ -945,3 +945,34 @@ TEST(SameListDifferentCursorPosition, AreNotSame)
 
     EXPECT_FALSE(sameListDifferentCursorPosition(listA, listB));
 }
+
+// C-3.23
+TEST(SplitCircleList, SplitCircleList)
+{
+    auto printCircleList = [](auto& list)
+    {
+        auto iter = list.frontNode();
+        do
+        {
+            cout << iter->elem << " ";
+            iter = iter->next;
+        } while(iter != list.frontNode());
+        cout << endl;
+    };
+
+    CircleList<int> myList;
+    for (auto item = 1; item <=6; item++)
+    {
+        myList.add(item);
+    }
+    CircleList<int> half;
+
+    cout << "original List: ";
+    printCircleList(myList);
+    
+    split(myList, half);
+    cout << "list A: ";
+    printCircleList(myList);
+    cout << "list B: ";
+    printCircleList(half);
+}

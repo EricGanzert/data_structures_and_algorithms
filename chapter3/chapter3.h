@@ -365,7 +365,7 @@ public:
         return cursor->next->elem;
     }
 
-    CNode<T> const* frontNode() const
+    CNode<T> * frontNode() const
     {
         return cursor->next;
     }
@@ -375,7 +375,7 @@ public:
         return cursor->elem;
     }
 
-    CNode<T> const* backNode() const
+    CNode<T> * backNode() const
     {
         return cursor;
     }
@@ -438,6 +438,7 @@ public:
         return count;
     }
 private:
+    friend void split(CircleList<T>& list, CircleList<T>& newList);
     CNode<T>* cursor = nullptr;
 };
 
@@ -522,3 +523,7 @@ bool isPalendrome(const std::string& input);
 bool hasMoreVowelsThanConsonants(const std::string& input);
 
 bool sameListDifferentCursorPosition(CircleList<int>& a, CircleList<int>& b);
+
+// list is the list you want to split.
+// mewList is an empty onbject to fill with half the split list
+void split(CircleList<int>& list, CircleList<int>& newList);

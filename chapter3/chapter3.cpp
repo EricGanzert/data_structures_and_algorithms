@@ -1051,3 +1051,33 @@ bool sameListDifferentCursorPosition(CircleList<int>& a, CircleList<int>& b)
 
     return true;
 }
+
+void split(CircleList<int>& list, CircleList<int>& newList)
+{
+    while(!newList.empty())
+    {
+        newList.remove();
+    }
+
+    auto slowRunner = list.backNode();
+    auto fastRunner = list.backNode();
+
+    do
+    {
+        fastRunner = fastRunner->next;
+        if (fastRunner == list.backNode())
+        {
+            break;
+        }
+        fastRunner = fastRunner->next;
+        slowRunner = slowRunner->next;
+    } while(fastRunner != list.backNode());
+    auto halfwayNode = slowRunner;
+
+    auto originalFront = list.cursor->next;
+    newList.cursor = list.cursor;
+    newList.cursor->next = halfwayNode->next;
+    
+    list.cursor = originalFront;
+    halfwayNode->next = list.cursor;
+}
