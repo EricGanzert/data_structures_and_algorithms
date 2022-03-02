@@ -1021,3 +1021,78 @@ TEST(AddMatrix3D, Add3DMatrices)
         }
     }
 }
+
+TEST(MatrixMultiplication, Multiply)
+{
+    Matrix2D a(4, 3);
+    Matrix2D b(3, 3);
+    a.data = {{1, 0, 1},
+              {2, 1, 1},
+              {0, 1, 1},
+              {1, 1, 2}};
+
+    b.data = {{1, 2, 1},
+              {2, 3, 1},
+              {4, 2, 2}};
+
+    Matrix2D expectedResult(4, 3);
+    expectedResult.data = {{5, 4, 3},
+                           {8, 9, 5},
+                           {6, 5, 3},
+                           {11, 9, 6}};
+
+    auto result = a * b;
+    ASSERT_THAT(result.getDimensions(), expectedResult.getDimensions());
+    auto resultDims = result.getDimensions();
+
+    for (auto i=0; i < resultDims.rows; i++)
+    {
+        for (auto j=0; j < resultDims.cols; j++)
+        {
+            ASSERT_THAT(result.data[i][j], expectedResult.data[i][j]);
+        }
+    }
+}
+
+TEST(MatrixMultiplication, ThrowsIfWrongDimensions)
+{
+    Matrix2D a(4, 3);
+    Matrix2D b(2, 3);
+
+    EXPECT_THROW(a * b, runtime_error);
+}
+
+TEST(MatrixAddition, Add)
+{
+    int rows = 5;
+    int cols = 6;
+    Matrix2D a(rows, cols);
+
+    RandomNumberGenerator rng;
+    for (auto i=0; i<rows; i++)
+    {
+        for (auto j=0; j<cols; j++)
+        {
+            a.data[i][j] = rng.getNumber(1, 1000);
+        }
+    }
+
+    auto b = a;
+    auto result = a + b;
+
+    for (auto i=0; i<rows; i++)
+    {
+        for (auto j=0; j<cols; j++)
+        {
+            ASSERT_THAT(result.data[i][j], 2 * a.data[i][j]);
+        }
+    }
+}
+
+TEST(MatrixAddition, ThrowsIfWrongDimensions)
+{
+    Matrix2D a(4, 3);
+    Matrix2D b(2, 3);
+
+    EXPECT_THROW(a + b, runtime_error);
+}

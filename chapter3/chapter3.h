@@ -559,3 +559,22 @@ struct Matrix3D {
 bool operator==(const Matrix3D::Dimensions& left, const Matrix3D::Dimensions& right);
 
 Matrix3D add(const Matrix3D& a, const Matrix3D& b);
+
+struct Matrix2D {
+    Matrix2D(int rows, int cols);
+    ~Matrix2D() = default;
+
+    struct Dimensions {
+        int rows{};
+        int cols{};
+    };
+    Dimensions getDimensions() const;
+
+    std::vector<std::vector<int>> data;
+};
+
+bool operator==(const Matrix2D::Dimensions& left, const Matrix2D::Dimensions& right);
+
+Matrix2D operator*(const Matrix2D& left, const Matrix2D& right);
+
+Matrix2D operator+(const Matrix2D& left, const Matrix2D& right);

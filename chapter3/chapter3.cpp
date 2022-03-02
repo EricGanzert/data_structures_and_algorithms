@@ -1068,7 +1068,7 @@ void split(CircleList<int>& list, CircleList<int>& newList)
 }
 
 Matrix3D::Matrix3D(int rows, int cols, int depth)
-    : data(depth, vector<vector<int>>(rows, vector<int>(cols, 0u)))
+    : data(depth, vector<vector<int>>(rows, vector<int>(cols, 0)))
 {
 }
 
@@ -1119,5 +1119,78 @@ Matrix3D add(const Matrix3D& a, const Matrix3D& b)
         }
     }
 
+    return result;
+}
+
+Matrix2D::Matrix2D(int rows, int cols)
+    : data(rows, vector<int>(cols, 0))
+{
+}
+
+Matrix2D::Dimensions Matrix2D::getDimensions() const
+{
+    Dimensions result;
+    result.rows = static_cast<int>(data.size());
+    if (data.empty())
+    {
+        return result;
+    }
+
+    result.cols = static_cast<int>(data.front().size());
+    return result;
+}
+
+
+bool operator==(const Matrix2D::Dimensions& left, const Matrix2D::Dimensions& right)
+{
+    return left.rows == right.rows
+        && left.cols == right.cols;
+}
+
+Matrix2D operator*(const Matrix2D& left, const Matrix2D& right)
+{
+    auto leftDims = left.getDimensions();
+    auto rightDims = right.getDimensions();
+    if (leftDims.cols != rightDims.rows)
+    {
+        throw runtime_error("can't multiply matrices unless left cols == right rows");
+    }
+
+    Matrix2D result(leftDims.rows, rightDims.cols);
+
+    for (auto i=0; i<leftDims.rows; i++)
+    {
+        for (auto j=0; j<rightDims.cols; j++)
+        {
+            int dotProduct = 0;
+            for (auto elem=0; elem<leftDims.cols; elem++)
+            {
+                dotProduct += left.data[i][elem] * right.data[elem][j];
+            }
+            result.data[i][j] = dotProduct;
+        }
+    }
+
+    return result;
+}
+
+Matrix2D operator+(const Matrix2D& left, const Matrix2D& right)
+{
+    auto leftDims = left.getDimensions();
+    auto rightDims = right.getDimensions();
+
+    if (!(leftDims == rightDims))
+    {
+        throw runtime_error("can't add matrices that have different dimensions");
+    }
+
+    Matrix2D result(leftDims.rows, leftDims.cols);
+    for (auto i = 0; i < leftDims.rows; i++)
+    {
+        for (auto j = 0; j < leftDims.cols; j++)
+        {
+            result.data[i][j] = left.data[i][j] + right.data[i][j];
+        }
+    }
     return result;
 }
