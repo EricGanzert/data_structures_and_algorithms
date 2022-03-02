@@ -1012,3 +1012,42 @@ bool hasMoreVowelsThanConsonants(const string& input)
     }
     return totalVCount > totalCCount;
 }
+
+bool sameListDifferentCursorPosition(CircleList<int>& a, CircleList<int>& b)
+{
+    auto getSortedItems = [](auto& list)
+    {
+        set<int> items;
+        auto start = list.frontNode();
+        items.insert(start->elem);
+        list.advance();
+        while(list.frontNode() != start)
+        {
+            items.insert(list.front());
+            list.advance();
+        }
+        return items;
+    };
+
+    auto aItems = getSortedItems(a);
+    auto bItems = getSortedItems(b);
+
+    if (aItems.size() != bItems.size())
+    {
+        return false;
+    }
+
+    auto aIter = aItems.begin();
+    auto bIter = bItems.begin();
+    for (auto i=0u; i<aItems.size(); i++)
+    {
+        if (*aIter != *bIter)
+        {
+            return false;
+        }
+        advance(aIter, 1);
+        advance(bIter, 1);
+    }
+
+    return true;
+}

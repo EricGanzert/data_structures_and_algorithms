@@ -338,12 +338,9 @@ void removeRandomUntilEmpty(std::vector<int>& array);
 
 template<typename T>
 class CNode {
-private:
+public:
     T elem{};
     CNode<T>* next = nullptr;
-
-    template<typename U>
-    friend class CircleList;
 };
 
 template<typename T>
@@ -368,9 +365,19 @@ public:
         return cursor->next->elem;
     }
 
+    CNode<T> const* frontNode() const
+    {
+        return cursor->next;
+    }
+
     const T& back()
     {
         return cursor->elem;
+    }
+
+    CNode<T> const* backNode() const
+    {
+        return cursor;
     }
 
     void advance()
@@ -513,3 +520,5 @@ void reverseString(std::string& input);
 bool isPalendrome(const std::string& input);
 
 bool hasMoreVowelsThanConsonants(const std::string& input);
+
+bool sameListDifferentCursorPosition(CircleList<int>& a, CircleList<int>& b);

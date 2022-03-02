@@ -914,3 +914,34 @@ TEST(MoreVowelsThanConsonants, YIsSometimesAVowel)
     word = "byy";
     EXPECT_TRUE(hasMoreVowelsThanConsonants(word));
 }
+
+// C-3.22
+TEST(SameListDifferentCursorPosition, AreSame)
+{
+    CircleList<int> listA;
+    listA.add(1);
+    listA.add(2);
+    listA.add(3);
+
+    CircleList<int> listB;
+    listB.add(2);
+    listB.add(3);
+    listB.add(1);
+
+    EXPECT_TRUE(sameListDifferentCursorPosition(listA, listB));
+}
+
+TEST(SameListDifferentCursorPosition, AreNotSame)
+{
+    CircleList<int> listA;
+    listA.add(1);
+    listA.add(2);
+    listA.add(3);
+
+    CircleList<int> listB;
+    listB.add(5);
+    listB.add(6);
+    listB.add(7);
+
+    EXPECT_FALSE(sameListDifferentCursorPosition(listA, listB));
+}
