@@ -4,7 +4,6 @@
 #include <iomanip>
 #include <iostream>
 #include <numeric>
-#include <random>
 #include <stdexcept>
 #include <unordered_set>
 
@@ -56,20 +55,6 @@ void arrayMaxInternal(const vector<int>& array, int currentIndex, int& currentMa
     currentIndex++;
     arrayMaxInternal(array, currentIndex, currentMax);
 }
-
-class RandomNumberGenerator {
-public:
-    RandomNumberGenerator()
-        : m_rng(m_dev())
-    {}
-    int getNumber(int min, int max) {
-        uniform_int_distribution<mt19937::result_type> dist(min, max);
-        return dist(m_rng);
-    }
-private:
-    random_device m_dev;
-    mt19937 m_rng;
-};
 
 uint32_t addNTimes(uint32_t toAdd, uint32_t totalTimes, uint32_t& count)
 {
@@ -1080,4 +1065,69 @@ void split(CircleList<int>& list, CircleList<int>& newList)
     
     list.cursor = originalFront;
     halfwayNode->next = list.cursor;
+}
+
+Matrix3D::Matrix3D(int rows, int cols, int depth)
+    : data(depth, vector<vector<int>>(rows, vector<int>(cols, 0u)))
+{
+}
+
+void Matrix3D::dimensions(int& rows, int& cols, int& depth) const
+{
+    rows = 0;
+    cols = 0;
+    depth = static_cast<int>(data.size());
+    if (data.empty())
+    {
+        return;
+    }
+
+    rows = static_cast<int>(data.front().size());
+    if (data.front().empty())
+    {
+        return;
+    }
+
+    cols = static_cast<int>(data.front().front().size());
+}
+
+bool operator==(const Matrix3D& left, const Matrix3D& right)
+{
+    int leftR{};
+    int leftC{};
+    int leftD{};
+    left.dimensions(leftR, leftC, leftD);
+
+    int rightR{};
+    int rightC{};
+    int rightD{};
+    right.dimensions(rightR, rightC, rightD);
+
+    return leftR == rightR && leftC == rightC && leftD == rightD;
+}
+
+Matrix3D add(const Matrix3D& a, const Matrix3D& b)
+{
+    if (!(a == b))
+    {
+        throw runtime_error("cannot add Matrices of different sizes");
+    }
+    int rows{};
+    int cols{};
+    int depth{};
+    a.dimensions(rows, cols, depth);
+    Matrix3D result(rows, cols, depth);
+
+    for (auto d = 0; d < depth; d++)
+    {
+        for (auto r = 0; r < rows; r++)
+        {
+            for (auto c = 0; c < cols; c++)
+            {
+                result.data[d][r][c] = a.data[d][r][c] + b.data[d][r][c];
+            }
+        }
+    }
+
+    return result;
 }

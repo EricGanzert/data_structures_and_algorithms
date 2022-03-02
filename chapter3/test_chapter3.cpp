@@ -969,10 +969,58 @@ TEST(SplitCircleList, SplitCircleList)
 
     cout << "original List: ";
     printCircleList(myList);
-    
+
     split(myList, half);
     cout << "list A: ";
     printCircleList(myList);
     cout << "list B: ";
     printCircleList(half);
+}
+
+// P-3.1
+TEST(AddMatrix3D, MatrixDimensions)
+{
+    Matrix3D myMatrix3D(4, 3, 2);
+    int rows{};
+    int cols{};
+    int depth{};
+    myMatrix3D.dimensions(rows, cols, depth);
+    EXPECT_THAT(rows, 4);
+    EXPECT_THAT(cols, 3);
+    EXPECT_THAT(depth, 2);
+}
+
+TEST(AddMatrix3D, Add3DMatrices)
+{
+    int rows = 4;
+    int cols = 3;
+    int depth = 2;
+
+    Matrix3D a(rows, cols, depth);
+    RandomNumberGenerator rng;
+
+    for (auto d = 0; d < depth; d++)
+    {
+        for (auto r = 0; r < rows; r++)
+        {
+            for (auto c = 0; c < cols; c++)
+            {
+                a.data[d][r][c] = rng.getNumber(1, 1000);
+            }
+        }
+    }
+
+    auto b = a;
+    auto sum = add(a, b);
+
+    for (auto d = 0; d < depth; d++)
+    {
+        for (auto r = 0; r < rows; r++)
+        {
+            for (auto c = 0; c < cols; c++)
+            {
+                EXPECT_THAT(sum.data[d][r][c], 2 * a.data[d][r][c]);
+            }
+        }
+    }
 }

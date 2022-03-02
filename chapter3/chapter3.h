@@ -1,8 +1,9 @@
 #include <array>
 #include <functional>
+#include <random>
 #include <set>
-#include <unordered_set>
 #include <string>
+#include <unordered_set>
 #include <vector>
 
 class GameEntry {
@@ -527,3 +528,28 @@ bool sameListDifferentCursorPosition(CircleList<int>& a, CircleList<int>& b);
 // list is the list you want to split.
 // mewList is an empty onbject to fill with half the split list
 void split(CircleList<int>& list, CircleList<int>& newList);
+
+class RandomNumberGenerator {
+public:
+    RandomNumberGenerator()
+        : m_rng(m_dev())
+    {}
+    int getNumber(int min, int max) {
+        std::uniform_int_distribution<std::mt19937::result_type> dist(min, max);
+        return dist(m_rng);
+    }
+private:
+    std::random_device m_dev;
+    std::mt19937 m_rng;
+};
+
+struct Matrix3D {
+    Matrix3D(int rows, int cols, int depth);
+    ~Matrix3D() = default;
+
+    void dimensions(int& rows, int& cols, int& depth) const;
+    std::vector<std::vector<std::vector<int>>> data;
+};
+
+bool operator==(const Matrix3D& left, const Matrix3D& right);
+Matrix3D add(const Matrix3D& a, const Matrix3D& b);
