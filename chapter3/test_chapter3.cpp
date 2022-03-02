@@ -981,13 +981,10 @@ TEST(SplitCircleList, SplitCircleList)
 TEST(AddMatrix3D, MatrixDimensions)
 {
     Matrix3D myMatrix3D(4, 3, 2);
-    int rows{};
-    int cols{};
-    int depth{};
-    myMatrix3D.dimensions(rows, cols, depth);
-    EXPECT_THAT(rows, 4);
-    EXPECT_THAT(cols, 3);
-    EXPECT_THAT(depth, 2);
+    auto dims = myMatrix3D.getDimensions();
+    EXPECT_THAT(dims.rows, 4);
+    EXPECT_THAT(dims.cols, 3);
+    EXPECT_THAT(dims.depth, 2);
 }
 
 TEST(AddMatrix3D, Add3DMatrices)

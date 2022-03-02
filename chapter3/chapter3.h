@@ -547,9 +547,15 @@ struct Matrix3D {
     Matrix3D(int rows, int cols, int depth);
     ~Matrix3D() = default;
 
-    void dimensions(int& rows, int& cols, int& depth) const;
+    struct Dimensions {
+        int rows{};
+        int cols{};
+        int depth{};
+    };
+    Dimensions getDimensions() const;
     std::vector<std::vector<std::vector<int>>> data;
 };
 
-bool operator==(const Matrix3D& left, const Matrix3D& right);
+bool operator==(const Matrix3D::Dimensions& left, const Matrix3D::Dimensions& right);
+
 Matrix3D add(const Matrix3D& a, const Matrix3D& b);

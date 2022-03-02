@@ -1072,57 +1072,47 @@ Matrix3D::Matrix3D(int rows, int cols, int depth)
 {
 }
 
-void Matrix3D::dimensions(int& rows, int& cols, int& depth) const
+Matrix3D::Dimensions Matrix3D::getDimensions() const
 {
-    rows = 0;
-    cols = 0;
-    depth = static_cast<int>(data.size());
+    Dimensions result;
+    result.depth = static_cast<int>(data.size());
     if (data.empty())
     {
-        return;
+        return result;
     }
 
-    rows = static_cast<int>(data.front().size());
+    result.rows = static_cast<int>(data.front().size());
     if (data.front().empty())
     {
-        return;
+        return result;
     }
 
-    cols = static_cast<int>(data.front().front().size());
+    result.cols = static_cast<int>(data.front().front().size());
+    return result;
 }
 
-bool operator==(const Matrix3D& left, const Matrix3D& right)
+bool operator==(const Matrix3D::Dimensions& left, const Matrix3D::Dimensions& right)
 {
-    int leftR{};
-    int leftC{};
-    int leftD{};
-    left.dimensions(leftR, leftC, leftD);
-
-    int rightR{};
-    int rightC{};
-    int rightD{};
-    right.dimensions(rightR, rightC, rightD);
-
-    return leftR == rightR && leftC == rightC && leftD == rightD;
+    return left.depth == right.depth 
+        && left.rows == right.rows 
+        && left.cols == right.cols;
 }
 
 Matrix3D add(const Matrix3D& a, const Matrix3D& b)
 {
-    if (!(a == b))
+    if (!(a.getDimensions() == b.getDimensions()))
     {
         throw runtime_error("cannot add Matrices of different sizes");
     }
-    int rows{};
-    int cols{};
-    int depth{};
-    a.dimensions(rows, cols, depth);
-    Matrix3D result(rows, cols, depth);
 
-    for (auto d = 0; d < depth; d++)
+    auto dims = a.getDimensions();
+    Matrix3D result(dims.rows, dims.cols, dims.depth);
+
+    for (auto d = 0; d < dims.depth; d++)
     {
-        for (auto r = 0; r < rows; r++)
+        for (auto r = 0; r < dims.rows; r++)
         {
-            for (auto c = 0; c < cols; c++)
+            for (auto c = 0; c < dims.cols; c++)
             {
                 result.data[d][r][c] = a.data[d][r][c] + b.data[d][r][c];
             }
