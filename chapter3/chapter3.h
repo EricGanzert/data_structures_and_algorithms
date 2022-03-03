@@ -2,7 +2,9 @@
 #include <functional>
 #include <random>
 #include <set>
+#include <stdexcept>
 #include <string>
+#include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
@@ -68,7 +70,7 @@ public:
     int numScores() const override;
 private:
     Node<GameEntry>* getPreceeding(Node<GameEntry>* node);
-    size_t count = 0;
+    int count = 0;
     Node<GameEntry>* head = nullptr;
 };
 
@@ -186,7 +188,7 @@ const T& DLinkedList<T>::front() const
 {
     if (empty())
     {
-        throw runtime_error("tried to get front element of an empty list");
+        throw std::runtime_error("tried to get front element of an empty list");
     }
     return header->next->elem;
 }
@@ -196,7 +198,7 @@ DNode<T>* DLinkedList<T>::frontNode()
 {
     if (empty())
     {
-        throw runtime_error("tried to get front element of an empty list");
+        throw std::runtime_error("tried to get front element of an empty list");
     }
     return header->next;
 }
@@ -206,7 +208,7 @@ const T& DLinkedList<T>::back() const
 {
     if (empty())
     {
-        throw runtime_error("tried to get back element of an empty list");
+        throw std::runtime_error("tried to get back element of an empty list");
     }
     return trailer->prev->elem;
 }
@@ -216,7 +218,7 @@ DNode<T>* DLinkedList<T>::backNode()
 {
     if (empty())
     {
-        throw runtime_error("tried to get front element of an empty list");
+        throw std::runtime_error("tried to get front element of an empty list");
     }
     return trailer->prev;
 }
@@ -262,7 +264,7 @@ void DLinkedList<T>::removeFront()
 {
     if (empty())
     {
-        throw runtime_error("tried to remove front from an empty list");
+        throw std::runtime_error("tried to remove front from an empty list");
     }
     remove(header->next);
 }
@@ -272,7 +274,7 @@ void DLinkedList<T>::removeBack()
 {
     if (empty())
     {
-        throw runtime_error("tried to remove back from an empty list");
+        throw std::runtime_error("tried to remove back from an empty list");
     }
     remove(trailer->prev);
 }
@@ -282,7 +284,7 @@ T DLinkedList<T>::middleElement()
 {
     if (empty())
     {
-        throw runtime_error("there is no middle element for an empty list");
+        throw std::runtime_error("there is no middle element for an empty list");
     }
 
     DNode<T>* back = trailer->prev;
@@ -407,7 +409,7 @@ public:
     {
         if (empty())
         {
-            throw runtime_error("cannot advance an empty list");
+            throw std::runtime_error("cannot advance an empty list");
         }
 
         cursor = cursor->next;
@@ -430,7 +432,7 @@ public:
     {
         if (empty())
         {
-            throw runtime_error("cannot remove from an empty list");
+            throw std::runtime_error("cannot remove from an empty list");
         }
 
         CNode<T>* toRemove = cursor->next;
@@ -461,7 +463,9 @@ public:
         return count;
     }
 private:
-    friend void split(CircleList<T>& list, CircleList<T>& newList);
+    template<typename U>
+    friend void split(CircleList<U>& list, CircleList<U>& newList);
+
     CNode<T>* cursor = nullptr;
 };
 
@@ -549,7 +553,36 @@ bool sameListDifferentCursorPosition(CircleList<int>& a, CircleList<int>& b);
 
 // list is the list you want to split.
 // mewList is an empty onbject to fill with half the split list
-void split(CircleList<int>& list, CircleList<int>& newList);
+template<typename T>
+void split(CircleList<T>& list, CircleList<T>& newList)
+{
+    while(!newList.empty())
+    {
+        newList.remove();
+    }
+
+    auto slowRunner = list.backNode();
+    auto fastRunner = list.backNode();
+
+    do
+    {
+        fastRunner = fastRunner->next;
+        if (fastRunner == list.backNode())
+        {
+            break;
+        }
+        fastRunner = fastRunner->next;
+        slowRunner = slowRunner->next;
+    } while(fastRunner != list.backNode());
+    auto halfwayNode = slowRunner;
+
+    auto originalFront = list.cursor->next;
+    newList.cursor = list.cursor;
+    newList.cursor->next = halfwayNode->next;
+    
+    list.cursor = originalFront;
+    halfwayNode->next = list.cursor;
+}
 
 class RandomNumberGenerator {
 public:

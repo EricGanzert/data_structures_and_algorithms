@@ -5,6 +5,7 @@
 #include <iostream>
 #include <numeric>
 #include <stdexcept>
+#include <type_traits>
 #include <unordered_set>
 
 using namespace std;
@@ -21,7 +22,7 @@ float arraySum(const vector<float>& row, size_t index)
 
 float recursiveSumInternal(const Matrix& matrix, int index, size_t maxSize)
 {
-    if (index == maxSize - 1)
+    if (index == static_cast<int>(maxSize - 1))
     {
         return arraySum(matrix[index], matrix[index].size()-1);
     }
@@ -43,7 +44,7 @@ void addNodes(StringLinkedList& list, vector<string>& items)
 
 void arrayMaxInternal(const vector<int>& array, int currentIndex, int& currentMax)
 {
-    if (currentIndex >= array.size())
+    if (currentIndex >= static_cast<int>(array.size()))
     {
         return;
     }
@@ -107,7 +108,7 @@ void outputAllSubsetsInternal(vector<int>& used, set<int>& unused)
 
 void findMinMaxInternal(const vector<int>& input, int& min, int& max, int index)
 {
-    if (index >= input.size())
+    if (index >= static_cast<int>(input.size()))
     {
         return;
     }
@@ -135,13 +136,6 @@ void accumulateSums(const vector<int>& input, int i, int j, unordered_set<int>& 
 
     sums.insert(input[i] + input[j]);
     accumulateSums(input, i, ++j, sums);
-}
-
-void swapIdx(vector<int>& input, int i, int evenIdx)
-{
-    auto temp = input[i];
-    input[i] = input[evenIdx];
-    input[evenIdx] = temp;
 }
 
 void sortEvensFirstThenOddsRecursiveInternal(vector<int>&input, vector<int>& evens, vector<int>& odds)
@@ -222,7 +216,7 @@ void Scores::add(const GameEntry& e)
     }
 
     entries.insert(e);
-    while (entries.size() > maxEntries)
+    while (static_cast<int>(entries.size()) > maxEntries)
     {
         entries.erase(--entries.end());
     }
@@ -230,7 +224,7 @@ void Scores::add(const GameEntry& e)
 
 GameEntry Scores::remove(int i)
 {
-    if (i < 0 || i >= entries.size())
+    if (i < 0 || i >= static_cast<int>(entries.size()))
     {
         throw runtime_error("Invalid index");
     }
@@ -245,7 +239,7 @@ GameEntry Scores::remove(int i)
 
 GameEntry Scores::at(int i) const
 {
-    if (i < 0 || i >= entries.size())
+    if (i < 0 || i >= static_cast<int>(entries.size()))
     {
         throw runtime_error("Invalid index");
     }
@@ -386,7 +380,7 @@ GameEntry ScoreLinkedList::at(int i) const
 
 int ScoreLinkedList::numScores() const
 {
-    return static_cast<int>(count);
+    return count;
 }
 
 void transpose(Matrix& matrix)
@@ -473,7 +467,8 @@ size_t StringLinkedList::size()
 
 void recursivelyDefineList(StringLinkedList& list, const vector<string>& items)
 {
-    addNodes(list, vector<string>(items));
+    auto itemsCopy(items);
+    addNodes(list, itemsCopy);
     return;
 }
 
@@ -529,8 +524,8 @@ void TicTacToe::clearBoard()
 
 void TicTacToe::putMark(int i, int j)
 {
-    if (i < 0 || i >= m_board.size()
-        || j < 0 || j >= m_board.front().size())
+    if (i < 0 || i >= static_cast<int>(m_board.size())
+        || j < 0 || j >= static_cast<int>(m_board.front().size()))
     {
         throw runtime_error("index out of range");
     }
@@ -612,7 +607,7 @@ bool findRepeat(const vector<int>& input, int& repeatedItem, int numOccurances)
     for (const auto& item : input)
     {
         seen.insert(item);
-        if (seen.count(item) == numOccurances)
+        if (static_cast<int>(seen.count(item)) == numOccurances)
         {
             repeatedItem = item;
             return true;
@@ -838,7 +833,7 @@ void TowersOfHanoi::print()
         for (const auto& peg : pegs)
         {
             string marker;
-            if (peg.size() >= currentHeight)
+            if (static_cast<int>(peg.size()) >= currentHeight)
             {
                 auto numDashes = m_numDisks - peg[currentHeight-1] + 1;
                 marker = string(numDashes, '-');
@@ -898,7 +893,7 @@ bool TowersOfHanoi::isSolved()
         return false;
     }
 
-    if (pegs[2].size() != m_numDisks)
+    if (static_cast<int>(pegs[2].size()) != m_numDisks)
     {
         return false;
     }
@@ -1160,36 +1155,6 @@ bool sameListDifferentCursorPosition(CircleList<int>& a, CircleList<int>& b)
     }
 
     return true;
-}
-
-void split(CircleList<int>& list, CircleList<int>& newList)
-{
-    while(!newList.empty())
-    {
-        newList.remove();
-    }
-
-    auto slowRunner = list.backNode();
-    auto fastRunner = list.backNode();
-
-    do
-    {
-        fastRunner = fastRunner->next;
-        if (fastRunner == list.backNode())
-        {
-            break;
-        }
-        fastRunner = fastRunner->next;
-        slowRunner = slowRunner->next;
-    } while(fastRunner != list.backNode());
-    auto halfwayNode = slowRunner;
-
-    auto originalFront = list.cursor->next;
-    newList.cursor = list.cursor;
-    newList.cursor->next = halfwayNode->next;
-    
-    list.cursor = originalFront;
-    halfwayNode->next = list.cursor;
 }
 
 Matrix3D::Matrix3D(int rows, int cols, int depth)

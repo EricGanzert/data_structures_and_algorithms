@@ -549,7 +549,7 @@ Polynomial::Polynomial(const vector<Term>& terms, ostream& outs)
     : m_termList([&]{
         decltype(m_termList) t(terms);
         sort(t.begin(), t.end(), greater<>());
-        return move(t);
+        return t;
     }())
     , m_outs(outs)
 {}
