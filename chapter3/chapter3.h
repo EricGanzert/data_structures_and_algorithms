@@ -22,6 +22,8 @@ private:
     int score{};
 };
 
+bool operator==(const GameEntry& left, const GameEntry& right);
+
 class IScores {
 public:
     IScores(int maxEnt = 10);
@@ -49,24 +51,32 @@ private:
     std::set<GameEntry, GameEntry::ScoreCompare> entries;
 };
 
+template<typename T>
+struct Node {
+    T elem;
+    Node<T>* next = nullptr;
+};
+
+class ScoreLinkedList : IScores{
+public:
+    ScoreLinkedList(int maxEnt = 10);
+    ~ScoreLinkedList() = default;
+
+    void add(const GameEntry& e) override;
+    GameEntry remove(int i) override;
+    GameEntry at(int i) const override;
+    int numScores() const override;
+private:
+    Node<GameEntry>* getPreceeding(Node<GameEntry>* node);
+    size_t count = 0;
+    Node<GameEntry>* head = nullptr;
+};
+
 using Matrix = std::vector<std::vector<float>>;
 
 void transpose(Matrix& matrix);
 
 float recursiveSum(const Matrix& matrix);
-
-class StringNode {
-public:
-    std::string element() const
-    {
-        return elem;
-    }
-private:
-    std::string elem;
-    StringNode* next;
-
-    friend class StringLinkedList;
-};
 
 class StringLinkedList {
 public:
@@ -78,7 +88,7 @@ public:
     void addFront(const std::string& e);
     void removeFront();
     // returns a pointer to the second to last node
-    StringNode* penultimate();
+    Node<std::string>* penultimate();
     void reverseRecursive();
     void reverse();
     void print();
@@ -89,11 +99,11 @@ public:
     void concatenate(StringLinkedList& toConsume);
     void swapNodes(const std::string& a, const std::string& b);
 private:
-    void reverseNodesInternal(StringNode* prev, StringNode* node);
-    void swapNodesInternal(StringNode* a, StringNode* b);
+    void reverseNodesInternal(Node<std::string>* prev, Node<std::string>* node);
+    void swapNodesInternal(Node<std::string>* a, Node<std::string>* b);
     // C-3.14
-    size_t countNodesInternal(StringNode* node);
-    StringNode* head;
+    size_t countNodesInternal(Node<std::string>* node);
+    Node<std::string>* head;
     size_t numElements = 0;
 };
 

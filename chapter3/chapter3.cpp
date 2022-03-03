@@ -198,6 +198,12 @@ int GameEntry::getScore() const
     return score;
 }
 
+bool operator==(const GameEntry& left, const GameEntry& right)
+{
+    return left.getName() == right.getName()
+        && left.getScore() == right.getScore();
+}
+
 IScores::IScores(int maxEnt)
     : maxEntries(maxEnt)
 {
@@ -269,6 +275,120 @@ int Scores::numScores() const
     return static_cast<int>(entries.size());
 }
 
+ScoreLinkedList::ScoreLinkedList(int maxEnt)
+    : IScores(maxEnt)
+{
+}
+
+void ScoreLinkedList::add(const GameEntry& e)
+{
+    // 1. insert a new node with game entry in order of score
+    if (head == nullptr)
+    {
+        head = new Node<GameEntry>;
+        head->elem = e;
+        head->next = nullptr;
+        count++;
+        return;
+    }
+
+    auto iter = head;
+    while(iter->next != nullptr)
+    {
+        if (iter->elem.getScore() < e.getScore() || iter->next->elem.getScore() < e.getScore())
+        {
+            break;
+        }
+        iter = iter->next;
+    }
+
+    auto newEntry = new Node<GameEntry>;
+    newEntry->elem = e;
+
+    if (iter == head)
+    {
+        if (e.getScore() > head->elem.getScore())
+        {
+            head = newEntry;
+            newEntry->next = iter;
+            count++;
+            return;
+        }
+        else if (count == 1)
+        {
+            head->next = newEntry;
+            newEntry->next = nullptr;
+            count++;
+            return;
+        }
+    }
+
+    // put the new node just after iter
+    newEntry->next = iter->next;
+    iter->next = newEntry;
+    count++;
+
+    // 2. if we have reached limit of scores remove the last one of the list
+    if (count > maxEntries)
+    {
+        while(iter->next != nullptr)
+        {
+            iter = iter->next;
+        }
+
+        auto newLast = getPreceeding(iter);
+        newLast->next = nullptr;
+        delete iter;
+        count--;
+    }
+}
+
+Node<GameEntry>* ScoreLinkedList::getPreceeding(Node<GameEntry>* node)
+{
+    if (head == nullptr)
+    {
+        return nullptr;
+    }
+
+    auto iter = head;
+    while(iter != nullptr && iter->next != node)
+    {
+        iter = iter->next;
+    }
+
+    if (iter == nullptr)
+    {
+        throw runtime_error("could not find preceeding node");
+    }
+
+    return iter;
+}
+
+GameEntry ScoreLinkedList::remove(int /* i */)
+{
+    return GameEntry{};
+}
+
+GameEntry ScoreLinkedList::at(int i) const
+{
+    if (head == nullptr || i >= count)
+    {
+        throw runtime_error("invalid call to at()");
+    }
+
+    auto iter = head;
+    for (auto iterCount = 0; iterCount < i; iterCount++)
+    {
+        iter = iter->next;
+    }
+    return iter->elem;
+}
+
+int ScoreLinkedList::numScores() const
+{
+    return static_cast<int>(count);
+}
+
 void transpose(Matrix& matrix)
 {
     auto rows = matrix.size();
@@ -331,7 +451,7 @@ const string& StringLinkedList::front() const
 
 void StringLinkedList::addFront(const string& e)
 {
-    StringNode* v = new StringNode;
+    Node<std::string>* v = new Node<std::string>;
     v->elem = e;
     v->next = head;
     head = v;
@@ -340,7 +460,7 @@ void StringLinkedList::addFront(const string& e)
 
 void StringLinkedList::removeFront()
 {
-    StringNode* old = head;
+    Node<std::string>* old = head;
     head = old->next;
     delete old;
     numElements--;
@@ -357,7 +477,7 @@ void recursivelyDefineList(StringLinkedList& list, const vector<string>& items)
     return;
 }
 
-StringNode* StringLinkedList::penultimate()
+Node<std::string>* StringLinkedList::penultimate()
 {
     if (numElements < 2)
     {
@@ -563,7 +683,7 @@ void StringLinkedList::reverseRecursive()
     reverseNodesInternal(nullptr, head);
 }
 
-void StringLinkedList::reverseNodesInternal(StringNode* prev, StringNode* node)
+void StringLinkedList::reverseNodesInternal(Node<std::string>* prev, Node<std::string>* node)
 {
     if (node->next == nullptr)
     {
@@ -584,8 +704,8 @@ void StringLinkedList::reverse()
         return;
     }
 
-    StringNode* prev = nullptr;
-    StringNode* node = head;
+    Node<std::string>* prev = nullptr;
+    Node<std::string>* node = head;
 
     while(node != nullptr)
     {
@@ -649,7 +769,7 @@ void StringLinkedList::swapNodes(const string& a, const string& b)
     swapNodesInternal(firstArg, secondArg);
 }
 
-void StringLinkedList::swapNodesInternal(StringNode* a, StringNode* b)
+void StringLinkedList::swapNodesInternal(Node<std::string>* a, Node<std::string>* b)
 {
     if (!(a && b))
     {
@@ -661,9 +781,9 @@ void StringLinkedList::swapNodesInternal(StringNode* a, StringNode* b)
         return;
     }
 
-    auto findPrev = [&](StringNode* target)
+    auto findPrev = [&](Node<std::string>* target)
     {
-        StringNode* result = nullptr;
+        Node<std::string>* result = nullptr;
         if (target == head)
         {
             return result;
@@ -812,7 +932,7 @@ size_t StringLinkedList::countNodes()
     return countNodesInternal(head);
 }
 
-size_t StringLinkedList::countNodesInternal(StringNode* node)
+size_t StringLinkedList::countNodesInternal(Node<std::string>* node)
 {
     if (node->next == nullptr)
     {

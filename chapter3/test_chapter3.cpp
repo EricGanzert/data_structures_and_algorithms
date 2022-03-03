@@ -247,7 +247,7 @@ TEST(SinglyLinkedList, Penultimate)
 
     auto secondToLast = myList.penultimate();
     ASSERT_NE(secondToLast, nullptr);
-    EXPECT_THAT(secondToLast->element(), Eq(string("B")));
+    EXPECT_THAT(secondToLast->elem, Eq(string("B")));
 }
 
 // R-3.8
@@ -1095,4 +1095,109 @@ TEST(MatrixAddition, ThrowsIfWrongDimensions)
     Matrix2D b(2, 3);
 
     EXPECT_THROW(a + b, runtime_error);
+}
+
+TEST(GameEntryLinkedList, AddScoresInOrder)
+{
+    ScoreLinkedList myList(4);
+    myList.add(GameEntry("A", 110));
+    myList.add(GameEntry("B", 100));
+    myList.add(GameEntry("C", 90));
+
+    ASSERT_THAT(myList.numScores(), 3);
+    EXPECT_THAT(myList.at(0), GameEntry("A", 110));
+    EXPECT_THAT(myList.at(1), GameEntry("B", 100));
+    EXPECT_THAT(myList.at(2), GameEntry("C", 90));
+}
+
+TEST(GameEntryLinkedList, AddScoresOutOfOrder)
+{
+    ScoreLinkedList myList(4);
+    myList.add(GameEntry("A", 110));
+    myList.add(GameEntry("C", 90));
+    myList.add(GameEntry("B", 100));
+
+    ASSERT_THAT(myList.numScores(), 3);
+    EXPECT_THAT(myList.at(0), GameEntry("A", 110));
+    EXPECT_THAT(myList.at(1), GameEntry("B", 100));
+    EXPECT_THAT(myList.at(2), GameEntry("C", 90));
+}
+
+TEST(GameEntryLinkedList, AddScoresReplaceHead)
+{
+    ScoreLinkedList myList(3);
+    myList.add(GameEntry("B", 90));
+    myList.add(GameEntry("A", 100));
+
+    ASSERT_THAT(myList.numScores(), 2);
+    EXPECT_THAT(myList.at(0), GameEntry("A", 100));
+    EXPECT_THAT(myList.at(1), GameEntry("B", 90));
+}
+
+TEST(GameEntryLinkedList, AddScoresReplaceHeadWithExtras)
+{
+    ScoreLinkedList myList(4);
+    myList.add(GameEntry("B", 100));
+    myList.add(GameEntry("C", 90));
+    myList.add(GameEntry("A", 110));
+
+    ASSERT_THAT(myList.numScores(), 3);
+    EXPECT_THAT(myList.at(0), GameEntry("A", 110));
+    EXPECT_THAT(myList.at(1), GameEntry("B", 100));
+    EXPECT_THAT(myList.at(2), GameEntry("C", 90));
+}
+
+TEST(GameEntryLinkedList, AddScoresUpToLimit)
+{
+    ScoreLinkedList myList(3);
+    myList.add(GameEntry("A", 110));
+    myList.add(GameEntry("B", 100));
+    myList.add(GameEntry("C", 90));
+
+    ASSERT_THAT(myList.numScores(), 3);
+    EXPECT_THAT(myList.at(0), GameEntry("A", 110));
+    EXPECT_THAT(myList.at(1), GameEntry("B", 100));
+    EXPECT_THAT(myList.at(2), GameEntry("C", 90));
+}
+
+TEST(GameEntryLinkedList, AddScoresPastLimit)
+{
+    ScoreLinkedList myList(3);
+    myList.add(GameEntry("A", 110));
+    myList.add(GameEntry("B", 100));
+    myList.add(GameEntry("C", 90));
+    myList.add(GameEntry("D", 80));
+
+    ASSERT_THAT(myList.numScores(), 3);
+    EXPECT_THAT(myList.at(0), GameEntry("A", 110));
+    EXPECT_THAT(myList.at(1), GameEntry("B", 100));
+    EXPECT_THAT(myList.at(2), GameEntry("C", 90));
+}
+
+TEST(GameEntryLinkedList, AddScoresPastLimitWithReplace)
+{
+    ScoreLinkedList myList(3);
+    myList.add(GameEntry("A", 110));
+    myList.add(GameEntry("B", 100));
+    myList.add(GameEntry("D", 80));
+    myList.add(GameEntry("C", 90));
+
+    ASSERT_THAT(myList.numScores(), 3);
+    EXPECT_THAT(myList.at(0), GameEntry("A", 110));
+    EXPECT_THAT(myList.at(1), GameEntry("B", 100));
+    EXPECT_THAT(myList.at(2), GameEntry("C", 90));
+}
+
+TEST(GameEntryLinkedList, AddScoresPastLimitWithReplaceHead)
+{
+    ScoreLinkedList myList(3);
+    myList.add(GameEntry("D", 80));
+    myList.add(GameEntry("A", 110));
+    myList.add(GameEntry("B", 100));
+    myList.add(GameEntry("C", 90));
+
+    ASSERT_THAT(myList.numScores(), 3);
+    EXPECT_THAT(myList.at(0), GameEntry("A", 110));
+    EXPECT_THAT(myList.at(1), GameEntry("B", 100));
+    EXPECT_THAT(myList.at(2), GameEntry("C", 90));
 }
