@@ -358,16 +358,45 @@ Node<GameEntry>* ScoreLinkedList::getPreceeding(Node<GameEntry>* node)
     return iter;
 }
 
-GameEntry ScoreLinkedList::remove(int /* i */)
+GameEntry ScoreLinkedList::remove(int i)
 {
-    return GameEntry{};
+    if (count - 1 < i)
+    {
+        throw runtime_error("invalid index in call to remove");
+    }
+
+    GameEntry result{};
+
+    if (i == 0)
+    {
+        auto removeNode = head;
+        head = head->next;
+        result = removeNode->elem;
+        delete removeNode;
+        count--;
+        return result;
+    }
+
+    auto iter = head;
+    for (auto hop = 0; hop < i - 1; hop++)
+    {
+        iter = iter->next;
+    }
+
+    auto removeNode = iter->next;
+    iter->next = removeNode->next;
+    result = removeNode->elem;
+    delete removeNode;
+    count--;
+    
+    return result;
 }
 
 GameEntry ScoreLinkedList::at(int i) const
 {
     if (head == nullptr || i >= count)
     {
-        throw runtime_error("invalid call to at()");
+        throw runtime_error("invalid index in call to at()");
     }
 
     auto iter = head;

@@ -1201,3 +1201,42 @@ TEST(GameEntryLinkedList, AddScoresPastLimitWithReplaceHead)
     EXPECT_THAT(myList.at(1), GameEntry("B", 100));
     EXPECT_THAT(myList.at(2), GameEntry("C", 90));
 }
+
+TEST(GameEntryLinkedList, RemoveMiddle)
+{
+    ScoreLinkedList myList(3);
+    myList.add(GameEntry("A", 110));
+    myList.add(GameEntry("B", 100));
+    myList.add(GameEntry("C", 90));
+
+    myList.remove(1);
+    ASSERT_THAT(myList.numScores(), 2);
+    EXPECT_THAT(myList.at(0), GameEntry("A", 110));
+    EXPECT_THAT(myList.at(1), GameEntry("C", 90));
+}
+
+TEST(GameEntryLinkedList, RemoveHead)
+{
+    ScoreLinkedList myList(3);
+    myList.add(GameEntry("A", 110));
+    myList.add(GameEntry("B", 100));
+    myList.add(GameEntry("C", 90));
+
+    myList.remove(0);
+    ASSERT_THAT(myList.numScores(), 2);
+    EXPECT_THAT(myList.at(0), GameEntry("B", 100));
+    EXPECT_THAT(myList.at(1), GameEntry("C", 90));
+}
+
+TEST(GameEntryLinkedList, RemoveTail)
+{
+    ScoreLinkedList myList(3);
+    myList.add(GameEntry("A", 110));
+    myList.add(GameEntry("B", 100));
+    myList.add(GameEntry("C", 90));
+
+    myList.remove(2);
+    ASSERT_THAT(myList.numScores(), 2);
+    EXPECT_THAT(myList.at(0), GameEntry("A", 110));
+    EXPECT_THAT(myList.at(1), GameEntry("B", 100));
+}
