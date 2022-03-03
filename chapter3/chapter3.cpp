@@ -198,8 +198,13 @@ int GameEntry::getScore() const
     return score;
 }
 
-Scores::Scores(int maxEnt) 
+IScores::IScores(int maxEnt)
     : maxEntries(maxEnt)
+{
+}
+
+Scores::Scores(int maxEnt) 
+    : IScores(maxEnt)
     , entries(GameEntry::chooseLarger)
 {}
 

@@ -22,18 +22,30 @@ private:
     int score{};
 };
 
-class Scores {
+class IScores {
+public:
+    IScores(int maxEnt = 10);
+    ~IScores() = default;
+
+    virtual void add(const GameEntry& e) = 0;
+    virtual GameEntry remove(int i) = 0;
+    virtual GameEntry at(int i) const = 0;
+    virtual int numScores() const = 0;
+protected:
+    int maxEntries{};
+};
+
+class Scores : public IScores {
 public:
     Scores(int maxEnt = 10);
 
-    void add(const GameEntry& e);
-    GameEntry remove(int i);
-    GameEntry at(int i) const;
-    int numScores() const; 
+    void add(const GameEntry& e) override;
+    GameEntry remove(int i) override;
+    GameEntry at(int i) const override;
+    int numScores() const override; 
     int maxEntriesPerPlayer() const;
 private:
     bool hasMaxEntries(const GameEntry& e) const;
-    int maxEntries{};
     std::set<GameEntry, GameEntry::ScoreCompare> entries;
 };
 
