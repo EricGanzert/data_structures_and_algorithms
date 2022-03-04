@@ -1240,3 +1240,149 @@ TEST(GameEntryLinkedList, RemoveTail)
     EXPECT_THAT(myList.at(0), GameEntry("A", 110));
     EXPECT_THAT(myList.at(1), GameEntry("B", 100));
 }
+
+// doubly linked list tests start here
+
+TEST(GameEntryDLinkedList, AddScoresInOrder)
+{
+    ScoreDLinkedList myList(4);
+    myList.add(GameEntry("A", 110));
+    myList.add(GameEntry("B", 100));
+    myList.add(GameEntry("C", 90));
+
+    ASSERT_THAT(myList.numScores(), 3);
+    EXPECT_THAT(myList.at(0), GameEntry("A", 110));
+    EXPECT_THAT(myList.at(1), GameEntry("B", 100));
+    EXPECT_THAT(myList.at(2), GameEntry("C", 90));
+}
+
+TEST(GameEntryDLinkedList, AddScoresOutOfOrder)
+{
+    ScoreDLinkedList myList(4);
+    myList.add(GameEntry("A", 110));
+    myList.add(GameEntry("C", 90));
+    myList.add(GameEntry("B", 100));
+
+    ASSERT_THAT(myList.numScores(), 3);
+    EXPECT_THAT(myList.at(0), GameEntry("A", 110));
+    EXPECT_THAT(myList.at(1), GameEntry("B", 100));
+    EXPECT_THAT(myList.at(2), GameEntry("C", 90));
+}
+
+TEST(GameEntryDLinkedList, AddScoresReplaceHead)
+{
+    ScoreDLinkedList myList(3);
+    myList.add(GameEntry("B", 90));
+    myList.add(GameEntry("A", 100));
+
+    ASSERT_THAT(myList.numScores(), 2);
+    EXPECT_THAT(myList.at(0), GameEntry("A", 100));
+    EXPECT_THAT(myList.at(1), GameEntry("B", 90));
+}
+
+TEST(GameEntryDLinkedList, AddScoresReplaceHeadWithExtras)
+{
+    ScoreDLinkedList myList(4);
+    myList.add(GameEntry("B", 100));
+    myList.add(GameEntry("C", 90));
+    myList.add(GameEntry("A", 110));
+
+    ASSERT_THAT(myList.numScores(), 3);
+    EXPECT_THAT(myList.at(0), GameEntry("A", 110));
+    EXPECT_THAT(myList.at(1), GameEntry("B", 100));
+    EXPECT_THAT(myList.at(2), GameEntry("C", 90));
+}
+
+TEST(GameEntryDLinkedList, AddScoresUpToLimit)
+{
+    ScoreDLinkedList myList(3);
+    myList.add(GameEntry("A", 110));
+    myList.add(GameEntry("B", 100));
+    myList.add(GameEntry("C", 90));
+
+    ASSERT_THAT(myList.numScores(), 3);
+    EXPECT_THAT(myList.at(0), GameEntry("A", 110));
+    EXPECT_THAT(myList.at(1), GameEntry("B", 100));
+    EXPECT_THAT(myList.at(2), GameEntry("C", 90));
+}
+
+TEST(GameEntryDLinkedList, AddScoresPastLimit)
+{
+    ScoreDLinkedList myList(3);
+    myList.add(GameEntry("A", 110));
+    myList.add(GameEntry("B", 100));
+    myList.add(GameEntry("C", 90));
+    myList.add(GameEntry("D", 80));
+
+    ASSERT_THAT(myList.numScores(), 3);
+    EXPECT_THAT(myList.at(0), GameEntry("A", 110));
+    EXPECT_THAT(myList.at(1), GameEntry("B", 100));
+    EXPECT_THAT(myList.at(2), GameEntry("C", 90));
+}
+
+TEST(GameEntryDLinkedList, AddScoresPastLimitWithReplace)
+{
+    ScoreDLinkedList myList(3);
+    myList.add(GameEntry("A", 110));
+    myList.add(GameEntry("B", 100));
+    myList.add(GameEntry("D", 80));
+    myList.add(GameEntry("C", 90));
+
+    ASSERT_THAT(myList.numScores(), 3);
+    EXPECT_THAT(myList.at(0), GameEntry("A", 110));
+    EXPECT_THAT(myList.at(1), GameEntry("B", 100));
+    EXPECT_THAT(myList.at(2), GameEntry("C", 90));
+}
+
+TEST(GameEntryDLinkedList, AddScoresPastLimitWithReplaceHead)
+{
+    ScoreDLinkedList myList(3);
+    myList.add(GameEntry("D", 80));
+    myList.add(GameEntry("A", 110));
+    myList.add(GameEntry("B", 100));
+    myList.add(GameEntry("C", 90));
+
+    ASSERT_THAT(myList.numScores(), 3);
+    EXPECT_THAT(myList.at(0), GameEntry("A", 110));
+    EXPECT_THAT(myList.at(1), GameEntry("B", 100));
+    EXPECT_THAT(myList.at(2), GameEntry("C", 90));
+}
+
+TEST(GameEntryDLinkedList, RemoveMiddle)
+{
+    ScoreDLinkedList myList(3);
+    myList.add(GameEntry("A", 110));
+    myList.add(GameEntry("B", 100));
+    myList.add(GameEntry("C", 90));
+
+    myList.remove(1);
+    ASSERT_THAT(myList.numScores(), 2);
+    EXPECT_THAT(myList.at(0), GameEntry("A", 110));
+    EXPECT_THAT(myList.at(1), GameEntry("C", 90));
+}
+
+TEST(GameEntryDLinkedList, RemoveHead)
+{
+    ScoreDLinkedList myList(3);
+    myList.add(GameEntry("A", 110));
+    myList.add(GameEntry("B", 100));
+    myList.add(GameEntry("C", 90));
+
+    myList.remove(0);
+    ASSERT_THAT(myList.numScores(), 2);
+    EXPECT_THAT(myList.at(0), GameEntry("B", 100));
+    EXPECT_THAT(myList.at(1), GameEntry("C", 90));
+}
+
+TEST(GameEntryDLinkedList, RemoveTail)
+{
+    ScoreDLinkedList myList(3);
+    myList.add(GameEntry("A", 110));
+    myList.add(GameEntry("B", 100));
+    myList.add(GameEntry("C", 90));
+
+    myList.remove(2);
+    ASSERT_THAT(myList.numScores(), 2);
+    EXPECT_THAT(myList.at(0), GameEntry("A", 110));
+    EXPECT_THAT(myList.at(1), GameEntry("B", 100));
+}

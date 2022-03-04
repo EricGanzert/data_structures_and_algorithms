@@ -59,10 +59,23 @@ struct Node {
     Node<T>* next = nullptr;
 };
 
+template<typename T>
+class DNode {
+private:
+    T elem{};
+    DNode<T>* prev = nullptr;
+    DNode<T>* next = nullptr;
+
+    template<typename U>
+    friend class DLinkedList;
+
+    friend class ScoreDLinkedList;
+};
+
 class ScoreLinkedList : IScores{
 public:
     ScoreLinkedList(int maxEnt = 10);
-    ~ScoreLinkedList() = default;
+    ~ScoreLinkedList();
 
     void add(const GameEntry& e) override;
     GameEntry remove(int i) override;
@@ -72,6 +85,26 @@ private:
     Node<GameEntry>* getPreceeding(Node<GameEntry>* node);
     int count = 0;
     Node<GameEntry>* head = nullptr;
+};
+
+class ScoreDLinkedList : IScores{
+public:
+    ScoreDLinkedList(int maxEnt = 10);
+    ~ScoreDLinkedList();
+
+    void add(const GameEntry& e) override;
+    GameEntry remove(int i) override;
+    GameEntry at(int i) const override;
+    int numScores() const override;
+
+    bool empty() const;
+private:
+    DNode<GameEntry>* getRefToIndex(int i);
+    const DNode<GameEntry>* getConstRefToIndex(int i) const;
+
+    DNode<GameEntry>* header = nullptr;
+    DNode<GameEntry>* trailer = nullptr;
+    int count = 0;
 };
 
 using Matrix = std::vector<std::vector<float>>;
@@ -110,17 +143,6 @@ private:
 };
 
 void recursivelyDefineList(StringLinkedList& list, const std::vector<std::string>& items);
-
-template<typename T>
-class DNode {
-private:
-    T elem{};
-    DNode<T>* prev = nullptr;
-    DNode<T>* next = nullptr;
-
-    template<typename U>
-    friend class DLinkedList;
-};
 
 template<typename T>
 class DLinkedList {

@@ -274,6 +274,14 @@ ScoreLinkedList::ScoreLinkedList(int maxEnt)
 {
 }
 
+ScoreLinkedList::~ScoreLinkedList()
+{
+    while(head != nullptr)
+    {
+        remove(0);
+    }
+}
+
 void ScoreLinkedList::add(const GameEntry& e)
 {
     // 1. insert a new node with game entry in order of score
@@ -360,7 +368,7 @@ Node<GameEntry>* ScoreLinkedList::getPreceeding(Node<GameEntry>* node)
 
 GameEntry ScoreLinkedList::remove(int i)
 {
-    if (count - 1 < i)
+    if (head == nullptr || count - 1 < i)
     {
         throw runtime_error("invalid index in call to remove");
     }
@@ -388,7 +396,7 @@ GameEntry ScoreLinkedList::remove(int i)
     result = removeNode->elem;
     delete removeNode;
     count--;
-    
+
     return result;
 }
 
@@ -408,6 +416,139 @@ GameEntry ScoreLinkedList::at(int i) const
 }
 
 int ScoreLinkedList::numScores() const
+{
+    return count;
+}
+
+ScoreDLinkedList::ScoreDLinkedList(int maxEnt)
+    : IScores(maxEnt), header(new DNode<GameEntry>()), trailer(new DNode<GameEntry>())
+{
+    header->next = trailer;
+    trailer->prev = header;
+}
+
+bool ScoreDLinkedList::empty() const
+{
+    return header->next == trailer
+        && trailer->prev == header;
+}
+
+ScoreDLinkedList::~ScoreDLinkedList()
+{
+    while(!empty())
+    {
+        remove(0);
+    }
+}
+
+void ScoreDLinkedList::add(const GameEntry& e)
+{
+    if (empty())
+    {
+        auto newEntry = new DNode<GameEntry>;
+        newEntry->elem = e;
+
+        header->next = newEntry;
+        newEntry->prev = header;
+
+        trailer->prev = newEntry;
+        newEntry->next = trailer;
+
+        count++;
+        return;
+    }
+
+    auto iter = header->next;
+    while(iter != trailer)
+    {
+        if (e.getScore() > iter->elem.getScore())
+        {
+            break;
+        }
+        iter = iter->next;
+    }
+
+    if (count == maxEntries && iter->next == trailer && e.getScore() <= iter->elem.getScore())
+    {
+        // new game entry didn't make the cut
+        return;
+    }
+
+    auto newEntry = new DNode<GameEntry>;
+    newEntry->elem = e;
+
+    auto beforeNewNode = iter->prev;
+
+    beforeNewNode->next = newEntry;
+    newEntry->prev = beforeNewNode;
+
+    newEntry->next = iter;
+    iter->prev = newEntry;
+
+    count++;
+
+    if (count > maxEntries)
+    {
+        auto toRemove = trailer->prev;
+        auto newLastNode = toRemove->prev;
+        newLastNode->next = trailer;
+        trailer->prev = newLastNode;
+        delete toRemove;
+        count--;
+    }
+}
+
+GameEntry ScoreDLinkedList::remove(int i)
+{
+    if (empty() || (count - 1) < i)
+    {
+        throw runtime_error("invalid index in call to at()");
+    }
+
+    auto toRemove = getRefToIndex(i);
+    auto before = toRemove->prev;
+    auto after = toRemove->next;
+
+    before->next = after;
+    after->prev = before;
+    auto result = toRemove->elem;
+
+    delete toRemove;
+    count--;
+
+    return result;
+}
+
+GameEntry ScoreDLinkedList::at(int i) const
+{
+    if (empty() || (count - 1) < i)
+    {
+        throw runtime_error("invalid index in call to at()");
+    }
+
+    return getConstRefToIndex(i)->elem;
+}
+
+const DNode<GameEntry>* ScoreDLinkedList::getConstRefToIndex(int i) const
+{
+    auto closerToFront = i <= count / 2;
+    auto numHops = closerToFront ? i : ((count-1) - i);
+    
+    auto iter = closerToFront ? header->next : trailer->prev;
+    for (auto hop = 0; hop < numHops; hop++)
+    {
+        iter = closerToFront ? iter->next : iter->prev;
+    }
+    return iter;
+}
+
+DNode<GameEntry>* ScoreDLinkedList::getRefToIndex(int i)
+{
+    // to avoid repeating the code written in getConstRefToIndex
+    return const_cast<DNode<GameEntry>*>(getConstRefToIndex(i));
+}
+
+int ScoreDLinkedList::numScores() const
 {
     return count;
 }
