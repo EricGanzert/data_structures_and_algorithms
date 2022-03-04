@@ -1104,7 +1104,7 @@ struct ScoreListTest : public testing::Test
     using ElementType = T;
 };
 
-using MyTypes = testing::Types<ScoreLinkedList, ScoreDLinkedList>;
+using MyTypes = testing::Types<ScoreLinkedList, ScoreDLinkedList, ScoreCLinkedList>;
 TYPED_TEST_SUITE(ScoreListTest, MyTypes);
 
 TYPED_TEST(ScoreListTest, AddScoresInOrder)

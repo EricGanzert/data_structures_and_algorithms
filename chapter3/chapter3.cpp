@@ -553,6 +553,166 @@ int ScoreDLinkedList::numScores() const
     return count;
 }
 
+ScoreCLinkedList::ScoreCLinkedList(int maxEnt)
+    : IScores(maxEnt)
+{
+}
+
+ScoreCLinkedList::~ScoreCLinkedList()
+{
+    while(!empty())
+    {
+        remove(0);
+    }
+}
+
+void ScoreCLinkedList::add(const GameEntry& e)
+{
+    if (empty())
+    {
+        cursor = new DNode<GameEntry>;
+        cursor->elem = e;
+        cursor->next = cursor;
+        cursor->prev = cursor;
+        count++;
+        return;
+    }
+
+    if (count == 1)
+    {
+        auto newEntry = new DNode<GameEntry>;
+        newEntry->elem = e;
+        newEntry->next = cursor;
+        newEntry->prev = cursor;
+        cursor->next = newEntry;
+        cursor->prev = newEntry;
+        count++;
+
+        if (newEntry->elem.getScore() > cursor->elem.getScore())
+        {
+            cursor = newEntry;
+        }
+        return;
+    }
+
+    auto iter = cursor;
+    do
+    {
+        if (e.getScore() > iter->elem.getScore())
+        {
+            break;
+        }
+        iter = iter->next;
+    } while(iter != cursor);
+
+    if (count == maxEntries && iter == cursor && e.getScore() <= iter->prev->elem.getScore())
+    {
+        // new game entry didn't make the cut
+        return;
+    }
+
+    auto newEntry = new DNode<GameEntry>;
+    newEntry->elem = e;
+
+    auto beforeNewNode = iter->prev;
+    beforeNewNode->next = newEntry;
+    newEntry->prev = beforeNewNode;
+
+    newEntry->next = iter;
+    iter->prev = newEntry;
+
+    if (newEntry->elem.getScore() > cursor->elem.getScore())
+    {
+        cursor = newEntry;
+    }
+
+    count++;
+
+    if (count > maxEntries)
+    {
+        auto toRemove = cursor->prev;
+        auto newLastNode = toRemove->prev;
+
+        newLastNode->next = cursor;
+        cursor->prev = newLastNode;
+        delete toRemove;
+        count--;
+    }
+}
+
+GameEntry ScoreCLinkedList::remove(int i)
+{
+    if (empty() || (count - 1) < i)
+    {
+        throw runtime_error("invalid index in call to at()");
+    }
+
+    if (count == 1)
+    {
+        auto result = cursor->elem;
+        delete cursor;
+        cursor = nullptr;
+        count--;
+        return result;
+    }
+
+    auto toRemove = getRefToIndex(i);
+    auto before = toRemove->prev;
+    auto after = toRemove->next;
+
+    before->next = after;
+    after->prev = before;
+    auto result = toRemove->elem;
+
+    if (toRemove == cursor)
+    {
+        cursor = cursor->next;
+    }
+    delete toRemove;
+    count--;
+
+    return result;
+}
+
+GameEntry ScoreCLinkedList::at(int i) const
+{
+    if (empty() || (count - 1) < i)
+    {
+        throw runtime_error("invalid index in call to at()");
+    }
+
+    return getConstRefToIndex(i)->elem;
+}
+
+bool ScoreCLinkedList::empty() const
+{
+    return cursor == nullptr;
+}
+
+int ScoreCLinkedList::numScores() const
+{
+    return count;
+}
+
+const DNode<GameEntry>* ScoreCLinkedList::getConstRefToIndex(int i) const
+{
+    auto closerToFront = i <= count / 2;
+    auto numHops = closerToFront ? i : (count - i);
+    
+    auto iter = cursor;
+    for (auto hop = 0; hop < numHops; hop++)
+    {
+        iter = closerToFront ? iter->next : iter->prev;
+    }
+    return iter;
+}
+
+DNode<GameEntry>* ScoreCLinkedList::getRefToIndex(int i)
+{
+    // to avoid repeating the code written in getConstRefToIndex
+    return const_cast<DNode<GameEntry>*>(getConstRefToIndex(i));
+}
+
 void transpose(Matrix& matrix)
 {
     auto rows = matrix.size();

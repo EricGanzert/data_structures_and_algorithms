@@ -70,6 +70,7 @@ private:
     friend class DLinkedList;
 
     friend class ScoreDLinkedList;
+    friend class ScoreCLinkedList;
 };
 
 class ScoreLinkedList : IScores{
@@ -104,6 +105,26 @@ private:
 
     DNode<GameEntry>* header = nullptr;
     DNode<GameEntry>* trailer = nullptr;
+    int count = 0;
+};
+
+class ScoreCLinkedList : IScores{
+public:
+    ScoreCLinkedList(int maxEnt = 10);
+    ~ScoreCLinkedList();
+
+    void add(const GameEntry& e) override;
+    GameEntry remove(int i) override;
+    GameEntry at(int i) const override;
+    int numScores() const override;
+
+    bool empty() const;
+
+private:
+    DNode<GameEntry>* getRefToIndex(int i);
+    const DNode<GameEntry>* getConstRefToIndex(int i) const;
+    
+    DNode<GameEntry>* cursor = nullptr;
     int count = 0;
 };
 
