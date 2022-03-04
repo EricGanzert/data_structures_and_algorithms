@@ -676,3 +676,29 @@ bool operator==(const Matrix2D::Dimensions& left, const Matrix2D::Dimensions& ri
 Matrix2D operator*(const Matrix2D& left, const Matrix2D& right);
 
 Matrix2D operator+(const Matrix2D& left, const Matrix2D& right);
+
+class SummationPuzzle{
+public:
+    SummationPuzzle(const std::string& addLeft, const std::string& addRight, const std::string& equals);
+    SummationPuzzle() = delete;
+    ~SummationPuzzle() = default;
+
+    bool solve();
+private:
+    int combine(const std::vector<int>& digits);
+    void solveInternal();
+    bool trySolution(const std::vector<int>& used);
+
+    std::string m_addLeft;
+    std::string m_addRight;
+    std::string m_equals;
+
+    std::set<int> m_unused;
+    std::vector<int> m_used;
+
+    std::unordered_map<char, int> m_letterIndexMap;
+    size_t m_numUniqueChars{};
+
+    std::vector<int> m_solution;
+    bool m_solved = false;
+};

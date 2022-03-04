@@ -1272,3 +1272,21 @@ TYPED_TEST(ScoreListTest, RemoveTail)
     EXPECT_THAT(myList.at(0), GameEntry("A", 110));
     EXPECT_THAT(myList.at(1), GameEntry("B", 100));
 }
+
+TEST(SummationPuzzleTest, PotPanBib)
+{
+    SummationPuzzle puzzle("pot", "pan", "bib");
+    EXPECT_TRUE(puzzle.solve());
+}
+
+TEST(SummationPuzzleTest, DogCatPig)
+{
+    SummationPuzzle puzzle("dog", "cat", "pig");
+    EXPECT_TRUE(puzzle.solve());
+}
+
+TEST(SummationPuzzleTest, BoyGirlBaby)
+{
+    SummationPuzzle puzzle("boy", "girl", "baby");
+    EXPECT_TRUE(puzzle.solve());
+}

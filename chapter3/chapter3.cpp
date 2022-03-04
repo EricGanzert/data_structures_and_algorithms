@@ -1614,3 +1614,109 @@ Matrix2D operator+(const Matrix2D& left, const Matrix2D& right)
     }
     return result;
 }
+
+SummationPuzzle::SummationPuzzle(const string& addLeft, const string& addRight, const string& equals)
+    : m_addLeft(addLeft), m_addRight(addRight), m_equals(equals)
+    , m_unused({0, 1, 2, 3, 4, 5, 6, 7, 8, 9})
+    , m_numUniqueChars([&] () {
+        int idx = 0;
+        unordered_set<char> uniqueChars;
+        string allWords = addLeft + addRight + equals;
+        for (char c : allWords)
+        {
+            if (!uniqueChars.count(c))
+            {
+                m_letterIndexMap[c] = idx;
+                idx++;
+                uniqueChars.insert(c);
+            }
+        }
+        return uniqueChars.size();
+    }())
+{
+    cout << "the puzzle is " << addLeft << " + " << addRight << " = " << equals << endl;
+    cout << "there are " << m_numUniqueChars << " unique characters" << endl;
+}
+
+int SummationPuzzle::combine(const vector<int>& digits)
+{
+    auto coefficient = static_cast<int>(pow(10, digits.size() - 1));
+    int result = 0;
+    for (const auto& digit : digits)
+    {
+        result += coefficient * digit;
+        coefficient /= 10;
+    }
+
+    return result;
+}
+
+bool SummationPuzzle::trySolution(const vector<int>& used)
+{
+    if (used.size() != m_numUniqueChars)
+    {
+        throw runtime_error("invalid call to trySolution. Used set is wrong size");
+    }
+
+    vector<int> leftWord;
+    vector<int> rightWord;
+    vector<int> equals;
+
+    for (auto c : m_addLeft)
+    {
+        leftWord.push_back(used[m_letterIndexMap[c]]);
+    }
+
+    for (auto c : m_addRight)
+    {
+        rightWord.push_back(used[m_letterIndexMap[c]]);
+    }
+
+    for (auto c : m_equals)
+    {
+        equals.push_back(used[m_letterIndexMap[c]]);
+    }
+
+    auto solved = combine(leftWord) + combine(rightWord) == combine(equals);
+    if (solved)
+    {
+        cout << "* Puzzle solved! *" << endl;
+        cout << "leftWord in numbers is " << combine(leftWord) << endl;
+        cout << "rightWord in numbers is " << combine(rightWord) << endl;
+        cout << "equals in numbers is " << combine(equals) << endl;
+    }
+    return solved;
+}
+
+void SummationPuzzle::solveInternal()
+{
+    for (auto i=0u; i<m_unused.size(); i++)
+    {
+        auto iter = m_unused.begin();
+        advance(iter, i);
+        auto item = *iter;
+        m_unused.erase(iter);
+        m_used.push_back(item);
+
+        if(m_used.size() == m_numUniqueChars)
+        {
+            if (m_solved |= trySolution(m_used))
+            {
+                return;
+            }
+        }
+
+        if (!m_solved)
+        {
+            solveInternal();
+            m_unused.insert(item);
+            m_used.pop_back();
+        }
+    }
+}
+
+bool SummationPuzzle::solve()
+{
+    solveInternal();
+    return m_solved;
+}
