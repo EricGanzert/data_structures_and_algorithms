@@ -1279,13 +1279,15 @@ TEST(SummationPuzzleTest, PotPanBib)
     EXPECT_TRUE(puzzle.solve());
 }
 
-TEST(SummationPuzzleTest, DogCatPig)
+// disabled because it may take several seconds to complete
+TEST(SummationPuzzleTest, DISABLED_DogCatPig)
 {
     SummationPuzzle puzzle("dog", "cat", "pig");
     EXPECT_TRUE(puzzle.solve());
 }
 
-TEST(SummationPuzzleTest, BoyGirlBaby)
+// disabled because it may take several seconds to complete
+TEST(SummationPuzzleTest, DISABLED_BoyGirlBaby)
 {
     SummationPuzzle puzzle("boy", "girl", "baby");
     EXPECT_TRUE(puzzle.solve());

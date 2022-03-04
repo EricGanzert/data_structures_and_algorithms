@@ -701,4 +701,8 @@ private:
 
     std::vector<int> m_solution;
     bool m_solved = false;
+
+    std::vector<int> m_leftWord;
+    std::vector<int> m_rightWord;
+    std::vector<int> m_equalsWord;
 };

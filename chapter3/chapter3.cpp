@@ -1633,6 +1633,9 @@ SummationPuzzle::SummationPuzzle(const string& addLeft, const string& addRight, 
         }
         return uniqueChars.size();
     }())
+    , m_leftWord(m_addLeft.size(), 0)
+    , m_rightWord(m_addRight.size(), 0)
+    , m_equalsWord(m_equals.size(), 0)
 {
     cout << "the puzzle is " << addLeft << " + " << addRight << " = " << equals << endl;
     cout << "there are " << m_numUniqueChars << " unique characters" << endl;
@@ -1640,12 +1643,12 @@ SummationPuzzle::SummationPuzzle(const string& addLeft, const string& addRight, 
 
 int SummationPuzzle::combine(const vector<int>& digits)
 {
-    auto coefficient = static_cast<int>(pow(10, digits.size() - 1));
+    auto coefficient = 1;
     int result = 0;
-    for (const auto& digit : digits)
+    for (auto digitIter = digits.rbegin(); digitIter<digits.rend(); digitIter++)
     {
-        result += coefficient * digit;
-        coefficient /= 10;
+        result += coefficient * (*digitIter);
+        coefficient *= 10;
     }
 
     return result;
@@ -1658,32 +1661,31 @@ bool SummationPuzzle::trySolution(const vector<int>& used)
         throw runtime_error("invalid call to trySolution. Used set is wrong size");
     }
 
-    vector<int> leftWord;
-    vector<int> rightWord;
-    vector<int> equals;
-
+    int index = 0;
     for (auto c : m_addLeft)
     {
-        leftWord.push_back(used[m_letterIndexMap[c]]);
+        m_leftWord[index++] = used[m_letterIndexMap[c]];
     }
 
+    index = 0;
     for (auto c : m_addRight)
     {
-        rightWord.push_back(used[m_letterIndexMap[c]]);
+        m_rightWord[index++] = used[m_letterIndexMap[c]];
     }
 
+    index = 0;
     for (auto c : m_equals)
     {
-        equals.push_back(used[m_letterIndexMap[c]]);
+        m_equalsWord[index++] = used[m_letterIndexMap[c]];
     }
 
-    auto solved = combine(leftWord) + combine(rightWord) == combine(equals);
+    auto solved = combine(m_leftWord) + combine(m_rightWord) == combine(m_equalsWord);
     if (solved)
     {
         cout << "* Puzzle solved! *" << endl;
-        cout << "leftWord in numbers is " << combine(leftWord) << endl;
-        cout << "rightWord in numbers is " << combine(rightWord) << endl;
-        cout << "equals in numbers is " << combine(equals) << endl;
+        cout << "leftWord in numbers is " << combine(m_leftWord) << endl;
+        cout << "rightWord in numbers is " << combine(m_rightWord) << endl;
+        cout << "equals in numbers is " << combine(m_equalsWord) << endl;
     }
     return solved;
 }
