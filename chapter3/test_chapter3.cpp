@@ -1097,9 +1097,21 @@ TEST(MatrixAddition, ThrowsIfWrongDimensions)
     EXPECT_THROW(a + b, runtime_error);
 }
 
-TEST(GameEntryLinkedList, AddScoresInOrder)
+
+template<typename T>
+struct ScoreListTest : public testing::Test
 {
-    ScoreLinkedList myList(4);
+    using ElementType = T;
+};
+
+using MyTypes = testing::Types<ScoreLinkedList, ScoreDLinkedList>;
+TYPED_TEST_SUITE(ScoreListTest, MyTypes);
+
+TYPED_TEST(ScoreListTest, AddScoresInOrder)
+{
+    using ElementType  = typename TestFixture::ElementType;
+
+    ElementType myList(4);
     myList.add(GameEntry("A", 110));
     myList.add(GameEntry("B", 100));
     myList.add(GameEntry("C", 90));
@@ -1110,9 +1122,11 @@ TEST(GameEntryLinkedList, AddScoresInOrder)
     EXPECT_THAT(myList.at(2), GameEntry("C", 90));
 }
 
-TEST(GameEntryLinkedList, AddScoresOutOfOrder)
+TYPED_TEST(ScoreListTest, AddScoresOutOfOrder)
 {
-    ScoreLinkedList myList(4);
+    using ElementType  = typename TestFixture::ElementType;
+
+    ElementType myList(4);
     myList.add(GameEntry("A", 110));
     myList.add(GameEntry("C", 90));
     myList.add(GameEntry("B", 100));
@@ -1123,9 +1137,11 @@ TEST(GameEntryLinkedList, AddScoresOutOfOrder)
     EXPECT_THAT(myList.at(2), GameEntry("C", 90));
 }
 
-TEST(GameEntryLinkedList, AddScoresReplaceHead)
+TYPED_TEST(ScoreListTest, AddScoresReplaceHead)
 {
-    ScoreLinkedList myList(3);
+    using ElementType  = typename TestFixture::ElementType;
+
+    ElementType myList(3);
     myList.add(GameEntry("B", 90));
     myList.add(GameEntry("A", 100));
 
@@ -1134,9 +1150,11 @@ TEST(GameEntryLinkedList, AddScoresReplaceHead)
     EXPECT_THAT(myList.at(1), GameEntry("B", 90));
 }
 
-TEST(GameEntryLinkedList, AddScoresReplaceHeadWithExtras)
+TYPED_TEST(ScoreListTest, AddScoresReplaceHeadWithExtras)
 {
-    ScoreLinkedList myList(4);
+    using ElementType  = typename TestFixture::ElementType;
+
+    ElementType myList(4);
     myList.add(GameEntry("B", 100));
     myList.add(GameEntry("C", 90));
     myList.add(GameEntry("A", 110));
@@ -1147,9 +1165,11 @@ TEST(GameEntryLinkedList, AddScoresReplaceHeadWithExtras)
     EXPECT_THAT(myList.at(2), GameEntry("C", 90));
 }
 
-TEST(GameEntryLinkedList, AddScoresUpToLimit)
+TYPED_TEST(ScoreListTest, AddScoresUpToLimit)
 {
-    ScoreLinkedList myList(3);
+    using ElementType  = typename TestFixture::ElementType;
+
+    ElementType myList(3);
     myList.add(GameEntry("A", 110));
     myList.add(GameEntry("B", 100));
     myList.add(GameEntry("C", 90));
@@ -1160,9 +1180,11 @@ TEST(GameEntryLinkedList, AddScoresUpToLimit)
     EXPECT_THAT(myList.at(2), GameEntry("C", 90));
 }
 
-TEST(GameEntryLinkedList, AddScoresPastLimit)
+TYPED_TEST(ScoreListTest, AddScoresPastLimit)
 {
-    ScoreLinkedList myList(3);
+    using ElementType  = typename TestFixture::ElementType;
+
+    ElementType myList(3);
     myList.add(GameEntry("A", 110));
     myList.add(GameEntry("B", 100));
     myList.add(GameEntry("C", 90));
@@ -1174,9 +1196,11 @@ TEST(GameEntryLinkedList, AddScoresPastLimit)
     EXPECT_THAT(myList.at(2), GameEntry("C", 90));
 }
 
-TEST(GameEntryLinkedList, AddScoresPastLimitWithReplace)
+TYPED_TEST(ScoreListTest, AddScoresPastLimitWithReplace)
 {
-    ScoreLinkedList myList(3);
+    using ElementType  = typename TestFixture::ElementType;
+
+    ElementType myList(3);
     myList.add(GameEntry("A", 110));
     myList.add(GameEntry("B", 100));
     myList.add(GameEntry("D", 80));
@@ -1188,9 +1212,11 @@ TEST(GameEntryLinkedList, AddScoresPastLimitWithReplace)
     EXPECT_THAT(myList.at(2), GameEntry("C", 90));
 }
 
-TEST(GameEntryLinkedList, AddScoresPastLimitWithReplaceHead)
+TYPED_TEST(ScoreListTest, AddScoresPastLimitWithReplaceHead)
 {
-    ScoreLinkedList myList(3);
+    using ElementType  = typename TestFixture::ElementType;
+
+    ElementType myList(3);
     myList.add(GameEntry("D", 80));
     myList.add(GameEntry("A", 110));
     myList.add(GameEntry("B", 100));
@@ -1202,9 +1228,11 @@ TEST(GameEntryLinkedList, AddScoresPastLimitWithReplaceHead)
     EXPECT_THAT(myList.at(2), GameEntry("C", 90));
 }
 
-TEST(GameEntryLinkedList, RemoveMiddle)
+TYPED_TEST(ScoreListTest, RemoveMiddle)
 {
-    ScoreLinkedList myList(3);
+    using ElementType  = typename TestFixture::ElementType;
+
+    ElementType myList(3);
     myList.add(GameEntry("A", 110));
     myList.add(GameEntry("B", 100));
     myList.add(GameEntry("C", 90));
@@ -1215,9 +1243,11 @@ TEST(GameEntryLinkedList, RemoveMiddle)
     EXPECT_THAT(myList.at(1), GameEntry("C", 90));
 }
 
-TEST(GameEntryLinkedList, RemoveHead)
+TYPED_TEST(ScoreListTest, RemoveHead)
 {
-    ScoreLinkedList myList(3);
+    using ElementType  = typename TestFixture::ElementType;
+
+    ElementType myList(3);
     myList.add(GameEntry("A", 110));
     myList.add(GameEntry("B", 100));
     myList.add(GameEntry("C", 90));
@@ -1228,155 +1258,11 @@ TEST(GameEntryLinkedList, RemoveHead)
     EXPECT_THAT(myList.at(1), GameEntry("C", 90));
 }
 
-TEST(GameEntryLinkedList, RemoveTail)
+TYPED_TEST(ScoreListTest, RemoveTail)
 {
-    ScoreLinkedList myList(3);
-    myList.add(GameEntry("A", 110));
-    myList.add(GameEntry("B", 100));
-    myList.add(GameEntry("C", 90));
+    using ElementType  = typename TestFixture::ElementType;
 
-    myList.remove(2);
-    ASSERT_THAT(myList.numScores(), 2);
-    EXPECT_THAT(myList.at(0), GameEntry("A", 110));
-    EXPECT_THAT(myList.at(1), GameEntry("B", 100));
-}
-
-// doubly linked list tests start here
-
-TEST(GameEntryDLinkedList, AddScoresInOrder)
-{
-    ScoreDLinkedList myList(4);
-    myList.add(GameEntry("A", 110));
-    myList.add(GameEntry("B", 100));
-    myList.add(GameEntry("C", 90));
-
-    ASSERT_THAT(myList.numScores(), 3);
-    EXPECT_THAT(myList.at(0), GameEntry("A", 110));
-    EXPECT_THAT(myList.at(1), GameEntry("B", 100));
-    EXPECT_THAT(myList.at(2), GameEntry("C", 90));
-}
-
-TEST(GameEntryDLinkedList, AddScoresOutOfOrder)
-{
-    ScoreDLinkedList myList(4);
-    myList.add(GameEntry("A", 110));
-    myList.add(GameEntry("C", 90));
-    myList.add(GameEntry("B", 100));
-
-    ASSERT_THAT(myList.numScores(), 3);
-    EXPECT_THAT(myList.at(0), GameEntry("A", 110));
-    EXPECT_THAT(myList.at(1), GameEntry("B", 100));
-    EXPECT_THAT(myList.at(2), GameEntry("C", 90));
-}
-
-TEST(GameEntryDLinkedList, AddScoresReplaceHead)
-{
-    ScoreDLinkedList myList(3);
-    myList.add(GameEntry("B", 90));
-    myList.add(GameEntry("A", 100));
-
-    ASSERT_THAT(myList.numScores(), 2);
-    EXPECT_THAT(myList.at(0), GameEntry("A", 100));
-    EXPECT_THAT(myList.at(1), GameEntry("B", 90));
-}
-
-TEST(GameEntryDLinkedList, AddScoresReplaceHeadWithExtras)
-{
-    ScoreDLinkedList myList(4);
-    myList.add(GameEntry("B", 100));
-    myList.add(GameEntry("C", 90));
-    myList.add(GameEntry("A", 110));
-
-    ASSERT_THAT(myList.numScores(), 3);
-    EXPECT_THAT(myList.at(0), GameEntry("A", 110));
-    EXPECT_THAT(myList.at(1), GameEntry("B", 100));
-    EXPECT_THAT(myList.at(2), GameEntry("C", 90));
-}
-
-TEST(GameEntryDLinkedList, AddScoresUpToLimit)
-{
-    ScoreDLinkedList myList(3);
-    myList.add(GameEntry("A", 110));
-    myList.add(GameEntry("B", 100));
-    myList.add(GameEntry("C", 90));
-
-    ASSERT_THAT(myList.numScores(), 3);
-    EXPECT_THAT(myList.at(0), GameEntry("A", 110));
-    EXPECT_THAT(myList.at(1), GameEntry("B", 100));
-    EXPECT_THAT(myList.at(2), GameEntry("C", 90));
-}
-
-TEST(GameEntryDLinkedList, AddScoresPastLimit)
-{
-    ScoreDLinkedList myList(3);
-    myList.add(GameEntry("A", 110));
-    myList.add(GameEntry("B", 100));
-    myList.add(GameEntry("C", 90));
-    myList.add(GameEntry("D", 80));
-
-    ASSERT_THAT(myList.numScores(), 3);
-    EXPECT_THAT(myList.at(0), GameEntry("A", 110));
-    EXPECT_THAT(myList.at(1), GameEntry("B", 100));
-    EXPECT_THAT(myList.at(2), GameEntry("C", 90));
-}
-
-TEST(GameEntryDLinkedList, AddScoresPastLimitWithReplace)
-{
-    ScoreDLinkedList myList(3);
-    myList.add(GameEntry("A", 110));
-    myList.add(GameEntry("B", 100));
-    myList.add(GameEntry("D", 80));
-    myList.add(GameEntry("C", 90));
-
-    ASSERT_THAT(myList.numScores(), 3);
-    EXPECT_THAT(myList.at(0), GameEntry("A", 110));
-    EXPECT_THAT(myList.at(1), GameEntry("B", 100));
-    EXPECT_THAT(myList.at(2), GameEntry("C", 90));
-}
-
-TEST(GameEntryDLinkedList, AddScoresPastLimitWithReplaceHead)
-{
-    ScoreDLinkedList myList(3);
-    myList.add(GameEntry("D", 80));
-    myList.add(GameEntry("A", 110));
-    myList.add(GameEntry("B", 100));
-    myList.add(GameEntry("C", 90));
-
-    ASSERT_THAT(myList.numScores(), 3);
-    EXPECT_THAT(myList.at(0), GameEntry("A", 110));
-    EXPECT_THAT(myList.at(1), GameEntry("B", 100));
-    EXPECT_THAT(myList.at(2), GameEntry("C", 90));
-}
-
-TEST(GameEntryDLinkedList, RemoveMiddle)
-{
-    ScoreDLinkedList myList(3);
-    myList.add(GameEntry("A", 110));
-    myList.add(GameEntry("B", 100));
-    myList.add(GameEntry("C", 90));
-
-    myList.remove(1);
-    ASSERT_THAT(myList.numScores(), 2);
-    EXPECT_THAT(myList.at(0), GameEntry("A", 110));
-    EXPECT_THAT(myList.at(1), GameEntry("C", 90));
-}
-
-TEST(GameEntryDLinkedList, RemoveHead)
-{
-    ScoreDLinkedList myList(3);
-    myList.add(GameEntry("A", 110));
-    myList.add(GameEntry("B", 100));
-    myList.add(GameEntry("C", 90));
-
-    myList.remove(0);
-    ASSERT_THAT(myList.numScores(), 2);
-    EXPECT_THAT(myList.at(0), GameEntry("B", 100));
-    EXPECT_THAT(myList.at(1), GameEntry("C", 90));
-}
-
-TEST(GameEntryDLinkedList, RemoveTail)
-{
-    ScoreDLinkedList myList(3);
+    ElementType myList(3);
     myList.add(GameEntry("A", 110));
     myList.add(GameEntry("B", 100));
     myList.add(GameEntry("C", 90));
