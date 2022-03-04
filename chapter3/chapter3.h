@@ -706,3 +706,16 @@ private:
     std::vector<int> m_rightWord;
     std::vector<int> m_equalsWord;
 };
+
+class Cipher {
+public:
+    Cipher();
+    ~Cipher() = default;
+
+    std::string encrypt(const std::string& message);
+    std::string decrypt(const std::string& message);
+private:
+    RandomNumberGenerator m_rng;
+    std::unordered_map<char, char> m_encryptionMap;
+    std::unordered_map<char, char> m_decryptionMap;
+};

@@ -1,6 +1,7 @@
 #include "chapter3.h"
 
 #include <algorithm>
+#include <deque>
 #include <iomanip>
 #include <iostream>
 #include <numeric>
@@ -177,6 +178,8 @@ void reverseStringRecursive(string& input, int i, int j)
 
     reverseStringRecursive(input, i + 1, j - 1);
 }
+
+const string g_alphabet = "abcdefghijklmnopqrstuvwxyz 0123456789.,!?:;-/";
 }
 
 GameEntry::GameEntry(const string& n, int s)
@@ -1721,4 +1724,57 @@ bool SummationPuzzle::solve()
 {
     solveInternal();
     return m_solved;
+}
+
+Cipher::Cipher()
+{
+        deque<char> alpha; // easier to remove a middle element
+        for (const auto& c : g_alphabet)
+        {
+            alpha.push_back(c);
+        }
+
+        for (const auto& c : g_alphabet)
+        {
+            auto randomIndex = m_rng.getNumber(0, static_cast<int>(alpha.size()-1));
+            auto randomChar = alpha[randomIndex];
+            alpha.erase(alpha.begin() + randomIndex);
+
+            m_encryptionMap[c] = randomChar;
+            m_decryptionMap[randomChar] = c;
+        }
+}
+
+string Cipher::encrypt(const string& message)
+{
+    string encrypted;
+    for (const auto& c : message)
+    {
+        if (g_alphabet.find(c) == string::npos)
+        {
+            encrypted += c;
+        }
+        else
+        {
+            encrypted += m_encryptionMap[c];
+        }
+    }
+    return encrypted;
+}
+
+string Cipher::decrypt(const string& message)
+{
+    string decrypted;
+    for (const auto& c : message)
+    {
+        if (g_alphabet.find(c) == string::npos)
+        {
+            decrypted += c;
+        }
+        else
+        {
+            decrypted += m_decryptionMap[c];
+        }
+    }
+    return decrypted;
 }

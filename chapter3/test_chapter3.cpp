@@ -1022,6 +1022,7 @@ TEST(AddMatrix3D, Add3DMatrices)
     }
 }
 
+// P-3.2
 TEST(MatrixMultiplication, Multiply)
 {
     Matrix2D a(4, 3);
@@ -1097,7 +1098,6 @@ TEST(MatrixAddition, ThrowsIfWrongDimensions)
     EXPECT_THROW(a + b, runtime_error);
 }
 
-
 template<typename T>
 struct ScoreListTest : public testing::Test
 {
@@ -1107,6 +1107,7 @@ struct ScoreListTest : public testing::Test
 using MyTypes = testing::Types<ScoreLinkedList, ScoreDLinkedList, ScoreCLinkedList>;
 TYPED_TEST_SUITE(ScoreListTest, MyTypes);
 
+// P-3.3 --> P-3.5
 TYPED_TEST(ScoreListTest, AddScoresInOrder)
 {
     using ElementType  = typename TestFixture::ElementType;
@@ -1273,6 +1274,7 @@ TYPED_TEST(ScoreListTest, RemoveTail)
     EXPECT_THAT(myList.at(1), GameEntry("B", 100));
 }
 
+// P-3.6
 TEST(SummationPuzzleTest, PotPanBib)
 {
     SummationPuzzle puzzle("pot", "pan", "bib");
@@ -1291,4 +1293,19 @@ TEST(SummationPuzzleTest, DISABLED_BoyGirlBaby)
 {
     SummationPuzzle puzzle("boy", "girl", "baby");
     EXPECT_TRUE(puzzle.solve());
+}
+
+// P-3.7
+TEST(CipherTest, Encrypt)
+{
+    Cipher cipher;
+    string message = "this is a secret message";
+    EXPECT_THAT(message, Ne(cipher.encrypt(message)));
+}
+
+TEST(CipherTest, Decrypt)
+{
+    Cipher cipher;
+    string message = "this is a secret message";
+    EXPECT_THAT(message, cipher.decrypt(cipher.encrypt(message)));
 }

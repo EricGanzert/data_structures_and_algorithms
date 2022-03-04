@@ -89,3 +89,6 @@ i) execute solve(n-1, storage, destination)
 ii) move lowest largest disk to destination peg
 iii) execute solve(n-1, destination, storage)
 *****
+
+P-3.8
+See solution for C-3.12 TowersOfHanoi class
