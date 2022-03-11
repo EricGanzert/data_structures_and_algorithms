@@ -52,3 +52,17 @@ public:
 private:
     int bruteRecursive(const std::vector<int>& num, int sum1, int sum2, int currentIndex);
 };
+
+class CountOfSubsetSum {
+public:
+  int solveBruteRecursive(const std::vector<int>& num, int sum);
+private:
+  int bruteRecursive(const std::vector<int>& num, int sum, int currentIndex);
+};
+
+class UnboundedKnapsack {
+public:
+  int solveBruteRecursive(const std::vector<int>& weights, const std::vector<int>& profits, int capacity);
+private:
+  int bruteRecursive(const std::vector<int>& weights, const std::vector<int>& profits, int capacity, int currentIndex);
+};

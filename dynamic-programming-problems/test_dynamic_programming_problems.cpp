@@ -113,3 +113,22 @@ TEST(MinSubsetSumDiffTest, BruteForceRecursive)
   num = vector<int>{1, 3, 100, 4};
   EXPECT_THAT(mssd.solveBruteRecursive(num), 92);
 }
+
+TEST(CountSubsetSumTest, BruteForceRecursive)
+{
+  CountOfSubsetSum css;
+  vector<int> num = {1, 1, 2, 3};
+  EXPECT_THAT(css.solveBruteRecursive(num, 4), 3);
+  num = vector<int>{1, 2, 7, 1, 5};
+  EXPECT_THAT(css.solveBruteRecursive(num, 9), 3);
+}
+
+TEST(UnboundedKnapsackTest, BruteForceRecursive)
+{
+  UnboundedKnapsack uks;
+  vector<int> profits = {15, 50, 60, 90};
+  vector<int> weights = {1, 3, 4, 5};
+
+  EXPECT_THAT(uks.solveBruteRecursive(weights, profits, 8), 140);
+  EXPECT_THAT(uks.solveBruteRecursive(weights, profits, 6), 105);
+}

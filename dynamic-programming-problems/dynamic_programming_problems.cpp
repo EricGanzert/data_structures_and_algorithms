@@ -410,3 +410,52 @@ int MinimumSubsetSumDifference::bruteRecursive(const vector<int>& num, int sum1,
 
     return min(diff1, diff2);
 }
+
+int CountOfSubsetSum::solveBruteRecursive(const std::vector<int>& num, int sum)
+{
+    return bruteRecursive(num, sum, 0);
+}
+
+int CountOfSubsetSum::bruteRecursive(const std::vector<int>& num, int sum, int currentIndex)
+{
+    if (sum == 0)
+    {
+        return 1;
+    }
+
+    if (currentIndex >= static_cast<int>(num.size()))
+    {
+        return 0;
+    }
+
+    int count1 = 0;
+    if (num[currentIndex] <= sum)
+    {
+        count1 = bruteRecursive(num, sum - num[currentIndex], currentIndex + 1);
+    }
+
+    int count2 = bruteRecursive(num, sum, currentIndex + 1);
+    return count1 + count2;
+}
+
+int UnboundedKnapsack::solveBruteRecursive(const vector<int>& weights, const vector<int>& profits, int capacity)
+{
+    return bruteRecursive(weights, profits, capacity, 0);
+}
+
+int UnboundedKnapsack::bruteRecursive(const vector<int>& weights, const vector<int>& profits, int capacity, int currentIndex)
+{
+    if (currentIndex >= static_cast<int>(weights.size()) || capacity <= 0)
+    {
+        return 0;
+    }
+
+    int profit1 = 0;
+    if (weights[currentIndex] <= capacity)
+    {
+        profit1 = profits[currentIndex] + bruteRecursive(weights, profits, capacity - weights[currentIndex], currentIndex);
+    }
+
+    int profit2 = bruteRecursive(weights, profits, capacity, currentIndex + 1);
+    return max(profit1, profit2);
+}
