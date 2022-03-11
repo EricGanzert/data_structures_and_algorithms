@@ -4,16 +4,16 @@
 
 class Knapsack {
 public:
-  int solveKnapsackBruteForceRecursive(const std::vector<int>& profits, const std::vector<int>& weights, int capacity);
+    int solveKnapsackBruteForceRecursive(const std::vector<int>& profits, const std::vector<int>& weights, int capacity);
 
-  int solveKnapsackMemoizeRecursive(const std::vector<int>& profits, const std::vector<int>& weights, int capacity);
+    int solveKnapsackMemoizeRecursive(const std::vector<int>& profits, const std::vector<int>& weights, int capacity);
 
-  int solveKnapsackBottomUpDP(const std::vector<int>& profits, const std::vector<int>& weights, int capacity);
+    int solveKnapsackBottomUpDP(const std::vector<int>& profits, const std::vector<int>& weights, int capacity);
 
 private:
-  int knapsackBruteForceRecursive(const std::vector<int>& profits, const std::vector<int>& weights, int capacity, int currentIndex);
+    int knapsackBruteForceRecursive(const std::vector<int>& profits, const std::vector<int>& weights, int capacity, int currentIndex);
 
-  int knapsackMemoizeRecursive(std::vector<std::vector<int>>& dp, 
+    int knapsackMemoizeRecursive(std::vector<std::vector<int>>& dp, 
                                const std::vector<int>& profits, 
                                const std::vector<int>& weights, 
                                int capacity, int currentIndex);
@@ -23,20 +23,25 @@ int coinChangeGFG(std::vector<int>& coinsToUse, int value);
 
 class CoinChange {
 public:
-  int solveCountChangeBruteRecursive(const std::vector<int> &denominations, int total);
-  int solveCountChangeMemoizeRecursive(const std::vector<int> &denominations, int total);
-  int solveCountChangeBottomUpDP(const std::vector<int> &denominations, int total);
+    int solveCountChangeBruteRecursive(const std::vector<int> &denominations, int total);
+
+    int solveCountChangeMemoizeRecursive(const std::vector<int> &denominations, int total);
+
+    int solveCountChangeBottomUpDP(const std::vector<int> &denominations, int total);
 
 private:
-  int countChangeBruteRecursive(const std::vector<int> &denominations, int total, int currentIndex);
-  int countChangeMemoizeRecursive(std::vector<std::vector<int>>& dp, const std::vector<int> &denominations, int total, int currentIndex);
+    int countChangeBruteRecursive(const std::vector<int> &denominations, int total, int currentIndex);
+
+    int countChangeMemoizeRecursive(std::vector<std::vector<int>>& dp, const std::vector<int> &denominations, int total, int currentIndex);
 };
 
 class PartitionSetEqualSums {
 public:
-  bool solveBruteRecursive(const std::vector<int>& num);
+    bool solveBruteRecursive(const std::vector<int>& num);
+    bool solveMemoizeRecursive(const std::vector<int> &num);
 private:
-  bool bruteRecursive(const std::vector<int>& num, int sum, int currentIndex);
+    bool bruteRecursive(const std::vector<int>& num, int sum, int currentIndex);
+    bool memoizeRecursive(std::vector<std::vector<int>>& dp, const std::vector<int> &num, int sum, int currentIndex);
 };
 
 class SubsetSum {
@@ -65,4 +70,11 @@ public:
   int solveBruteRecursive(const std::vector<int>& weights, const std::vector<int>& profits, int capacity);
 private:
   int bruteRecursive(const std::vector<int>& weights, const std::vector<int>& profits, int capacity, int currentIndex);
+};
+
+class RodCutting {
+public:
+  int solveBruteRecursive(const std::vector<int>& lengths, const std::vector<int>& prices, int totalLength);
+private:
+  int bruteRecursive(const std::vector<int>& lengths, const std::vector<int>& prices, int remainingLength, int currentIndex);
 };

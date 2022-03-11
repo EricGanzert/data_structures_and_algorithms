@@ -325,7 +325,7 @@ bool PartitionSetEqualSums::solveBruteRecursive(const vector<int>& num)
 {
     if (num.empty())
     {
-        return true;
+        return false;
     }
 
     int sum = 0;
@@ -340,6 +340,28 @@ bool PartitionSetEqualSums::solveBruteRecursive(const vector<int>& num)
     }
 
     return bruteRecursive(num, sum / 2, 0);
+}
+
+bool PartitionSetEqualSums::solveMemoizeRecursive(const vector<int> &num)
+{
+    if (num.empty())
+    {
+        return false;
+    }
+
+    int sum = 0;
+    for (int i=0; i < static_cast<int>(num.size()); i++)
+    {
+        sum += num[i];
+    }
+
+    if (sum % 2 != 0)
+    {
+        return false;
+    }
+
+    vector<vector<int>> dp(num.size(), vector<int>((sum / 2) + 1, -1));
+    return memoizeRecursive(dp, num, sum / 2, 0);
 }
 
 bool PartitionSetEqualSums::bruteRecursive(const vector<int>& num, int sum, int currentIndex)
@@ -363,6 +385,38 @@ bool PartitionSetEqualSums::bruteRecursive(const vector<int>& num, int sum, int 
     }
 
     return bruteRecursive(num, sum, currentIndex + 1);
+}
+
+bool PartitionSetEqualSums::memoizeRecursive(vector<vector<int>>& dp, const vector<int>& num, int sum, int currentIndex)
+{
+    if (sum == 0)
+    {
+        return true;
+    }
+
+    if (currentIndex >= static_cast<int>(num.size()))
+    {
+        return false;
+    }
+
+    if (dp[currentIndex][sum] != -1)
+    {
+        return dp[currentIndex][sum];
+    }
+
+    bool path1 = false;
+    if (num[currentIndex] <= sum)
+    {
+        if (path1 = memoizeRecursive(dp, num, sum - num[currentIndex], currentIndex + 1))
+        {
+            dp[currentIndex][sum] = int{true};
+            return dp[currentIndex][sum];
+        }
+    }
+
+    bool path2 = memoizeRecursive(dp, num, sum, currentIndex + 1);
+    dp[currentIndex][sum] = int{path1 || path2};
+    return dp[currentIndex][sum]; 
 }
 
 bool SubsetSum::solveBruteRecursive(const vector<int> &num, int sum)
@@ -411,12 +465,12 @@ int MinimumSubsetSumDifference::bruteRecursive(const vector<int>& num, int sum1,
     return min(diff1, diff2);
 }
 
-int CountOfSubsetSum::solveBruteRecursive(const std::vector<int>& num, int sum)
+int CountOfSubsetSum::solveBruteRecursive(const vector<int>& num, int sum)
 {
     return bruteRecursive(num, sum, 0);
 }
 
-int CountOfSubsetSum::bruteRecursive(const std::vector<int>& num, int sum, int currentIndex)
+int CountOfSubsetSum::bruteRecursive(const vector<int>& num, int sum, int currentIndex)
 {
     if (sum == 0)
     {
@@ -457,5 +511,27 @@ int UnboundedKnapsack::bruteRecursive(const vector<int>& weights, const vector<i
     }
 
     int profit2 = bruteRecursive(weights, profits, capacity, currentIndex + 1);
+    return max(profit1, profit2);
+}
+
+int RodCutting::solveBruteRecursive(const vector<int>& lengths, const vector<int>& prices, int totalLength)
+{
+    return bruteRecursive(lengths, prices, totalLength, 0);
+}
+
+int RodCutting::bruteRecursive(const vector<int>& lengths, const vector<int>& prices, int remainingLength, int currentIndex)
+{
+    if (currentIndex >= static_cast<int>(lengths.size()) || remainingLength <= 0)
+    {
+        return 0;
+    }
+
+    int profit1 = 0;
+    if (lengths[currentIndex] <= remainingLength)
+    {
+        profit1 = prices[currentIndex] + bruteRecursive(lengths, prices, remainingLength - lengths[currentIndex], currentIndex);
+    }
+
+    int profit2 = bruteRecursive(lengths, prices, remainingLength, currentIndex + 1);
     return max(profit1, profit2);
 }

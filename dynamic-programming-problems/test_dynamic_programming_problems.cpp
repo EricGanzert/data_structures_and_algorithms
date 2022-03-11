@@ -92,6 +92,17 @@ TEST(PartitionSetEqualTest, BruteForceRecursive)
   EXPECT_THAT(ps.solveBruteRecursive(num), false);
 }
 
+TEST(PartitionSetEqualTest, MemoizeRecursive)
+{
+  PartitionSetEqualSums ps;
+  vector<int> num = {1, 2, 3, 4};
+  EXPECT_THAT(ps.solveMemoizeRecursive(num), true);
+  num = vector<int>{1, 1, 3, 4, 7};
+  EXPECT_THAT(ps.solveMemoizeRecursive(num), true);
+  num = vector<int>{2, 3, 4, 6};
+  EXPECT_THAT(ps.solveMemoizeRecursive(num), false);
+}
+
 TEST(SubsetSumTest, BruteForceRecursive)
 {
   SubsetSum ss;
@@ -131,4 +142,13 @@ TEST(UnboundedKnapsackTest, BruteForceRecursive)
 
   EXPECT_THAT(uks.solveBruteRecursive(weights, profits, 8), 140);
   EXPECT_THAT(uks.solveBruteRecursive(weights, profits, 6), 105);
+}
+
+TEST(RodCuttingTest, BruteForceRecursive)
+{
+  RodCutting rodCut;
+  vector<int> lengths = {1, 2, 3, 4, 5};
+  vector<int> prices = {2, 6, 7, 10, 13};
+  int maxProfit = rodCut.solveBruteRecursive(lengths, prices, 5);
+  EXPECT_THAT(maxProfit, 14);
 }
