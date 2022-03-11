@@ -18,3 +18,16 @@ private:
                                const std::vector<int>& weights, 
                                int capacity, int currentIndex);
 };
+
+int coinChangeGFG(std::vector<int>& coinsToUse, int value);
+
+class CoinChange {
+public:
+  int solveCountChangeBruteRecursive(const std::vector<int> &denominations, int total);
+  int solveCountChangeMemoizeRecursive(const std::vector<int> &denominations, int total);
+  int solveCountChangeBottomUpDP(const std::vector<int> &denominations, int total);
+
+private:
+  int countChangeBruteRecursive(const std::vector<int> &denominations, int total, int currentIndex);
+  int countChangeMemoizeRecursive(std::vector<std::vector<int>>& dp, const std::vector<int> &denominations, int total, int currentIndex);
+};

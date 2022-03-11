@@ -1,4 +1,5 @@
 #include "dynamic_programming_problems.h"
+#include <iostream>
 
 using namespace std;
 
@@ -136,4 +137,186 @@ int Knapsack::solveKnapsackBottomUpDP(const vector<int> &profits, const vector<i
     }
 
     return dp[n-1][capacity];
+}
+
+// if N = 12 and the coins we can use are {1, 5, 10}
+//
+// Index of array of coins:
+// [0, 1,  2]
+// array of coins
+// [1, 5, 10]
+//
+// Index of array of ways:
+// [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+// Array of ways
+// [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0]
+//
+// first we can init our array of ways to 1's because if we had n=0 there is one way to fulfill that,
+// by using 0 coins
+//
+// Index of array of ways:
+// [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+// Array of ways
+// [1, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0]
+//
+// now compare each coins[i] value to all of the ways array indexes j.
+// if the ith coin is <= the index j then ways[j] = ways[j] + ways[j-coins[i]]
+//
+// using first coin 1c
+// array of ways
+// [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+//
+// next using second coin 5c
+// array of ways
+// [1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3]
+//
+// next using third coin 10c
+// array of ways
+// [1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 4, 4, 4]
+
+int coinChangeGFG(vector<int>& coinsToUse, int value)
+{
+    vector<int> ways(value + 1, 0);
+    ways[0] = 1;
+
+    for (int i = 0; i < coinsToUse.size(); i++)
+    {
+        auto coin = coinsToUse[i];
+        for (int j = 0; j < ways.size(); j++)
+        {
+            if (coin <= j)
+            {
+                ways[j] = ways[j] + ways[j-coin];
+            }
+        }
+
+        // print for debugging purposes
+        cout << "ways: [";
+        for (int j = 0; j < ways.size(); j++)
+        {
+            cout << ways[j];
+            if (j < ways.size() - 1)
+            {
+                cout << ",";
+            }
+        }
+        cout << "]" << endl;
+    }
+
+    return ways[value];
+}
+
+// a brute force recursive solution would look like this:
+// for each coin in coinsToUse:
+//   create a new set which includes one quantity of the coin if it does not exceed value
+//     recursively call to process all coins
+//   create a new set without the coin and recursively call to process the remaining coins
+// return the count of sets who have a sum equal to value
+
+int CoinChange::solveCountChangeBruteRecursive(const vector<int> &denominations, int total)
+{
+    return countChangeBruteRecursive(denominations, total, 0);
+}
+
+int CoinChange::solveCountChangeMemoizeRecursive(const vector<int> &denominations, int total)
+{
+    vector<vector<int>> dp(denominations.size(), vector<int>(total + 1));
+    return countChangeMemoizeRecursive(dp, denominations, total, 0);
+}
+
+int CoinChange::countChangeBruteRecursive(const vector<int>& denominations, int total, int currentIndex)
+{
+    if (total == 0)
+    {
+        return 1;
+    }
+
+    if (denominations.empty() || currentIndex >= static_cast<int>(denominations.size()))
+    {
+        return 0;
+    }
+
+    int sum1 = 0;
+    if (denominations[currentIndex] <= total)
+    {
+        sum1 = countChangeBruteRecursive(denominations, total - denominations[currentIndex], currentIndex);
+    }
+
+    int sum2 = countChangeBruteRecursive(denominations, total, currentIndex + 1);
+    return sum1 + sum2;
+}
+
+// in this version we remember what result we got for each index used and remaining total.
+// this result will be valid for any other branch of the problem that arrives at the same index and remaining total
+// so it will prevent extra instances of this recursion from continuing to completion which could be a long path taken unnecessarily
+//
+// for each coin in the denominations
+int CoinChange::countChangeMemoizeRecursive(vector<vector<int>>& dp, const vector<int>& denominations, int total, int currentIndex)
+{
+    if (total == 0)
+    {
+        return 1;
+    }
+
+    if (denominations.empty() || currentIndex >= static_cast<int>(denominations.size()))
+    {
+        return 0;
+    }
+
+    if (dp[currentIndex][total] > 0)
+    {
+        return dp[currentIndex][total];
+    }
+
+    int sum1 = 0;
+    if (denominations[currentIndex] <= total)
+    {
+        sum1 = countChangeMemoizeRecursive(dp, denominations, total - denominations[currentIndex], currentIndex);
+    }
+
+    int sum2 = countChangeMemoizeRecursive(dp, denominations, total, currentIndex + 1);
+    dp[currentIndex][total] = sum1 + sum2;
+    return dp[currentIndex][total];
+}
+
+// We will try to find if we can make all possible sums, with every combination of coins
+// to populate the array dp[TotalDenominations][Total+1]
+//
+// So for every possible total t in (0 <= t <= Total) and for every possible coin index in (0 <= index <= totalDenominations)
+// we have 2 options:
+// 1. Exclude the coin. Count all the coin combinations without the given coin up to the total t => dp[index-1][t]
+// 2. Include the coin if it's value is not more than t. In this case  we will count all the coin combinations to get the remaining
+// total: dp[index][t - denominations[index]]
+// Finally, to find the total combinations we will add both of the above values sum1 + sum2
+int CoinChange::solveCountChangeBottomUpDP(const vector<int>& denominations, int total)
+{
+    int n = static_cast<int>(denominations.size());
+    vector<vector<int>> dp(n, vector<int>(total + 1, 0));
+
+    // populate the total=0 columns, as we will always have an empty set for zero total
+    for (int i=0; i<n; i++)
+    {
+        dp[i][0] = 1;
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int t = 1; t <= total; t++)
+        {
+            int sum1 = 0;
+            if (i > 0) // if there is a result for this total made from previously seen denominations
+            {
+                sum1 = dp[i-1][t];
+            }
+
+            int sum2 = 0;
+            if (t >= denominations[i]) // if we have room to use this coin
+            {
+                sum2 = dp[i][t - denominations[i]];
+            }
+            dp[i][t] = sum1 + sum2;
+        }
+    }
+
+    return dp[n-1][total];
 }

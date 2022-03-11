@@ -42,3 +42,41 @@ TEST(KnapsackTest, BottomUpDP)
     maxProfit = ks.solveKnapsackBottomUpDP(profits, weights, 6);
     cout << "Total knapsack profit ---> " << maxProfit << endl;
 }
+
+TEST(CoinProblem, CoinProblemGFG)
+{
+    vector<int> coinsToUse = {1, 5, 10};
+    int value = 22;
+
+    auto numWays = coinChangeGFG(coinsToUse, value);
+}
+
+TEST(CoinProblem, CoinProblemBruteRecursive)
+{
+    vector<int> coinsToUse = {1, 5, 10};
+    int value = 22;
+
+    CoinChange cc;
+    auto numWays = cc.solveCountChangeBruteRecursive(coinsToUse, value);
+    EXPECT_THAT(numWays, 9);
+}
+
+TEST(CoinProblem, CoinProblemMemoizeRecursive)
+{
+    vector<int> coinsToUse = {1, 5, 10};
+    int value = 22;
+
+    CoinChange cc;
+    auto numWays = cc.solveCountChangeMemoizeRecursive(coinsToUse, value);
+    EXPECT_THAT(numWays, 9);
+}
+
+TEST(CoinProblem, CoinProblemBottomUpDP)
+{
+    vector<int> coinsToUse = {1, 5, 10};
+    int value = 22;
+
+    CoinChange cc;
+    auto numWays = cc.solveCountChangeBottomUpDP(coinsToUse, value);
+    EXPECT_THAT(numWays, 9);
+}
