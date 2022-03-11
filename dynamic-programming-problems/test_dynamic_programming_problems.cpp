@@ -80,3 +80,36 @@ TEST(CoinProblem, CoinProblemBottomUpDP)
     auto numWays = cc.solveCountChangeBottomUpDP(coinsToUse, value);
     EXPECT_THAT(numWays, 9);
 }
+
+TEST(PartitionSetEqualTest, BruteForceRecursive)
+{
+  PartitionSetEqualSums ps;
+  vector<int> num = {1, 2, 3, 4};
+  EXPECT_THAT(ps.solveBruteRecursive(num), true);
+  num = vector<int>{1, 1, 3, 4, 7};
+  EXPECT_THAT(ps.solveBruteRecursive(num), true);
+  num = vector<int>{2, 3, 4, 6};
+  EXPECT_THAT(ps.solveBruteRecursive(num), false);
+}
+
+TEST(SubsetSumTest, BruteForceRecursive)
+{
+  SubsetSum ss;
+  vector<int> num = {1, 2, 3, 7};
+  EXPECT_THAT(ss.solveBruteRecursive(num, 6), true);
+  num = vector<int>{1, 2, 7, 1, 5};
+  EXPECT_THAT(ss.solveBruteRecursive(num, 10), true);
+  num = vector<int>{1, 3, 4, 8};
+  EXPECT_THAT(ss.solveBruteRecursive(num, 6), false);
+}
+
+TEST(MinSubsetSumDiffTest, BruteForceRecursive)
+{
+  MinimumSubsetSumDifference mssd;
+  vector<int> num = {1, 2, 3, 9};
+  EXPECT_THAT(mssd.solveBruteRecursive(num), 3);
+  num = vector<int>{1, 2, 7, 1, 5};
+  EXPECT_THAT(mssd.solveBruteRecursive(num), 0);
+  num = vector<int>{1, 3, 100, 4};
+  EXPECT_THAT(mssd.solveBruteRecursive(num), 92);
+}

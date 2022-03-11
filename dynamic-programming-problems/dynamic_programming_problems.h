@@ -31,3 +31,24 @@ private:
   int countChangeBruteRecursive(const std::vector<int> &denominations, int total, int currentIndex);
   int countChangeMemoizeRecursive(std::vector<std::vector<int>>& dp, const std::vector<int> &denominations, int total, int currentIndex);
 };
+
+class PartitionSetEqualSums {
+public:
+  bool solveBruteRecursive(const std::vector<int>& num);
+private:
+  bool bruteRecursive(const std::vector<int>& num, int sum, int currentIndex);
+};
+
+class SubsetSum {
+public:
+  bool solveBruteRecursive(const std::vector<int> &num, int sum);
+private:
+  bool bruteRecursive(const std::vector<int> &num, int sum, int currentIndex);
+};
+
+class MinimumSubsetSumDifference {
+public:
+    int solveBruteRecursive(const std::vector<int>& num);
+private:
+    int bruteRecursive(const std::vector<int>& num, int sum1, int sum2, int currentIndex);
+};

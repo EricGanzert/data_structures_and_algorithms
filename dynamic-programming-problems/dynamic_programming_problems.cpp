@@ -320,3 +320,93 @@ int CoinChange::solveCountChangeBottomUpDP(const vector<int>& denominations, int
 
     return dp[n-1][total];
 }
+
+bool PartitionSetEqualSums::solveBruteRecursive(const vector<int>& num)
+{
+    if (num.empty())
+    {
+        return true;
+    }
+
+    int sum = 0;
+    for (const auto& item : num)
+    {
+        sum += item;
+    }
+
+    if (sum % 2 != 0)
+    {
+        return false;
+    }
+
+    return bruteRecursive(num, sum / 2, 0);
+}
+
+bool PartitionSetEqualSums::bruteRecursive(const vector<int>& num, int sum, int currentIndex)
+{
+    if (sum == 0)
+    {
+        return true;
+    }
+
+    if (num.empty() || currentIndex >= static_cast<int>(num.size()))
+    {
+        return false;
+    }
+
+    if (num[currentIndex] <= sum)
+    {
+        if (bruteRecursive(num, sum - num[currentIndex], currentIndex + 1))
+        {
+            return true;
+        }
+    }
+
+    return bruteRecursive(num, sum, currentIndex + 1);
+}
+
+bool SubsetSum::solveBruteRecursive(const vector<int> &num, int sum)
+{
+    return bruteRecursive(num, sum, 0);
+}
+
+bool SubsetSum::bruteRecursive(const vector<int> &num, int sum, int currentIndex)
+{
+    if (currentIndex >= static_cast<int>(num.size()))
+    {
+        return false;
+    }
+
+    if (sum == 0)
+    {
+        return true;
+    }
+
+    if (num[currentIndex] <= sum)
+    {
+        if (bruteRecursive(num, sum - num[currentIndex], currentIndex + 1))
+        {
+            return true;
+        }
+    }
+
+    return bruteRecursive(num, sum, currentIndex + 1);
+}
+
+int MinimumSubsetSumDifference::solveBruteRecursive(const vector<int>& num)
+{
+    return bruteRecursive(num, 0, 0, 0);
+}
+
+int MinimumSubsetSumDifference::bruteRecursive(const vector<int>& num, int sum1, int sum2, int currentIndex)
+{
+    if (currentIndex >= static_cast<int>(num.size()))
+    {
+        return abs(sum1 - sum2);
+    }
+
+    int diff1 = bruteRecursive(num, sum1 + num[currentIndex], sum2, currentIndex + 1);
+    int diff2 = bruteRecursive(num, sum1, sum2 + num[currentIndex], currentIndex + 1);
+
+    return min(diff1, diff2);
+}
