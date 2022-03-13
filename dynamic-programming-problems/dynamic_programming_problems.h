@@ -18,25 +18,6 @@ private:
 
 int coinChangeGFG(std::vector<int>& coinsToUse, int value);
 
-// Given an infinite supply of coin denominations and a total money amount, we are asked to find the total T
-// number of distinct ways to make up that amount
-//
-// Basic solution:
-// for each coind denomination d
-//   1. create a set that includes d if it does not exceed T. Recursively process all denominations in the set
-//   2. create a set that excludes d and recuresively process the remaining denominations
-// return the number of above sets that has a sum equal to T 
-class CoinChange {
-public:
-    int solveCountChangeBruteRecursive(const std::vector<int> &denominations, int total);
-    int solveCountChangeMemoizeRecursive(const std::vector<int> &denominations, int total);
-    int solveCountChangeBottomUpDP(const std::vector<int> &denominations, int total);
-
-private:
-    int countChangeBruteRecursive(const std::vector<int> &denominations, int total, int currentIndex);
-    int countChangeMemoizeRecursive(std::vector<std::vector<int>>& dp, const std::vector<int> &denominations, int total, int currentIndex);
-};
-
 // Given a set of positive numbers, find if we can partition it into two subsets such that the sum of elements in both subsets are equal
 // This is equivalent to finding a subset that equals total sum S / 2
 //
@@ -91,13 +72,15 @@ private:
 // Basic solution
 // for each number i
 //   1. create a new set that contains i if it does not exceed S and recursively process the remaining elements
-//   2. create a new ser that excludes i and recursively process the remaining elements
+//   2. create a new set that excludes i and recursively process the remaining elements
 // return the total number of sets whose sum equals S
 class CountOfSubsetSum {
 public:
   int solveBruteRecursive(const std::vector<int>& num, int sum);
+  int solveMemoizeRecursive(const std::vector<int>& num, int sum);
 private:
   int bruteRecursive(const std::vector<int>& num, int sum, int currentIndex);
+  int memoizeRecursive(std::vector<std::vector<int>>& dp, const std::vector<int>& num, int sum, int currentIndex);
 };
 
 // given 2 integer arrays to represent the weights and profits of N items, we need to find a subset of items that will give us
@@ -112,8 +95,10 @@ private:
 class UnboundedKnapsack {
 public:
   int solveBruteRecursive(const std::vector<int>& weights, const std::vector<int>& profits, int capacity);
+  int solveMemoizeRecursive(const std::vector<int>& weights, const std::vector<int>& profits, int capacity);
 private:
   int bruteRecursive(const std::vector<int>& weights, const std::vector<int>& profits, int capacity, int currentIndex);
+  int memoizeRecursive(std::vector<std::vector<int>>& dp, const std::vector<int>& weights, const std::vector<int>& profits, int capacity, int currentIndex);
 };
 
 // Given a rod of length n we are asked to cut the rod and sell the pieces in a way that will maximize the profit.
@@ -127,6 +112,27 @@ private:
 class RodCutting {
 public:
   int solveBruteRecursive(const std::vector<int>& lengths, const std::vector<int>& prices, int totalLength);
+  int solveMemoizeRecursive(const std::vector<int>& lengths, const std::vector<int>& prices, int totalLength);
 private:
   int bruteRecursive(const std::vector<int>& lengths, const std::vector<int>& prices, int remainingLength, int currentIndex);
+  int memoizeRecursive(std::vector<std::vector<int>>& dp, const std::vector<int>& lengths, const std::vector<int>& prices, int remainingLength, int currentIndex);
+};
+
+// Given an infinite supply of coins, of a given set of denominations. And a total money amount we are asked to find the total T
+// number of distinct ways to make up that amount
+//
+// Basic solution:
+// for each coind denomination d
+//   1. create a set that includes d if it does not exceed T. Recursively process all denominations in the set
+//   2. create a set that excludes d and recuresively process the remaining denominations
+// return the number of above sets that has a sum equal to T 
+class CoinChange {
+public:
+    int solveCountChangeBruteRecursive(const std::vector<int> &denominations, int total);
+    int solveCountChangeMemoizeRecursive(const std::vector<int> &denominations, int total);
+    int solveCountChangeBottomUpDP(const std::vector<int> &denominations, int total);
+
+private:
+    int countChangeBruteRecursive(const std::vector<int> &denominations, int total, int currentIndex);
+    int countChangeMemoizeRecursive(std::vector<std::vector<int>>& dp, const std::vector<int> &denominations, int total, int currentIndex);
 };

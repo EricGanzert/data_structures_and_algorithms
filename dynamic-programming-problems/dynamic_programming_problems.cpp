@@ -206,121 +206,6 @@ int coinChangeGFG(vector<int>& coinsToUse, int value)
     return ways[value];
 }
 
-// a brute force recursive solution would look like this:
-// for each coin in coinsToUse:
-//   create a new set which includes one quantity of the coin if it does not exceed value
-//     recursively call to process all coins
-//   create a new set without the coin and recursively call to process the remaining coins
-// return the count of sets who have a sum equal to value
-
-int CoinChange::solveCountChangeBruteRecursive(const vector<int> &denominations, int total)
-{
-    return countChangeBruteRecursive(denominations, total, 0);
-}
-
-int CoinChange::solveCountChangeMemoizeRecursive(const vector<int> &denominations, int total)
-{
-    vector<vector<int>> dp(denominations.size(), vector<int>(total + 1));
-    return countChangeMemoizeRecursive(dp, denominations, total, 0);
-}
-
-int CoinChange::countChangeBruteRecursive(const vector<int>& denominations, int total, int currentIndex)
-{
-    if (total == 0)
-    {
-        return 1;
-    }
-
-    if (denominations.empty() || currentIndex >= static_cast<int>(denominations.size()))
-    {
-        return 0;
-    }
-
-    int sum1 = 0;
-    if (denominations[currentIndex] <= total)
-    {
-        sum1 = countChangeBruteRecursive(denominations, total - denominations[currentIndex], currentIndex);
-    }
-
-    int sum2 = countChangeBruteRecursive(denominations, total, currentIndex + 1);
-    return sum1 + sum2;
-}
-
-// in this version we remember what result we got for each index used and remaining total.
-// this result will be valid for any other branch of the problem that arrives at the same index and remaining total
-// so it will prevent extra instances of this recursion from continuing to completion which could be a long path taken unnecessarily
-//
-// for each coin in the denominations
-int CoinChange::countChangeMemoizeRecursive(vector<vector<int>>& dp, const vector<int>& denominations, int total, int currentIndex)
-{
-    if (total == 0)
-    {
-        return 1;
-    }
-
-    if (denominations.empty() || currentIndex >= static_cast<int>(denominations.size()))
-    {
-        return 0;
-    }
-
-    if (dp[currentIndex][total] > 0)
-    {
-        return dp[currentIndex][total];
-    }
-
-    int sum1 = 0;
-    if (denominations[currentIndex] <= total)
-    {
-        sum1 = countChangeMemoizeRecursive(dp, denominations, total - denominations[currentIndex], currentIndex);
-    }
-
-    int sum2 = countChangeMemoizeRecursive(dp, denominations, total, currentIndex + 1);
-    dp[currentIndex][total] = sum1 + sum2;
-    return dp[currentIndex][total];
-}
-
-// We will try to find if we can make all possible sums, with every combination of coins
-// to populate the array dp[TotalDenominations][Total+1]
-//
-// So for every possible total t in (0 <= t <= Total) and for every possible coin index in (0 <= index <= totalDenominations)
-// we have 2 options:
-// 1. Exclude the coin. Count all the coin combinations without the given coin up to the total t => dp[index-1][t]
-// 2. Include the coin if it's value is not more than t. In this case  we will count all the coin combinations to get the remaining
-// total: dp[index][t - denominations[index]]
-// Finally, to find the total combinations we will add both of the above values sum1 + sum2
-int CoinChange::solveCountChangeBottomUpDP(const vector<int>& denominations, int total)
-{
-    int n = static_cast<int>(denominations.size());
-    vector<vector<int>> dp(n, vector<int>(total + 1, 0));
-
-    // populate the total=0 columns, as we will always have an empty set for zero total
-    for (int i=0; i<n; i++)
-    {
-        dp[i][0] = 1;
-    }
-
-    for (int i = 0; i < n; i++)
-    {
-        for (int t = 1; t <= total; t++)
-        {
-            int sum1 = 0;
-            if (i > 0) // if there is a result for this total made from previously seen denominations
-            {
-                sum1 = dp[i-1][t];
-            }
-
-            int sum2 = 0;
-            if (t >= denominations[i]) // if we have room to use this coin
-            {
-                sum2 = dp[i][t - denominations[i]];
-            }
-            dp[i][t] = sum1 + sum2;
-        }
-    }
-
-    return dp[n-1][total];
-}
-
 bool PartitionSetEqualSums::solveBruteRecursive(const vector<int>& num)
 {
     if (num.empty())
@@ -513,7 +398,7 @@ int MinimumSubsetSumDifference::bruteRecursive(const vector<int>& num, int sum1,
     return min(diff1, diff2);
 }
 
-int MinimumSubsetSumDifference::memoizeRecursive(std::vector<std::vector<int>>& dp, const std::vector<int>& num, int sum1, int sum2, int currentIndex)
+int MinimumSubsetSumDifference::memoizeRecursive(vector<vector<int>>& dp, const vector<int>& num, int sum1, int sum2, int currentIndex)
 {
     if (currentIndex >= static_cast<int>(num.size()))
     {
@@ -535,6 +420,40 @@ int MinimumSubsetSumDifference::memoizeRecursive(std::vector<std::vector<int>>& 
 int CountOfSubsetSum::solveBruteRecursive(const vector<int>& num, int sum)
 {
     return bruteRecursive(num, sum, 0);
+}
+
+int CountOfSubsetSum::solveMemoizeRecursive(const vector<int>& num, int sum)
+{
+    vector<vector<int>> dp(num.size(), vector<int>(sum + 1, -1));
+    return memoizeRecursive(dp, num, sum, 0);
+}
+
+int CountOfSubsetSum::memoizeRecursive(vector<vector<int>>& dp, const vector<int>& num, int sum, int currentIndex)
+{
+    if (sum == 0)
+    {
+        return 1;
+    }
+
+    if (currentIndex >= static_cast<int>(num.size()))
+    {
+        return 0;
+    }
+
+    if (dp[currentIndex][sum] != -1)
+    {
+        return dp[currentIndex][sum];
+    }
+
+    int count1 = 0;
+    if (num[currentIndex] <= sum)
+    {
+        count1 = memoizeRecursive(dp, num, sum - num[currentIndex], currentIndex + 1);
+    }
+
+    int count2 = memoizeRecursive(dp, num, sum, currentIndex + 1);
+    dp[currentIndex][sum] = count1 + count2;
+    return dp[currentIndex][sum];
 }
 
 int CountOfSubsetSum::bruteRecursive(const vector<int>& num, int sum, int currentIndex)
@@ -581,9 +500,44 @@ int UnboundedKnapsack::bruteRecursive(const vector<int>& weights, const vector<i
     return max(profit1, profit2);
 }
 
+int UnboundedKnapsack::solveMemoizeRecursive(const vector<int>& weights, const vector<int>& profits, int capacity)
+{
+    vector<vector<int>> dp(weights.size(), vector<int>(capacity + 1, -1));
+    return memoizeRecursive(dp, weights, profits, capacity, 0);
+}
+
+int UnboundedKnapsack::memoizeRecursive(vector<vector<int>>& dp, const vector<int>& weights, const vector<int>& profits, int capacity, int currentIndex)
+{
+    if (currentIndex >= static_cast<int>(weights.size()) || capacity <= 0)
+    {
+        return 0;
+    }
+
+    if (dp[currentIndex][capacity] != -1)
+    {
+        return dp[currentIndex][capacity];
+    }
+
+    int total1 = 0;
+    if (weights[currentIndex] <= capacity)
+    {
+        total1 = profits[currentIndex] + memoizeRecursive(dp, weights, profits, capacity - weights[currentIndex], currentIndex);
+    }
+
+    int total2 = memoizeRecursive(dp, weights, profits, capacity, currentIndex + 1);
+    dp[currentIndex][capacity] = max(total1, total2);
+    return dp[currentIndex][capacity];
+}
+
 int RodCutting::solveBruteRecursive(const vector<int>& lengths, const vector<int>& prices, int totalLength)
 {
     return bruteRecursive(lengths, prices, totalLength, 0);
+}
+
+int RodCutting::solveMemoizeRecursive(const vector<int>& lengths, const vector<int>& prices, int totalLength)
+{
+    vector<vector<int>> dp(lengths.size(), vector<int>(totalLength + 1, -1));
+    return memoizeRecursive(dp, lengths, prices, totalLength, 0);
 }
 
 int RodCutting::bruteRecursive(const vector<int>& lengths, const vector<int>& prices, int remainingLength, int currentIndex)
@@ -601,4 +555,145 @@ int RodCutting::bruteRecursive(const vector<int>& lengths, const vector<int>& pr
 
     int profit2 = bruteRecursive(lengths, prices, remainingLength, currentIndex + 1);
     return max(profit1, profit2);
+}
+
+int RodCutting::memoizeRecursive(vector<vector<int>>& dp, const vector<int>& lengths, const vector<int>& prices, int remainingLength, int currentIndex)
+{
+    if (currentIndex >= static_cast<int>(lengths.size()) || remainingLength <= 0)
+    {
+        return 0;
+    }
+
+    if (dp[currentIndex][remainingLength] != -1)
+    {
+        return dp[currentIndex][remainingLength];
+    }
+
+    int profit1 = 0;
+    if (lengths[currentIndex] <= remainingLength)
+    {
+        profit1 = prices[currentIndex] + memoizeRecursive(dp, lengths, prices, remainingLength - lengths[currentIndex], currentIndex);
+    }
+
+    int profit2 = memoizeRecursive(dp, lengths, prices, remainingLength, currentIndex + 1);
+    dp[currentIndex][remainingLength] = max(profit1, profit2);
+    return dp[currentIndex][remainingLength];
+}
+
+// a brute force recursive solution would look like this:
+// for each coin in coinsToUse:
+//   create a new set which includes one quantity of the coin if it does not exceed value
+//     recursively call to process all coins
+//   create a new set without the coin and recursively call to process the remaining coins
+// return the count of sets who have a sum equal to value
+
+int CoinChange::solveCountChangeBruteRecursive(const vector<int>& denominations, int total)
+{
+    return countChangeBruteRecursive(denominations, total, 0);
+}
+
+int CoinChange::solveCountChangeMemoizeRecursive(const vector<int>& denominations, int total)
+{
+    vector<vector<int>> dp(denominations.size(), vector<int>(total + 1, -1));
+    return countChangeMemoizeRecursive(dp, denominations, total, 0);
+}
+
+int CoinChange::countChangeBruteRecursive(const vector<int>& denominations, int total, int currentIndex)
+{
+    if (total == 0)
+    {
+        return 1;
+    }
+
+    if (denominations.empty() || currentIndex >= static_cast<int>(denominations.size()))
+    {
+        return 0;
+    }
+
+    int sum1 = 0;
+    if (denominations[currentIndex] <= total)
+    {
+        sum1 = countChangeBruteRecursive(denominations, total - denominations[currentIndex], currentIndex);
+    }
+
+    int sum2 = countChangeBruteRecursive(denominations, total, currentIndex + 1);
+    return sum1 + sum2;
+}
+
+// in this version we remember what result we got for each index used and remaining total.
+// this result will be valid for any other branch of the problem that arrives at the same index and remaining total
+// so it will prevent extra instances of this recursion from continuing to completion which could be a long path taken unnecessarily
+//
+// for each coin in the denominations
+int CoinChange::countChangeMemoizeRecursive(vector<vector<int>>& dp, const vector<int>& denominations, int total, int currentIndex)
+{
+    if (total == 0)
+    {
+        // if we used up the total perfectly to zero this is a success path.
+        // return a tally to contribute to the total solutions
+        return 1;
+    }
+
+    if (currentIndex >= static_cast<int>(denominations.size()))
+    {
+        // we weren't able to reach the total in this path
+        return 0;
+    }
+
+    if(dp[currentIndex][total] != -1)
+    {
+        return dp[currentIndex][total];
+    }
+
+    int total1 = 0;
+    if (denominations[currentIndex] <= total)
+    {
+        total1 = countChangeMemoizeRecursive(dp, denominations, total - denominations[currentIndex], currentIndex);
+    }
+
+    int total2 = countChangeMemoizeRecursive(dp, denominations, total, currentIndex + 1);
+    dp[currentIndex][total] = total1 + total2;
+    return dp[currentIndex][total];
+}
+
+// We will try to find if we can make all possible sums, with every combination of coins
+// to populate the array dp[TotalDenominations][Total+1]
+//
+// So for every possible total t in (0 <= t <= Total) and for every possible coin index in (0 <= index <= totalDenominations)
+// we have 2 options:
+// 1. Exclude the coin. Count all the coin combinations without the given coin up to the total t => dp[index-1][t]
+// 2. Include the coin if it's value is not more than t. In this case  we will count all the coin combinations to get the remaining
+// total: dp[index][t - denominations[index]]
+// Finally, to find the total combinations we will add both of the above values sum1 + sum2
+int CoinChange::solveCountChangeBottomUpDP(const vector<int>& denominations, int total)
+{
+    int n = static_cast<int>(denominations.size());
+    vector<vector<int>> dp(n, vector<int>(total + 1, 0));
+
+    // populate the total=0 columns, as we will always have an empty set for zero total
+    for (int i=0; i<n; i++)
+    {
+        dp[i][0] = 1;
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int t = 1; t <= total; t++)
+        {
+            int sum1 = 0;
+            if (i > 0) // if there is a result for this total made from previously seen denominations
+            {
+                sum1 = dp[i-1][t];
+            }
+
+            int sum2 = 0;
+            if (t >= denominations[i]) // if we have room to use this coin
+            {
+                sum2 = dp[i][t - denominations[i]];
+            }
+            dp[i][t] = sum1 + sum2;
+        }
+    }
+
+    return dp[n-1][total];
 }

@@ -51,36 +51,6 @@ TEST(CoinProblem, CoinProblemGFG)
     auto numWays = coinChangeGFG(coinsToUse, value);
 }
 
-TEST(CoinProblem, CoinProblemBruteRecursive)
-{
-    vector<int> coinsToUse = {1, 5, 10};
-    int value = 22;
-
-    CoinChange cc;
-    auto numWays = cc.solveCountChangeBruteRecursive(coinsToUse, value);
-    EXPECT_THAT(numWays, 9);
-}
-
-TEST(CoinProblem, CoinProblemMemoizeRecursive)
-{
-    vector<int> coinsToUse = {1, 5, 10};
-    int value = 22;
-
-    CoinChange cc;
-    auto numWays = cc.solveCountChangeMemoizeRecursive(coinsToUse, value);
-    EXPECT_THAT(numWays, 9);
-}
-
-TEST(CoinProblem, CoinProblemBottomUpDP)
-{
-    vector<int> coinsToUse = {1, 5, 10};
-    int value = 22;
-
-    CoinChange cc;
-    auto numWays = cc.solveCountChangeBottomUpDP(coinsToUse, value);
-    EXPECT_THAT(numWays, 9);
-}
-
 TEST(PartitionSetEqualTest, BruteForceRecursive)
 {
   PartitionSetEqualSums ps;
@@ -156,6 +126,15 @@ TEST(CountSubsetSumTest, BruteForceRecursive)
   EXPECT_THAT(css.solveBruteRecursive(num, 9), 3);
 }
 
+TEST(CountSubsetSumTest, MemoizeRecursive)
+{
+  CountOfSubsetSum css;
+  vector<int> num = {1, 1, 2, 3};
+  EXPECT_THAT(css.solveMemoizeRecursive(num, 4), 3);
+  num = vector<int>{1, 2, 7, 1, 5};
+  EXPECT_THAT(css.solveMemoizeRecursive(num, 9), 3);
+}
+
 TEST(UnboundedKnapsackTest, BruteForceRecursive)
 {
   UnboundedKnapsack uks;
@@ -166,6 +145,16 @@ TEST(UnboundedKnapsackTest, BruteForceRecursive)
   EXPECT_THAT(uks.solveBruteRecursive(weights, profits, 6), 105);
 }
 
+TEST(UnboundedKnapsackTest, MemoizeRecursive)
+{
+  UnboundedKnapsack uks;
+  vector<int> profits = {15, 50, 60, 90};
+  vector<int> weights = {1, 3, 4, 5};
+
+  EXPECT_THAT(uks.solveMemoizeRecursive(weights, profits, 8), 140);
+  EXPECT_THAT(uks.solveMemoizeRecursive(weights, profits, 6), 105);
+}
+
 TEST(RodCuttingTest, BruteForceRecursive)
 {
   RodCutting rodCut;
@@ -173,4 +162,43 @@ TEST(RodCuttingTest, BruteForceRecursive)
   vector<int> prices = {2, 6, 7, 10, 13};
   int maxProfit = rodCut.solveBruteRecursive(lengths, prices, 5);
   EXPECT_THAT(maxProfit, 14);
+}
+
+TEST(RodCuttingTest, MemoizeRecursive)
+{
+  RodCutting rodCut;
+  vector<int> lengths = {1, 2, 3, 4, 5};
+  vector<int> prices = {2, 6, 7, 10, 13};
+  int maxProfit = rodCut.solveMemoizeRecursive(lengths, prices, 5);
+  EXPECT_THAT(maxProfit, 14);
+}
+
+TEST(CoinProblem, CoinProblemBruteRecursive)
+{
+    vector<int> coinsToUse = {1, 5, 10};
+    int value = 22;
+
+    CoinChange cc;
+    auto numWays = cc.solveCountChangeBruteRecursive(coinsToUse, value);
+    EXPECT_THAT(numWays, 9);
+}
+
+TEST(CoinProblem, CoinProblemMemoizeRecursive)
+{
+    vector<int> coinsToUse = {1, 5, 10};
+    int value = 22;
+
+    CoinChange cc;
+    auto numWays = cc.solveCountChangeMemoizeRecursive(coinsToUse, value);
+    EXPECT_THAT(numWays, 9);
+}
+
+TEST(CoinProblem, CoinProblemBottomUpDP)
+{
+    vector<int> coinsToUse = {1, 5, 10};
+    int value = 22;
+
+    CoinChange cc;
+    auto numWays = cc.solveCountChangeBottomUpDP(coinsToUse, value);
+    EXPECT_THAT(numWays, 9);
 }
