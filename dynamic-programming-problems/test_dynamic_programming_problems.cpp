@@ -114,6 +114,17 @@ TEST(SubsetSumTest, BruteForceRecursive)
   EXPECT_THAT(ss.solveBruteRecursive(num, 6), false);
 }
 
+TEST(SubsetSumTest, MemoizeRecursive)
+{
+  SubsetSum ss;
+  vector<int> num = {1, 2, 3, 7};
+  EXPECT_THAT(ss.solveMemoizeRecursive(num, 6), true);
+  num = vector<int>{1, 2, 7, 1, 5};
+  EXPECT_THAT(ss.solveMemoizeRecursive(num, 10), true);
+  num = vector<int>{1, 3, 4, 8};
+  EXPECT_THAT(ss.solveMemoizeRecursive(num, 6), false);
+}
+
 TEST(MinSubsetSumDiffTest, BruteForceRecursive)
 {
   MinimumSubsetSumDifference mssd;
@@ -123,6 +134,17 @@ TEST(MinSubsetSumDiffTest, BruteForceRecursive)
   EXPECT_THAT(mssd.solveBruteRecursive(num), 0);
   num = vector<int>{1, 3, 100, 4};
   EXPECT_THAT(mssd.solveBruteRecursive(num), 92);
+}
+
+TEST(MinSubsetSumDiffTest, MemoizeRecursive)
+{
+  MinimumSubsetSumDifference mssd;
+  vector<int> num = {1, 2, 3, 9};
+  EXPECT_THAT(mssd.solveMemoizeRecursive(num), 3);
+  num = vector<int>{1, 2, 7, 1, 5};
+  EXPECT_THAT(mssd.solveMemoizeRecursive(num), 0);
+  num = vector<int>{1, 3, 100, 4};
+  EXPECT_THAT(mssd.solveMemoizeRecursive(num), 92);
 }
 
 TEST(CountSubsetSumTest, BruteForceRecursive)

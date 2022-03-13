@@ -424,6 +424,12 @@ bool SubsetSum::solveBruteRecursive(const vector<int> &num, int sum)
     return bruteRecursive(num, sum, 0);
 }
 
+bool SubsetSum::solveMemoizeRecursive(const vector<int>& num, int sum)
+{
+    vector<vector<int>> dp(num.size(), vector<int>(sum + 1, -1));
+    return memoizeRecursive(dp, num, sum, 0);
+}
+
 bool SubsetSum::bruteRecursive(const vector<int> &num, int sum, int currentIndex)
 {
     if (currentIndex >= static_cast<int>(num.size()))
@@ -447,9 +453,51 @@ bool SubsetSum::bruteRecursive(const vector<int> &num, int sum, int currentIndex
     return bruteRecursive(num, sum, currentIndex + 1);
 }
 
+bool SubsetSum::memoizeRecursive(vector<vector<int>>& dp, const vector<int>& num, int sum, int currentIndex)
+{
+    if (sum == 0)
+    {
+        return true;
+    }
+
+    if (currentIndex >= static_cast<int>(num.size()))
+    {
+        return false;
+    }
+
+    if (dp[currentIndex][sum] != -1)
+    {
+        return dp[currentIndex][sum]; 
+    }
+
+    if (num[currentIndex] <= sum)
+    {
+        if (memoizeRecursive(dp, num, sum - num[currentIndex], currentIndex + 1))
+        {
+            dp[currentIndex][sum] = int{true};
+            return dp[currentIndex][sum];
+        }
+    }
+
+    dp[currentIndex][sum] = memoizeRecursive(dp, num, sum, currentIndex + 1);
+    return dp[currentIndex][sum];
+}
+
 int MinimumSubsetSumDifference::solveBruteRecursive(const vector<int>& num)
 {
     return bruteRecursive(num, 0, 0, 0);
+}
+
+int MinimumSubsetSumDifference::solveMemoizeRecursive(const vector<int>& num)
+{
+    int sum = 0;
+    for (int i=0; i<static_cast<int>(num.size()); i++)
+    {
+        sum += num[i];
+    }
+
+    vector<vector<int>> dp(num.size(), vector<int>(sum + 1, -1));
+    return memoizeRecursive(dp, num, 0, 0, 0);
 }
 
 int MinimumSubsetSumDifference::bruteRecursive(const vector<int>& num, int sum1, int sum2, int currentIndex)
@@ -463,6 +511,25 @@ int MinimumSubsetSumDifference::bruteRecursive(const vector<int>& num, int sum1,
     int diff2 = bruteRecursive(num, sum1, sum2 + num[currentIndex], currentIndex + 1);
 
     return min(diff1, diff2);
+}
+
+int MinimumSubsetSumDifference::memoizeRecursive(std::vector<std::vector<int>>& dp, const std::vector<int>& num, int sum1, int sum2, int currentIndex)
+{
+    if (currentIndex >= static_cast<int>(num.size()))
+    {
+        return abs(sum1 - sum2);
+    }
+
+    if (dp[currentIndex][sum1] != -1)
+    {
+        return dp[currentIndex][sum1];
+    }
+
+    int diff1 = memoizeRecursive(dp, num, sum1 + num[currentIndex], sum2, currentIndex + 1);
+    int diff2 = memoizeRecursive(dp, num, sum1, sum2 + num[currentIndex], currentIndex + 1);
+
+    dp[currentIndex][sum1] = min(diff1, diff2);
+    return dp[currentIndex][sum1];
 }
 
 int CountOfSubsetSum::solveBruteRecursive(const vector<int>& num, int sum)
